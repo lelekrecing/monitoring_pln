@@ -1,0 +1,56 @@
+/* ================= ADMIN LAYOUT: SIDEBAR TETAP (dipakai di SEMUA halaman admin) ================= */
+.sidebar-link { display:block; width:100%; padding:15px 25px; color:#94a3b8; text-decoration:none; font-size:15px; font-weight:500; transition:.3s ease; border-left:3px solid transparent; }
+.sidebar-link:hover, .sidebar-link.active { background:linear-gradient(90deg, rgba(14,165,233,.15) 0%, rgba(14,165,233,.05) 100%); color:#38bdf8; border-left-color:#0ea5e9; }
+.sidebar-link span { display:block; }
+
+.sidebar {
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    width: 250px; min-width: 250px;
+    height: 100vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    z-index: 100;
+}
+.sidebar ul { flex: 0 0 auto; }
+.content { margin-left: 250px; }
+.logout-menu { margin-top: auto; border-top: 1px solid rgba(255,255,255,.08); }
+.logout-menu a { color: #ef4444; }
+.logout-menu a:hover { background: rgba(239,68,68,0.1); border-left-color:#ef4444; }
+
+/* ================= Komponen bersama: stat-card, tabel, badge, tombol aksi ================= */
+.stat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:8px; }
+@media (max-width:900px){ .stat-grid{ grid-template-columns:1fr; } }
+.stat-card { background:#1e293b; border:1px solid rgba(255,255,255,.05); border-radius:16px; padding:24px; }
+.stat-card p { color:#94a3b8; margin-bottom:6px; font-size:.85rem; }
+.stat-card h3 { color:#f8fafc; font-size:1.7rem; font-weight:700; }
+
+.table-container { overflow-x:auto; }
+table.data-table { width:100%; border-collapse:collapse; text-align:left; }
+table.data-table th { background:#0f172a; color:#94a3b8; font-weight:600; font-size:12px; text-transform:uppercase; padding:14px 16px; border-bottom:2px solid rgba(255,255,255,.08); }
+table.data-table td { padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.06); color:#cbd5e1; font-size:14px; }
+table.data-table tbody tr:hover { background:rgba(255,255,255,.02); }
+table.data-table a { color:#38bdf8; text-decoration:none; }
+table.data-table a:hover { text-decoration:underline; }
+
+.badge { padding:3px 10px; border-radius:999px; font-size:12px; font-weight:600; display:inline-block; }
+.badge-live { background:rgba(34,197,94,.12); color:#4ade80; }
+.badge-arsip { background:rgba(148,163,184,.15); color:#cbd5e1; }
+.badge-gagal { background:rgba(239,68,68,.12); color:#f87171; }
+.badge-proses { background:rgba(234,179,8,.12); color:#facc15; }
+
+.filter-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+.filter-bar a { display:inline-block; padding:6px 14px; border-radius:8px; text-decoration:none; color:#38bdf8; background:#1e293b; border:1px solid rgba(255,255,255,.08); font-size:14px; }
+.filter-bar a.active { background:#0ea5e9; color:#fff; border-color:#0ea5e9; }
+
+.action-btns { display:flex; gap:6px; justify-content:flex-end; align-items:center; }
+.btn-icon { background:none; border:none; cursor:pointer; padding:6px; border-radius:6px; transition:.2s; display:flex; align-items:center; justify-content:center; line-height:0; }
+.btn-icon .material-icons { font-size:20px; }
+.btn-activate { color:#38bdf8; }
+.btn-activate:hover { background:rgba(56,189,248,.12); }
+.btn-delete { color:#f87171; }
+.btn-delete:hover { background:rgba(239,68,68,.12); }
+.btn-disabled { color:#475569; cursor:not-allowed; }
+
+.back-link { display:inline-block; margin-bottom:16px; color:#38bdf8; text-decoration:none; font-size:14px; }

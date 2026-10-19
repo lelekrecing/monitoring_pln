@@ -1,0 +1,256 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#fff;
+}
+
+.container{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.login-container{
+    width:min(1160px, 94vw);
+    height:min(620px, 88vh);
+    margin:0 auto;
+    display:flex;
+    background:#fff;
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,0.12);
+}
+
+/* ===========================
+KIRI
+=========================== */
+
+.left-panel{
+    position: relative;
+    width:50%;
+    height:100%;
+    overflow:hidden;
+}
+
+.bg-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.overlay{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.45);
+}
+
+.left-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    z-index:2;
+    text-align:center;
+    color:#fff;
+    width:90%;
+}
+
+.left-content h2{
+    font-size:clamp(22px, 2.6vw, 38px);
+    font-weight:bold;
+    line-height:1.35;
+    letter-spacing:0.5px;
+}
+
+.brand-badge{
+    margin-bottom:16px;
+}
+
+.brand-badge img{
+    display:block;
+    margin:0 auto;
+    width:clamp(140px, 14vw, 220px);
+    height:auto;
+    filter:drop-shadow(0 3px 10px rgba(0,0,0,0.35));
+}
+
+.brand-logo{
+    font-size:clamp(44px, 5.5vw, 76px);
+    font-weight:800;
+    letter-spacing:4px;
+    line-height:1.1;
+    margin-bottom:14px;
+    text-shadow:0 2px 12px rgba(0,0,0,0.25);
+}
+
+.brand-tagline{
+    font-size:clamp(14px, 1.3vw, 18px);
+    font-weight:400;
+    letter-spacing:0.3px;
+    line-height:1.5;
+    opacity:0.92;
+    margin-bottom:18px;
+}
+
+.brand-divider{
+    width:56px;
+    height:3px;
+    background:#22a7ea;
+    border:none;
+    border-radius:2px;
+    margin:0 auto 18px auto;
+}
+
+.brand-org{
+    font-size:clamp(15px, 1.5vw, 20px);
+    font-weight:700;
+    letter-spacing:2px;
+    opacity:0.95;
+}
+
+.brand-eyebrow{
+    display:inline-block;
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:3px;
+    padding:5px 14px;
+    margin-bottom:16px;
+    border:1px solid rgba(255,255,255,0.5);
+    border-radius:20px;
+    opacity:0.9;
+}
+
+/* ===========================
+KANAN
+=========================== */
+
+.right-panel{
+    width:50%;
+    height:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:white;
+}
+
+.login-box{
+    width:70%;
+    max-width:600px;
+}
+
+.login-box h1{
+    text-align:center;
+    color:#22a7ea;
+    font-size:72px;
+    font-weight:300;
+    margin-bottom:60px;
+}
+
+label{
+    display:block;
+    font-size:18px;
+    margin-bottom:8px;
+}
+
+input{
+    width:100%;
+    height:52px;
+    border:1px solid #d9d9d9;
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:30px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    height:55px;
+    border:none;
+    border-radius:15px;
+    background:#2ea8e6;
+    color:#fff;
+    font-size:22px;
+    cursor:pointer;
+    margin-top:10px;
+}
+
+button:hover{
+    background:#1d98d7;
+}
+
+p{
+    text-align:center;
+    margin-top:18px;
+    font-size:15px;
+}
+
+a{
+    color:#2ea8e6;
+    text-decoration:none;
+}
+
+.alert{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border-radius:6px;
+    background:#ffe5e5;
+    color:#d8000c;
+    font-size:14px;
+    text-align:center;
+}
+
+/* ===========================
+RESPONSIVE (MOBILE)
+=========================== */
+
+@media (max-width: 768px){
+
+    html,
+    body{
+        height:auto;
+        overflow-y:auto;
+    }
+
+    .container{
+        height:auto;
+        min-height:100vh;
+        padding:24px 0;
+    }
+
+    .login-container{
+        flex-direction:column;
+        width:92vw;
+        height:auto;
+        max-height:none;
+    }
+
+    .left-panel{
+        width:100%;
+        height:200px;
+    }
+
+    .right-panel{
+        width:100%;
+        padding:30px 20px;
+    }
+
+    .login-box{
+        width:100%;
+    }
+
+}
