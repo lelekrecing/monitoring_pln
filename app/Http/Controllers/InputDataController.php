@@ -49,9 +49,6 @@ class InputDataController extends Controller
         // ===========================
         // Naikkan batas memori & waktu eksekusi
         // khusus untuk request ini saja.
-        // File Excel dengan banyak sheet/formula
-        // butuh memori lebih dari default 512M
-        // agar tidak fatal error saat load/kalkulasi.
         // ===========================
         ini_set('memory_limit', '-1');
         ini_set('max_execution_time', 0);
@@ -76,32 +73,21 @@ class InputDataController extends Controller
             // ===========================
             // Baca Excel
             // ===========================
-            // PERBAIKAN: Sebelumnya dipakai setReadDataOnly(true) dengan
-            // tujuan supaya PhpSpreadsheet tidak menyentuh mesin formula.
-            // Setelah ditelusuri ke source PhpSpreadsheet
-            // (Reader/Xlsx.php), setReadDataOnly(true) TERNYATA tidak ada
-            // hubungannya dengan formula sama sekali - opsi ini membuat
-            // reader melewati (skip) SEMUA info STYLE per sel (termasuk
-            // Number Format tanggal/angka/Rp) dan info MERGE CELL, karena
-            // baris `if ($cAttr['s'] && !$this->readDataOnly)` dan
-            // `... && !$this->readDataOnly` pada mergeCells tidak pernah
-            // dijalankan saat readDataOnly = true. Akibatnya SETIAP sel
-            // dianggap berformat "General", sehingga tanggal tampil
-            // sebagai angka serial Excel (mis. 46358) dan format angka
-            // (Rp, ribuan, dst) ikut hilang.
-            //
-            // Baris `setReadDataOnly(true)` DIHAPUS supaya style (Number
-            // Format) ikut terbaca dan tanggal/angka tampil sesuai format
-            // Excel aslinya. Keamanan terhadap error formula TETAP terjaga
-            // seperti sebelumnya karena readWorksheetToArray() di bawah
-            // memang sudah memakai getOldCalculatedValue() (nilai cache
-            // hasil terakhir dari Excel) untuk sel formula, BUKAN memicu
-            // mesin kalkulasi PhpSpreadsheet - jadi tidak berkaitan dengan
-            // opsi readDataOnly ini.
+            // setReadDataOnly(true) sengaja TIDAK dipakai supaya style
+            // (Number Format tanggal/angka/Rp) dan merge cell ikut terbaca.
+            // Keamanan terhadap error formula tetap terjaga karena
+            // readWorksheetToArray() memakai getOldCalculatedValue().
             $reader = IOFactory::createReaderForFile($fullPath);
             $spreadsheet = $reader->load($fullPath);
 
             $sheetCount = $spreadsheet->getSheetCount();
+
+            // ===========================
+            // Validasi kecocokan file dengan jenis monitoring yang dipilih
+            // (dicek dari NAMA SHEET di dalam file), SEBELUM data lama
+            // dihapus & data baru disimpan.
+            // ===========================
+            $this->validateJenisMonitoring($spreadsheet, $jenisMonitoring, $labelMonitoring);
 
             // ===========================
             // Simpan Upload
@@ -118,14 +104,27 @@ class InputDataController extends Controller
 
             // ===========================
             // Hapus Data Sheet & SheetData Lama
-            // TAMBAHAN: HANYA untuk jenis monitoring yang sama.
-            // Supaya upload Monitoring Tiang/Pelanggan tidak ikut
-            // menghapus data Monitoring KHS (atau sebaliknya).
+            // HANYA untuk jenis monitoring yang sama.
             // Riwayat di tabel "uploads" tetap disimpan.
             // ===========================
             $oldSheetIds = Sheet::where('jenis_monitoring', $jenisMonitoring)->pluck('id');
             SheetData::whereIn('sheet_id', $oldSheetIds)->delete();
             Sheet::where('jenis_monitoring', $jenisMonitoring)->delete();
+
+            // ===========================
+            // FIX: Cari tahun cadangan dari sheet mana pun di file ini.
+            // Dipakai kalau suatu sheet (mis. "TOTAL VENDOR", "REKAP KR")
+            // namanya tidak mengandung angka tahun, supaya kolom "tahun"
+            // (NOT NULL) tidak pernah diisi null.
+            // ===========================
+            $tahunFile = null;
+
+            foreach ($spreadsheet->getSheetNames() as $namaSheetCek) {
+                if (preg_match('/(20\d{2})/', $namaSheetCek, $m)) {
+                    $tahunFile = $m[1];
+                    break;
+                }
+            }
 
             // ===========================
             // Loop Semua Sheet
@@ -138,43 +137,20 @@ class InputDataController extends Controller
                 $highestColumnIndex =
                     \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
 
-                // TAMBAHAN/PERBAIKAN: Sebelumnya dipakai
-                // $worksheet->toArray(null, false, true, false) - parameter
-                // ke-2 (false) adalah $calculateFormulas. Di dalam
-                // PhpSpreadsheet (Worksheet::cellToArray()), kalau
-                // $calculateFormulas = false, maka untuk SEL BERFORMULA
-                // yang dipakai adalah $cell->getValue() - yaitu TEKS
-                // FORMULA MENTAH (mis. "='KHS JASA 2026'!B2"), BUKAN hasil
-                // hitungannya. Ini penyebab bug "yang tampil di website
-                // adalah tulisan formula, bukan hasilnya".
-                //
-                // FIX: dipakai fungsi readWorksheetToArray() di bawah, yang
-                // untuk sel berformula mengambil getOldCalculatedValue() -
-                // yaitu NILAI HASIL TERAKHIR yang sudah dihitung & disimpan
-                // sendiri oleh Excel di dalam file (persis "nilai hasil
-                // terakhir yang sudah tersimpan di file Excel" seperti
-                // tujuan awal kode ini) TANPA menjalankan mesin kalkulasi
-                // formula PhpSpreadsheet sama sekali - jadi tetap aman dari
-                // error "Unexpected operator" dkk pada formula kompleks.
+                // Baca isi sheet. Sel berformula memakai nilai hasil
+                // terakhir yang disimpan Excel (bukan teks formula mentah).
                 $rows = $this->readWorksheetToArray($worksheet, $highestRow, $highestColumnIndex);
 
                 // ===========================
-                // TAMBAHAN: Tangkap URL dari Hyperlink Excel
-                // Kalau di Excel ada sel yang tampil sebagai teks biasa
-                // (mis. "Lihat Lokasi", "Buka Dokumen") tapi sebenarnya
-                // di-klik akan membuka link (dipasang lewat fitur
-                // "Insert Link" di Excel), maka URL aslinya TIDAK ikut
-                // terbaca oleh toArray() di atas (yang terbaca cuma teks
-                // tampilannya). Blok ini mengambil URL asli dari metadata
-                // Hyperlink Excel dan menaruhnya menggantikan teks
-                // tampilan, KHUSUS untuk sel yang isinya belum berupa URL
-                // mentah, supaya website tetap bisa membuka link tsb.
+                // Tangkap URL dari Hyperlink Excel
+                // Sel yang tampil sebagai teks biasa tapi sebenarnya
+                // berisi link (Insert Link) diganti dengan URL aslinya.
                 // ===========================
                 foreach ($worksheet->getHyperlinkCollection() as $coordinate => $hyperlink) {
                     $url = trim((string) $hyperlink->getUrl());
 
                     if ($url === '' || str_starts_with($url, '#')) {
-                        continue; // lewati link internal antar-sel/sheet (bukan URL eksternal)
+                        continue; // lewati link internal antar-sel/sheet
                     }
 
                     [$colLetter, $rowNumber] = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::coordinateFromString($coordinate);
@@ -189,21 +165,32 @@ class InputDataController extends Controller
                 }
 
                 // ===========================
-                // Ambil Tahun
+                // Ambil Tahun (FIX: dengan fallback bertingkat)
+                // 1. Dari nama sheet
+                // 2. Dari sheet lain di file yang sama
+                // 3. Dari input form (name="tahun"), kalau ada
+                // 4. Tahun sekarang
                 // ===========================
-                $tahun = null;
+                $tahunDariNama = null;
 
                 if (preg_match('/(20\d{2})/', $sheetName, $match)) {
-                    $tahun = $match[1];
+                    $tahunDariNama = $match[1];
                 }
+
+                $tahun = $tahunDariNama
+                    ?? $tahunFile
+                    ?? $request->input('tahun')
+                    ?? now()->year;
 
                 // ===========================
                 // Ambil Kategori
+                // Tahun hanya dibuang dari nama kalau memang berasal dari
+                // nama sheet itu sendiri (bukan hasil fallback).
                 // ===========================
                 $kategori = $sheetName;
 
-                if ($tahun) {
-                    $kategori = trim(str_replace($tahun, '', $sheetName));
+                if ($tahunDariNama) {
+                    $kategori = trim(str_replace($tahunDariNama, '', $sheetName));
                 }
 
                 // ===========================
@@ -213,7 +200,7 @@ class InputDataController extends Controller
                     'upload_id'        => $upload->id,
                     'nama_sheet'       => $sheetName,
                     'kategori'         => strtoupper($kategori),
-                    'jenis_monitoring' => $jenisMonitoring, // TAMBAHAN
+                    'jenis_monitoring' => $jenisMonitoring,
                     'tahun'            => $tahun,
                     'urutan'           => $index + 1,
                     'total_rows'       => count($rows),
@@ -243,12 +230,8 @@ class InputDataController extends Controller
 
             DB::commit();
 
-            // TAMBAHAN: kalau request ini datang dari progress bar upload
-            // (AJAX/fetch, mengirim header Accept: application/json),
-            // balas dengan JSON supaya JS bisa menampilkan status
-            // "berhasil" tanpa reload halaman. Form submit BIASA (bukan
-            // AJAX) TETAP memakai redirect + flash session persis seperti
-            // sebelumnya - tidak ada perubahan untuk jalur lama itu.
+            // Request AJAX (progress bar upload) dibalas JSON.
+            // Form submit biasa tetap redirect + flash session.
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
@@ -264,11 +247,17 @@ class InputDataController extends Controller
 
             DB::rollBack();
 
-            // TAMBAHAN: sama seperti di atas - balas JSON hanya untuk
-            // request AJAX dari progress bar upload, supaya progress bar
-            // bisa berhenti dan menampilkan pesan error yang sesuai.
-            // Jalur form submit biasa TETAP balik ke back()->withErrors()
-            // seperti sebelumnya.
+            // Kalau gagal, hapus file fisik yang sempat ke-upload supaya
+            // tidak menumpuk jadi sampah di server.
+            if (isset($path) && \Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+                try {
+                    \Illuminate\Support\Facades\Storage::disk('public')->delete($path);
+                } catch (\Throwable $ignore) {
+                    // Diabaikan - kegagalan hapus file tidak boleh
+                    // menutupi pesan error asli di bawah.
+                }
+            }
+
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => false,
@@ -283,26 +272,67 @@ class InputDataController extends Controller
     }
 
     // ==========================
-    // TAMBAHAN/PERBAIKAN: Pengganti $worksheet->toArray() bawaan
-    // PhpSpreadsheet, khusus supaya SEL BERFORMULA menampilkan HASIL
-    // formulanya, bukan teks formula mentah.
-    //
-    // Cara kerjanya mengikuti persis logika internal
-    // Worksheet::cellToArray() di PhpSpreadsheet (baca sel per sel,
-    // ambil RichText sebagai teks polos, lalu terapkan format angka
-    // bawaan sel) - HANYA BEDA di satu titik: untuk sel berformula,
-    // dipakai getOldCalculatedValue() (nilai hasil terakhir yang sudah
-    // dihitung & disimpan sendiri oleh Excel di file-nya), BUKAN
-    // getCalculatedValue() (yang akan menjalankan ulang mesin formula
-    // PhpSpreadsheet dan berisiko error pada formula kompleks/fungsi
-    // yang tidak didukung) dan BUKAN pula getValue() (yang mengembalikan
-    // teks formula mentah, ini penyebab bug sebelumnya).
-    //
-    // Hasil array yang dikembalikan strukturnya SAMA PERSIS dengan
-    // toArray(null, ..., ..., false) sebelumnya: array baris (index 0..n)
-    // berisi array kolom (index 0..m), supaya seluruh kode setelahnya
-    // (hitung total_rows, simpan row_data, deteksi Hyperlink, dst) tidak
-    // perlu diubah sama sekali.
+    // Validasi kecocokan isi file Excel dengan jenis monitoring
+    // yang dipilih saat upload (KHS/Tiang/Pelanggan). Dicek dari NAMA
+    // SHEET di dalam file, berdasarkan daftar kata kunci per jenis.
+    // Kalau TIDAK ADA satupun nama sheet yang cocok, upload ditolak.
+    // ==========================
+    private function validateJenisMonitoring(
+        \PhpOffice\PhpSpreadsheet\Spreadsheet $spreadsheet,
+        string $jenisMonitoring,
+        string $labelMonitoring
+    ): void {
+        $kataKunciPerJenis = [
+            // Sesuai daftar sheet Monitoring Tiang di Sidebar.
+            'tiang' => ['RPB', 'TA PER SPB', 'MAXIMA', 'WIKA', 'TOTAL VENDOR', 'REKAP KR', 'SPB'],
+
+            // Sesuai daftar sheet Monitoring Pelanggan di Sidebar.
+            // "PERMOHONAN" supaya file sumber asli "Monitoring Permohonan"
+            // tetap diterima.
+            'pelanggan' => ['PELANGGAN', 'PERMOHONAN'],
+
+            // Sesuai pengelompokan sheet Monitoring KHS di
+            // DashboardController::buildKhsMenu().
+            'khs' => [
+                'KHS', 'RES', 'REKAP', 'AMR', 'GANTER', 'KR PBPD', 'COVER',
+                'PEMBESIAN', 'PENGIKAT', 'JOINTING', 'BKJ', 'DETAIL KR',
+                'KUOTA VENDOR',
+            ],
+        ];
+
+        $kataKunci = $kataKunciPerJenis[$jenisMonitoring] ?? null;
+
+        // Jenis monitoring yang belum dikenal tidak divalidasi.
+        if ($kataKunci === null) {
+            return;
+        }
+
+        $namaSheetAsli = $spreadsheet->getSheetNames();
+
+        foreach ($namaSheetAsli as $namaSheet) {
+            $namaSheetUpper = mb_strtoupper(trim($namaSheet));
+
+            foreach ($kataKunci as $kunci) {
+                if (str_contains($namaSheetUpper, $kunci)) {
+                    return; // Ada sheet yang cocok -> file valid, lolos.
+                }
+            }
+        }
+
+        // Tidak ada satupun sheet yang cocok -> tolak upload.
+        throw new \Exception(
+            'File yang diupload sepertinya BUKAN file ' . $labelMonitoring . '. ' .
+            'Nama sheet di dalam file Anda: "' . implode('", "', $namaSheetAsli) . '". ' .
+            'Silakan periksa kembali dan upload file Excel yang sesuai untuk ' . $labelMonitoring . '.'
+        );
+    }
+
+    // ==========================
+    // Pengganti $worksheet->toArray() bawaan PhpSpreadsheet, supaya SEL
+    // BERFORMULA menampilkan HASIL formulanya, bukan teks formula mentah.
+    // Untuk sel berformula dipakai getOldCalculatedValue() (nilai cache
+    // yang disimpan Excel), tanpa menjalankan mesin kalkulasi
+    // PhpSpreadsheet.
     // ==========================
     private function readWorksheetToArray(
         \PhpOffice\PhpSpreadsheet\Worksheet\Worksheet $worksheet,
@@ -321,7 +351,7 @@ class InputDataController extends Controller
 
             for ($c = 1; $c <= $highestColumnIndex; $c++) {
                 // createIfNotExists = false, supaya sel kosong tidak ikut
-                // dibuat di memori (sama seperti perilaku toArray() bawaan).
+                // dibuat di memori.
                 $cell = $worksheet->getCell($colLetters[$c] . $r, false);
 
                 if ($cell === null || $cell->getValue() === null) {
@@ -334,16 +364,11 @@ class InputDataController extends Controller
                 if ($rawValue instanceof \PhpOffice\PhpSpreadsheet\RichText\RichText) {
                     $value = $rawValue->getPlainText();
                 } elseif ($cell->isFormula()) {
-                    // FIX UTAMA: pakai nilai hasil terakhir yang sudah
-                    // dihitung & disimpan Excel sendiri.
                     $value = $cell->getOldCalculatedValue();
 
-                    // Fallback jaga-jaga: hanya kepakai kalau file Excel
-                    // ternyata belum pernah menyimpan nilai cache-nya sama
-                    // sekali (jarang terjadi). Dibungkus try/catch supaya
-                    // formula rumit/tidak didukung tidak menggagalkan
-                    // seluruh proses import - kalau tetap gagal dihitung,
-                    // baru dipakai teks formula apa adanya.
+                    // Fallback: hanya kepakai kalau file belum pernah
+                    // menyimpan nilai cache. Dibungkus try/catch supaya
+                    // formula rumit tidak menggagalkan seluruh import.
                     if ($value === null) {
                         try {
                             $value = $cell->getCalculatedValue();
@@ -355,9 +380,7 @@ class InputDataController extends Controller
                     $value = $rawValue;
                 }
 
-                // Samakan dengan perilaku toArray() sebelumnya
-                // ($formatData = true): terapkan format angka bawaan sel
-                // (mis. General/Currency/Percent) ke nilai akhirnya.
+                // Terapkan format angka bawaan sel ke nilai akhirnya.
                 $style = $worksheet->getParentOrThrow()->getCellXfByIndex($cell->getXfIndex());
                 $value = \PhpOffice\PhpSpreadsheet\Style\NumberFormat::toFormattedString(
                     $value,

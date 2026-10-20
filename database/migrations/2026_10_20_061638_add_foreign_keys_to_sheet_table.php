@@ -6,29 +6,23 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
         Schema::table('sheet', function (Blueprint $table) {
-
-            $table->longText('merge_cells')->nullable()->after('total_rows');
-
-            $table->integer('highest_row')->nullable()->after('merge_cells');
-
-            $table->integer('highest_column')->nullable()->after('highest_row');
-
+            $table->foreign(['upload_id'])->references(['id'])->on('uploads')->onUpdate('no action')->onDelete('cascade');
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
         Schema::table('sheet', function (Blueprint $table) {
-
-            $table->dropColumn([
-                'merge_cells',
-                'highest_row',
-                'highest_column'
-            ]);
-
+            $table->dropForeign('sheet_upload_id_foreign');
         });
     }
 };

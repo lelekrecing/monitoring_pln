@@ -7,6 +7,12 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InputDataController;
 use App\Http\Controllers\Admin\UploadController;
+use App\Http\Controllers\StandarKonstruksiController;
+use App\Http\Controllers\Admin\StandarKonstruksiController as AdminStandarKonstruksiController;
+use App\Http\Middleware\AdminSession;
+use App\Http\Middleware\UserArea;
+use App\Http\Controllers\Admin\AnggotaController;
+use App\Http\Controllers\Admin\RiwayatUploadController;
 
 // ==========================
 // LOGIN USER
@@ -24,11 +30,15 @@ Route::post('/login', [LoginController::class, 'login'])->name('login');
 // ==========================
 // LOGIN ADMIN
 // ==========================
+Route::get('/admin', function () {
+    return view('login_admin');
+})->name('admin.login.view');
+
+Route::post('/admin/login', [LoginController::class, 'adminLogin'])->name('admin.login');
 
 Route::get('/logout-admin', [AdminAuthController::class, 'logout'])->name('logout.admin');
 
-// TAMBAHAN: Route Logout User (sebelumnya belum terdaftar sehingga
-// tombol Logout di Dashboard User mengarah ke halaman yang tidak ada).
+// Logout User
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 // ==========================
@@ -43,8 +53,15 @@ Route::post('/registrasi', [RegisterController::class, 'store'])->name('register
 // ==========================
 // DASHBOARD
 // ==========================
-Route::get('/dashboard', [DashboardController::class, 'userIndex'])->name('dashboard');
-Route::get('/dashboard-admin', [DashboardController::class, 'adminIndex'])->name('admin.dashboard');
+// Dashboard USER: kalau yang buka adalah admin -> dialihkan ke dashboard admin
+Route::get('/dashboard', [DashboardController::class, 'userIndex'])
+    ->middleware(UserArea::class)
+    ->name('dashboard');
+
+// Dashboard ADMIN: wajib login admin
+Route::get('/dashboard-admin', [DashboardController::class, 'adminIndex'])
+    ->middleware(AdminSession::class)
+    ->name('admin.dashboard');
 
 // ==========================
 // INPUT DATA ADMIN
@@ -60,13 +77,10 @@ Route::post('/input-data', [InputDataController::class, 'storeKhs'])->name('inpu
 // ==========================
 Route::get('/upload-excel', [UploadController::class, 'index'])->name('upload.index');
 
-Route::post('/upload-excel',
-    [InputDataController::class,'storeKhs'])
+Route::post('/upload-excel', [InputDataController::class, 'storeKhs'])
     ->name('upload.store');
 
-// ==========================
-// TAMBAHAN: Upload terpisah - Monitoring Tiang & Monitoring Pelanggan
-// ==========================
+// Upload terpisah - Monitoring Tiang & Monitoring Pelanggan
 Route::post('/input-data/tiang', [InputDataController::class, 'storeTiang'])
     ->name('input-data.store.tiang');
 
@@ -87,8 +101,52 @@ Route::get('/rekap', function () {
 Route::get('/sheet/{id}', [DashboardController::class, 'show'])
     ->name('sheet.show');
 
-// ==========================
-// TAMBAHAN: Live Search (Find/Search) Daftar Sheet
-// ==========================
+// Live Search (Find/Search) Daftar Sheet
 Route::get('/search-sheet', [DashboardController::class, 'searchSheet'])
     ->name('search.sheet');
+
+// ==========================
+// STANDAR KONSTRUKSI (Katalog/Galeri) - USER (read-only)
+// ==========================
+Route::get('/standar-konstruksi', [StandarKonstruksiController::class, 'index'])
+    ->name('standar-konstruksi.index');
+
+// ==========================
+// STANDAR KONSTRUKSI - ADMIN (dilindungi middleware AdminSession)
+// ==========================
+Route::prefix('admin/standar-konstruksi')
+    ->middleware(AdminSession::class)
+    ->name('admin.standar-konstruksi.')
+    ->group(function () {
+        Route::get('/', [AdminStandarKonstruksiController::class, 'index'])->name('index');
+        Route::get('/create', [AdminStandarKonstruksiController::class, 'create'])->name('create');
+        Route::post('/', [AdminStandarKonstruksiController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [AdminStandarKonstruksiController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [AdminStandarKonstruksiController::class, 'update'])->name('update');
+        Route::delete('/{id}', [AdminStandarKonstruksiController::class, 'destroy'])->name('destroy');
+
+        // Import Excel/Spreadsheet "Standar Kontruksi"
+        Route::post('/import', [AdminStandarKonstruksiController::class, 'import'])->name('import');
+    });
+  
+// ==========================
+// MANAJEMEN AKUN (ANGGOTA) - ADMIN (dilindungi middleware AdminSession)
+// ==========================
+Route::prefix('admin/anggota')
+    ->middleware(AdminSession::class)
+    ->name('admin.anggota.')
+    ->group(function () {
+        Route::get('/', [AnggotaController::class, 'index'])->name('index');
+        Route::put('/{id}/reset-password', [AnggotaController::class, 'resetPassword'])->name('reset-password');
+        Route::delete('/{id}', [AnggotaController::class, 'destroy'])->name('destroy');
+    });
+// / 2) Tambahkan di bagian bawah routes/web.php:
+ 
+// ==========================
+// RIWAYAT UPLOAD - ADMIN
+// ==========================
+Route::middleware(AdminSession::class)->group(function () {
+    Route::get('/riwayat-upload', [RiwayatUploadController::class, 'index'])->name('admin.riwayat-upload');
+    Route::post('/riwayat-upload/{id}/aktifkan', [RiwayatUploadController::class, 'aktifkan'])->name('admin.riwayat-upload.aktifkan');
+    Route::delete('/riwayat-upload/{id}', [RiwayatUploadController::class, 'destroy'])->name('admin.riwayat-upload.destroy');
+});

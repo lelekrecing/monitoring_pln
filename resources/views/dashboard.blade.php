@@ -982,7 +982,8 @@ body{
 
 <a href="#" onclick="toggleMenu()">
 
-<span><i class="fa fa-folder"></i> Pusat Monitoring</span>
+<span><i class="fa fa-folder"></i> Pusat
+ Monitoring</span>
 
 <i class="fa fa-chevron-down"></i>
 
@@ -1158,6 +1159,17 @@ body{
 @endforeach
 
 </div>
+
+<!-- ================= TAMBAHAN: DOKUMEN & ASSESSMENT =================
+     Section baru TERPISAH di BAWAH "Pusat Monitoring" (tidak mengubah
+     posisi/tampilan Pusat Monitoring di atas). Berisi menu Standar
+     Konstruksi (katalog/galeri gambar konstruksi SUTM, read-only untuk
+     User). Memakai class/komponen yang sama (menu a) supaya desainnya
+     mengikuti Sidebar yang sudah ada. -->
+
+<a href="{{ route('standar-konstruksi.index') }}">
+<span><i class="fa fa-images"></i> Standar Konstruksi</span>
+</a>
 
 <a href="/logout">
 
@@ -1461,6 +1473,22 @@ if(!wasOpen){
 
 }
 
+function refreshOpenChartPanelHeight(){
+
+/* TAMBAHAN: hitung ulang tinggi (max-height) panel grafik (accordion)
+   yang sedang terbuka - dipanggil setiap kali konten DI BAWAH grafik
+   berubah (mis. panel Detail Vendor muncul/hilang saat titik/garis
+   grafik diklik), supaya detail LANGSUNG terlihat saat itu juga tanpa
+   harus Hide Grafik lalu ditampilkan lagi. Tidak mengubah desain,
+   data, maupun perhitungan grafik - hanya menyesuaikan tinggi
+   container accordion yang sudah ada. */
+
+var openPanel = document.querySelector('.chart-collapse.is-open');
+
+if(openPanel) openPanel.style.maxHeight = openPanel.scrollHeight + 'px';
+
+}
+
 window.addEventListener('resize', function(){
 
 /* TAMBAHAN: jaga grafik yang sedang terbuka tidak terpotong saat ukuran
@@ -1708,6 +1736,11 @@ x.style.display="block";
 
         if (kvPlaceholder) kvPlaceholder.style.display = 'none';
         if (kvContent) kvContent.style.display = '';
+
+        // TAMBAHAN: recalc tinggi panel accordion supaya detail yang
+        // baru ditampilkan LANGSUNG terlihat (tidak butuh Hide Grafik
+        // dulu baru ditampilkan lagi).
+        refreshOpenChartPanelHeight();
     }
 
     const kvCloseBtn = document.getElementById('kvCloseBtn');
@@ -1715,6 +1748,7 @@ x.style.display="block";
         kvCloseBtn.addEventListener('click', function(){
             if (kvContent) kvContent.style.display = 'none';
             if (kvPlaceholder) kvPlaceholder.style.display = '';
+            refreshOpenChartPanelHeight();
         });
     }
 
@@ -2213,12 +2247,23 @@ x.style.display="block";
         elPlaceholder.style.display = 'none';
         elContent.style.display     = 'block';
 
+        // PERBAIKAN: recalc tinggi panel accordion (chart-collapse) di sini
+        // supaya panel Detail Vendor yang baru ditampilkan LANGSUNG
+        // terlihat saat titik/garis grafik diklik - sebelumnya tinggi
+        // panel accordion hanya dihitung SEKALI saat grafik dibuka,
+        // sebelum ada detail yang ditampilkan, sehingga detail baru
+        // terlihat setelah grafik di-hide lalu ditampilkan lagi. Tidak
+        // ada perubahan pada data/perhitungan/desain grafik maupun
+        // fitur Hide Grafik itu sendiri.
+        refreshOpenChartPanelHeight();
+
         scrollDetailIntoViewIfNeeded();
     }
 
     function clearVendorDetail(){
         elContent.style.display     = 'none';
         elPlaceholder.style.display = 'block';
+        refreshOpenChartPanelHeight();
     }
 
     // TAMBAHAN: setelah vendor diklik, geser halaman SEDIKIT SAJA supaya
@@ -2394,5 +2439,6 @@ x.style.display="block";
 
 </script>
 
+   @includeIf('partials.upload-progress-widget')
 </body>
 </html>
