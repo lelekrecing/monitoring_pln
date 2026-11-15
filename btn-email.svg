@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 136 48" width="136" height="48">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#1F1315"/><stop offset="1" stop-color="#B91C1C"/></linearGradient></defs>
+<style>@keyframes sh{0%{transform:translateX(-60px)}100%{transform:translateX(196px)}}.sh{animation:sh 3.2s ease-in-out infinite}</style>
+<clipPath id="k"><rect width="136" height="48" rx="24"/></clipPath>
+<rect width="136" height="48" rx="24" fill="url(#g)"/>
+<g clip-path="url(#k)"><rect class="sh" x="0" y="-10" width="24" height="70" fill="#fff" opacity=".28" transform="skewX(-20)"/></g>
+<text x="24" y="31" font-size="18">✉️</text>
+<text x="52" y="30" font-family="'Segoe UI',Roboto,Arial,sans-serif" font-size="15" font-weight="800" fill="#fff" letter-spacing="1">EMAIL</text></svg>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 48" width="100%">
+<defs><linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F5C451"/><stop offset="1" stop-color="#EF4444"/></linearGradient>
+<clipPath id="p0"><rect class="w0" x="140" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p1"><rect class="w1" x="311" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p2"><rect class="w2" x="298" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p3"><rect class="w3" x="259" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p4"><rect class="w4" x="219" y="0" height="44" width="0"/></clipPath>
+</defs><style>.m{font-family:'Courier New',Courier,monospace}
+@keyframes w0{0%,1.00%{width:0}12.00%,18.00%{width:620px}20.00%,100%{width:0}}@keyframes c0{0%,0.00%{opacity:0;transform:translateX(0)}1.00%{opacity:1;transform:translateX(0)}12.00%,18.00%{opacity:1;transform:translateX(620px)}19.70%{opacity:1;transform:translateX(620px)}20.00%,100%{opacity:0;transform:translateX(620px)}}.w0{animation:w0 21.0s steps(47,end) infinite}.c0{animation:c0 21.0s steps(47,end) infinite}
+@keyframes w1{0%,21.00%{width:0}32.00%,38.00%{width:277px}40.00%,100%{width:0}}@keyframes c1{0%,20.00%{opacity:0;transform:translateX(0)}21.00%{opacity:1;transform:translateX(0)}32.00%,38.00%{opacity:1;transform:translateX(277px)}39.70%{opacity:1;transform:translateX(277px)}40.00%,100%{opacity:0;transform:translateX(277px)}}.w1{animation:w1 21.0s steps(21,end) infinite}.c1{animation:c1 21.0s steps(21,end) infinite}
+@keyframes w2{0%,41.00%{width:0}52.00%,58.00%{width:304px}60.00%,100%{width:0}}@keyframes c2{0%,40.00%{opacity:0;transform:translateX(0)}41.00%{opacity:1;transform:translateX(0)}52.00%,58.00%{opacity:1;transform:translateX(304px)}59.70%{opacity:1;transform:translateX(304px)}60.00%,100%{opacity:0;transform:translateX(304px)}}.w2{animation:w2 21.0s steps(23,end) infinite}.c2{animation:c2 21.0s steps(23,end) infinite}
+@keyframes w3{0%,61.00%{width:0}72.00%,78.00%{width:383px}80.00%,100%{width:0}}@keyframes c3{0%,60.00%{opacity:0;transform:translateX(0)}61.00%{opacity:1;transform:translateX(0)}72.00%,78.00%{opacity:1;transform:translateX(383px)}79.70%{opacity:1;transform:translateX(383px)}80.00%,100%{opacity:0;transform:translateX(383px)}}.w3{animation:w3 21.0s steps(29,end) infinite}.c3{animation:c3 21.0s steps(29,end) infinite}
+@keyframes w4{0%,81.00%{width:0}92.00%,98.00%{width:462px}100.00%,100%{width:0}}@keyframes c4{0%,80.00%{opacity:0;transform:translateX(0)}81.00%{opacity:1;transform:translateX(0)}92.00%,98.00%{opacity:1;transform:translateX(462px)}99.70%{opacity:1;transform:translateX(462px)}100.00%,100%{opacity:0;transform:translateX(462px)}}.w4{animation:w4 21.0s steps(35,end) infinite}.c4{animation:c4 21.0s steps(35,end) infinite}
+</style><text x="140" y="31" class="m" font-size="22" font-weight="bold" fill="url(#tg)" clip-path="url(#p0)">Backend : PHP · Laravel · CodeIgniter · Node.js</text>
+<rect class="c0" x="140" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="311" y="31" class="m" font-size="22" font-weight="bold" fill="url(#tg)" clip-path="url(#p1)">Frontend : JavaScript</text>
+<rect class="c1" x="311" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="298" y="31" class="m" font-size="22" font-weight="bold" fill="url(#tg)" clip-path="url(#p2)">Mobile : Flutter &amp; Dart</text>
+<rect class="c2" x="298" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="259" y="31" class="m" font-size="22" font-weight="bold" fill="url(#tg)" clip-path="url(#p3)">Database : MySQL &amp; PostgreSQL</text>
+<rect class="c3" x="259" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="219" y="31" class="m" font-size="22" font-weight="bold" fill="url(#tg)" clip-path="url(#p4)">Status : Mahasiswa · Selalu Belajar</text>
+<rect class="c4" x="219" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+</svg>

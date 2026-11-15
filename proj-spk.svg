@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 150" width="100%">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FCA5A5"/><stop offset="1" stop-color="#DC2626"/></linearGradient>
+<linearGradient id="b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#150C10"/><stop offset="1" stop-color="#0A0709"/></linearGradient></defs>
+<style>.s{font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif}.m{font-family:'Courier New',Courier,monospace}
+@keyframes sweep{from{stroke-dashoffset:0}to{stroke-dashoffset:-1000}}
+@keyframes ping{0%{r:5;opacity:.8}100%{r:14;opacity:0}}
+@keyframes shine{0%{transform:translateX(-140px)}100%{transform:translateX(560px)}}
+.bd{stroke-dasharray:140 860;animation:sweep 5s linear infinite}
+.pg{animation:ping 1.8s ease-out infinite}
+.sh{animation:shine 5s ease-in-out infinite}
+</style>
+<clipPath id="k"><rect x="1" y="1" width="438" height="148" rx="16"/></clipPath>
+<rect x="1" y="1" width="438" height="148" rx="16" fill="url(#b)" stroke="#3A1F26" stroke-width="2"/>
+<g clip-path="url(#k)"><rect class="sh" x="0" y="-20" width="50" height="200" fill="#fff" opacity=".04" transform="skewX(-20)"/></g>
+<rect class="bd" x="1" y="1" width="438" height="148" rx="16" fill="none" stroke="url(#g)" stroke-width="3" stroke-linecap="round" pathLength="1000"/>
+<rect x="24" y="26" width="6" height="30" rx="3" fill="url(#g)"/>
+<text x="42" y="50" class="s" font-size="17" font-weight="800" fill="#F8FAFC">Sistem Pendukung Keputusan</text>
+<rect x="24" y="76" width="79" height="26" rx="13" fill="#1E1217" stroke="#3A1F26"/><text x="64" y="93.5" text-anchor="middle" class="m" font-size="12.5" font-weight="bold" fill="#CBD5E1">Laravel</text><rect x="111.39999999999999" y="76" width="63" height="26" rx="13" fill="#1E1217" stroke="#3A1F26"/><text x="143" y="93.5" text-anchor="middle" class="m" font-size="12.5" font-weight="bold" fill="#CBD5E1">Blade</text><rect x="182.39999999999998" y="76" width="63" height="26" rx="13" fill="#1E1217" stroke="#3A1F26"/><text x="214" y="93.5" text-anchor="middle" class="m" font-size="12.5" font-weight="bold" fill="#CBD5E1">MySQL</text><circle cx="34" cy="125" r="5" fill="#FCA5A5"/><circle class="pg" cx="34" cy="125" r="5" fill="none" stroke="#FCA5A5" stroke-width="2"/>
+<text x="48" y="129.5" class="s" font-size="13.5" font-weight="700" fill="#FCA5A5">Completed</text>
+<text x="416" y="129.5" text-anchor="end" class="m" font-size="12" fill="#64748B">github.com/lelekrecing ↗</text>
+</svg>
