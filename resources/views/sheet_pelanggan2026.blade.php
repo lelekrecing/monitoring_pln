@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $sheet->nama_sheet }}</title>
+    <title>{{ $sheet->nama_sheet }} | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     {{--
         ============================================================
@@ -34,49 +39,64 @@
         }
 
         .plg2026-page{
-            font-family:Calibri, Arial, Helvetica, sans-serif;
-            background:#f5f7fb;
+            font-family:'Inter', 'Segoe UI', Arial, sans-serif;
+            background:#f8fafc;
+            color:#0f172a;
         }
 
         .plg2026-container{
-            width:98%;
-            margin:20px auto 40px auto;
+            width:min(1680px, 96%);
+            margin:22px auto 44px auto;
         }
 
         /* ================= PAGE HEADER (judul halaman + tombol) ================= */
 
         .plg2026-page-header{
-            background:#0B5EA8;
+            background:linear-gradient(135deg, #0d2137 0%, #153459 100%);
             color:#fff;
-            padding:18px 25px;
-            border-radius:10px;
+            padding:22px 26px;
+            border-radius:16px;
             margin-bottom:16px;
             display:flex;
             justify-content:space-between;
             align-items:center;
             flex-wrap:wrap;
-            gap:10px;
+            gap:12px;
+            box-shadow:0 12px 28px -8px rgba(13, 33, 55, 0.25);
+            border:1px solid rgba(255,255,255,.08);
         }
 
         .plg2026-page-header h2{
-            font-size:24px;
+            font-size:23px;
+            font-weight:700;
             line-height:1.3;
         }
 
         .plg2026-page-header p{
             font-size:13px;
-            opacity:.9;
+            color:#cbd5e1;
+            margin-top:3px;
         }
 
         .plg2026-btn{
-            background:#fff;
-            color:#0B5EA8;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:#ffffff;
+            color:#0f172a;
             text-decoration:none;
-            padding:10px 20px;
-            border-radius:8px;
-            font-weight:bold;
-            font-size:14px;
+            padding:9px 16px;
+            border-radius:10px;
+            font-weight:600;
+            font-size:13px;
             white-space:nowrap;
+            box-shadow:0 1px 3px rgba(0,0,0,.15);
+            transition:all .18s ease;
+        }
+
+        .plg2026-btn:hover{
+            background:#f1f5f9;
+            transform:translateY(-1px);
         }
 
         .plg2026-btn:hover{
@@ -116,12 +136,12 @@
 
         .plg2026-table-box{
             background:#fff;
-            border-radius:10px;
-            overflow-x:auto;
-            overflow-y:visible;
+            border-radius:14px;
+            overflow:auto;
+            max-height:74vh;
             position:relative;
-            box-shadow:0 2px 8px rgba(11,94,168,.10);
-            border:1px solid #cdd9e6;
+            box-shadow:0 4px 16px rgba(15,23,42,.05);
+            border:1px solid #cbd5e1;
         }
 
         .plg2026-table{
@@ -154,7 +174,7 @@
         }
 
         .plg2026-table thead th{
-            background:#0B5EA8;
+            background:#0d2137;
             color:#fff;
             font-weight:bold;
             text-align:center;
@@ -250,6 +270,12 @@
 
 <body class="plg2026-page">
 
+@includeIf('partials.simerah-topbar', ['topSubTitle' => 'UP3 JAMBI • ' . strtoupper($sheet->nama_sheet), 'withSidebar' => true])
+
+<div class="simerah-shell">
+    @includeIf('partials.simerah-sidebar', ['activeNav' => 'sheet', 'activeSheetId' => $sheet->id])
+    <div class="simerah-main">
+
 <div class="plg2026-container">
 
     <div class="plg2026-page-header">
@@ -274,6 +300,8 @@
             </a>
         </div>
     </div>
+
+    @includeIf('partials.sheet-filter-bar')
 
     <div class="plg2026-hint">
         Geser tabel ke kanan untuk melihat kolom lainnya (kolom cukup banyak), dan scroll halaman ke bawah untuk melihat seluruh baris data.
@@ -760,5 +788,7 @@ UNTUK PD TM','bg'=>'#FF0000','wrap'=>true],
 })();
 </script>
 
+    </div>
+</div>
 </body>
 </html>

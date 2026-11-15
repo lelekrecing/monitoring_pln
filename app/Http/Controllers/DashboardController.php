@@ -15,27 +15,33 @@ class DashboardController extends Controller
     // ==========================
     // Dashboard User
     // ==========================
-    public function userIndex()
+    public function userIndex(Request $request)
     {
         if (!Auth::check()) {
             return redirect('/login');
         }
 
+        $availableYears = $this->getAvailableYears();
+        $selectedYear   = trim((string) $request->query('tahun', ''));
+        if ($selectedYear !== '' && !in_array($selectedYear, $availableYears, true)) {
+            $selectedYear = '';
+        }
+
         // TAMBAHAN: Struktur Sidebar bertingkat (Nested Dropdown)
-        $sidebarMenu = $this->buildSidebarMenu();
+        $sidebarMenu = $this->buildSidebarMenu($selectedYear);
 
         // TAMBAHAN: Data Grafik Progress (diambil dari sheet "Detail KR")
-        $progressChart = $this->getProgressChartData();
+        $progressChart = $this->getProgressChartData($selectedYear);
 
         // TAMBAHAN: Data Grafik "Sisa Kuota Vendor" (diambil dari sheet
         // "KUOTA VENDOR" - terpisah total dari $progressChart di atas).
-        $kuotaVendorChart = $this->getKuotaVendorChartData();
+        $kuotaVendorChart = $this->getKuotaVendorChartData($selectedYear);
 
         // TAMBAHAN: Navigasi Dashboard -> Vendor & Nama Pelanggan
         // Vendor: pakai daftar vendor yang sama dengan Grafik Progress
         // (sudah diambil dari sheet "Detail KR", jadi konsisten & dari DB).
         $resMfsSheetId      = $this->findSheetIdByNama('RES MFS');
-        $detailKr2026SheetId = $this->findSheetIdByNama('Detail KR', '2026');
+        $detailKr2026SheetId = $this->findSheetIdByNama('Detail KR', $selectedYear !== '' ? $selectedYear : '2026');
         $pelangganList      = $this->getNamaPelangganList();
 
         return view('dashboard', compact(
@@ -44,8 +50,42 @@ class DashboardController extends Controller
             'kuotaVendorChart',
             'resMfsSheetId',
             'detailKr2026SheetId',
-            'pelangganList'
+            'pelangganList',
+            'availableYears',
+            'selectedYear'
         ));
+    }
+
+    private function getAvailableYears(): array
+    {
+        $years = [];
+        $sheets = Sheet::select('tahun', 'nama_sheet')->get();
+
+        foreach ($sheets as $sheet) {
+            if (preg_match('/^(20\d{2})$/', trim((string) $sheet->tahun), $m)) {
+                $years[$m[1]] = true;
+            }
+            if (preg_match_all('/\b(20[1-3]\d)\b/', (string) $sheet->nama_sheet, $matches)) {
+                foreach ($matches[1] as $yr) {
+                    $years[$yr] = true;
+                }
+            }
+        }
+
+        $list = array_keys($years);
+        rsort($list, SORT_NUMERIC);
+        return $list;
+    }
+
+    private function sheetMatchesYear($sheet, ?string $selectedYear): bool
+    {
+        if ($selectedYear === null || $selectedYear === '') {
+            return true;
+        }
+        if ((string) ($sheet->tahun ?? '') === $selectedYear) {
+            return true;
+        }
+        return str_contains((string) ($sheet->nama_sheet ?? ''), $selectedYear);
     }
 
     // ==========================
@@ -56,12 +96,12 @@ class DashboardController extends Controller
     //   sheet yang ada di database (upload baru langsung muncul).
     // - Monitoring Pelanggan -> sama seperti Monitoring Tiang.
     // ==========================
-    private function buildSidebarMenu()
+    public function buildSidebarMenu(?string $selectedYear = null)
     {
         return [
             'Monitoring KHS' => [
                 'type'   => 'monitoring-khs',
-                'groups' => $this->buildKhsMenu(),
+                'groups' => $this->buildKhsMenu($selectedYear),
             ],
             'Monitoring Tiang' => [
                 'type'  => 'flat',
@@ -72,13 +112,13 @@ class DashboardController extends Controller
                     'WIKA per SPB',
                     'Total Vendor',
                     'Rekap KR',
-                ]),
+                ], $selectedYear),
             ],
             'Monitoring Pelanggan' => [
                 'type'  => 'flat',
                 'items' => $this->filterAllowedSheets('pelanggan', [
                     'Pelanggan 2026',
-                ]),
+                ], $selectedYear),
             ],
         ];
     }
@@ -93,7 +133,7 @@ class DashboardController extends Controller
     // mengikuti urutan $allowedNames, bukan urutan kolom "urutan" di DB,
     // supaya sesuai urutan yang diminta.
     // ==========================
-    private function filterAllowedSheets(string $jenisMonitoring, array $allowedNames)
+    private function filterAllowedSheets(string $jenisMonitoring, array $allowedNames, ?string $selectedYear = null)
     {
         $sheets = Sheet::where('jenis_monitoring', $jenisMonitoring)
             ->orderBy('urutan')
@@ -102,8 +142,11 @@ class DashboardController extends Controller
         $allowedLower = array_map(fn ($n) => mb_strtolower(trim($n)), $allowedNames);
 
         return $sheets
-            ->filter(function ($sheet) use ($allowedLower) {
-                return in_array(mb_strtolower(trim($sheet->nama_sheet ?? '')), $allowedLower, true);
+            ->filter(function ($sheet) use ($allowedLower, $selectedYear) {
+                if (!in_array(mb_strtolower(trim($sheet->nama_sheet ?? '')), $allowedLower, true)) {
+                    return false;
+                }
+                return $this->sheetMatchesYear($sheet, $selectedYear);
             })
             ->sortBy(function ($sheet) use ($allowedLower) {
                 $pos = array_search(mb_strtolower(trim($sheet->nama_sheet ?? '')), $allowedLower, true);
@@ -128,7 +171,7 @@ class DashboardController extends Controller
     //   sebagai grup tersendiri, supaya tidak ada data yang hilang
     //   dari Sidebar meskipun belum termasuk pola di atas.
     // ==========================
-    private function buildKhsMenu()
+    private function buildKhsMenu(?string $selectedYear = null)
     {
         $sheets = Sheet::where('jenis_monitoring', 'khs')
             ->orderBy('kategori')
@@ -144,6 +187,9 @@ class DashboardController extends Controller
         $khsTambahan = ['AMR', 'GANTER', 'KR PBPD'];
 
         foreach ($sheets as $sheet) {
+            if (!$this->sheetMatchesYear($sheet, $selectedYear)) {
+                continue;
+            }
             $kategori  = strtoupper(trim($sheet->kategori ?? ''));
             $namaSheet = strtoupper(trim($sheet->nama_sheet ?? ''));
 
@@ -277,7 +323,7 @@ class DashboardController extends Controller
     //   - Nilai Kontrak
     //   - Status (%)
     // ==========================
-    private function getProgressChartData()
+    private function getProgressChartData(?string $selectedYear = null)
     {
         // ==========================
         // PERBAIKAN (root cause "data lama tidak hilang setelah dihapus &
@@ -321,12 +367,15 @@ class DashboardController extends Controller
             );
         }
 
-        $sheets2026 = $sheetsDitemukan->filter(function ($s) {
-            return (string) $s->tahun === '2026' || str_contains((string) $s->nama_sheet, '2026');
+        $targetYear = ($selectedYear !== null && $selectedYear !== '') ? $selectedYear : '2026';
+        $sheetsTarget = $sheetsDitemukan->filter(function ($s) use ($targetYear) {
+            return (string) $s->tahun === $targetYear || str_contains((string) $s->nama_sheet, $targetYear);
         });
 
-        if ($sheets2026->isNotEmpty()) {
-            $sheetsDitemukan = $sheets2026;
+        if ($selectedYear !== null && $selectedYear !== '') {
+            $sheetsDitemukan = $sheetsTarget;
+        } elseif ($sheetsTarget->isNotEmpty()) {
+            $sheetsDitemukan = $sheetsTarget;
         }
 
         \Illuminate\Support\Facades\Log::info('DETAIL KR 2026 candidates: ' . $sheetsDitemukan->count());
@@ -740,7 +789,7 @@ class DashboardController extends Controller
     // dirapikan (trim spasi berlebih) sebelum ditampilkan, dan baris hanya
     // dilewati kalau NAMA VENDOR-nya benar-benar kosong.
     // ==========================
-    private function getKuotaVendorChartData()
+    private function getKuotaVendorChartData(?string $selectedYear = null)
     {
         $sheetsDitemukan = Sheet::whereRaw('LOWER(nama_sheet) LIKE ?', ['%kuota vendor%'])->get();
 
@@ -752,13 +801,24 @@ class DashboardController extends Controller
             ];
         }
 
-        // Utamakan sheet "KUOTA VENDOR" tahun 2026 kalau ada lebih dari satu
-        $sheets2026 = $sheetsDitemukan->filter(function ($s) {
-            return (string) $s->tahun === '2026' || str_contains((string) $s->nama_sheet, '2026');
+        // Utamakan sheet "KUOTA VENDOR" tahun yang dipilih (atau 2026) kalau ada lebih dari satu
+        $targetYear = ($selectedYear !== null && $selectedYear !== '') ? $selectedYear : '2026';
+        $sheetsTarget = $sheetsDitemukan->filter(function ($s) use ($targetYear) {
+            return (string) $s->tahun === $targetYear || str_contains((string) $s->nama_sheet, $targetYear);
         });
 
-        if ($sheets2026->isNotEmpty()) {
-            $sheetsDitemukan = $sheets2026;
+        if ($selectedYear !== null && $selectedYear !== '') {
+            $sheetsDitemukan = $sheetsTarget;
+        } elseif ($sheetsTarget->isNotEmpty()) {
+            $sheetsDitemukan = $sheetsTarget;
+        }
+
+        if ($sheetsDitemukan->isEmpty()) {
+            return [
+                'vendors' => [],
+                'sisa_kuota_persen' => [],
+                'detail_vendor' => [],
+            ];
         }
 
         // Hanya SATU sheet (paling baru) yang dipakai - sama seperti
@@ -1278,7 +1338,8 @@ class DashboardController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $q = trim((string) $request->query('q', ''));
+        $q     = trim((string) $request->query('q', ''));
+        $tahun = trim((string) $request->query('tahun', ''));
 
         if (mb_strlen($q) < 2) {
             return response()->json(['sheets' => [], 'data' => []]);
@@ -1294,8 +1355,11 @@ class DashboardController extends Controller
         $sheetMatches = Sheet::whereRaw('LOWER(nama_sheet) LIKE ?', ['%' . $qLower . '%'])
             ->whereRaw('LOWER(TRIM(nama_sheet)) != ?', ['rekap'])
             ->orderBy('nama_sheet')
-            ->limit(20)
+            ->limit(40)
             ->get()
+            ->filter(fn ($s) => $this->sheetMatchesYear($s, $tahun))
+            ->take(20)
+            ->values()
             ->map(function ($s) {
                 return [
                     'id'         => $s->id,
@@ -1308,9 +1372,10 @@ class DashboardController extends Controller
         // Catatan: pencarian pakai LIKE pada kolom row_data (JSON mentah).
         // Cukup cepat untuk skala data saat ini; kalau data sudah sangat
         // besar, sebaiknya ditambahkan full-text index di kemudian hari.
-        $dataRows = SheetData::whereRaw('LOWER(row_data) LIKE ?', ['%' . $qLower . '%'])
+        $dataQuery = SheetData::whereRaw('LOWER(row_data) LIKE ?', ['%' . $qLower . '%']);
+        $dataRows = $dataQuery
             ->orderBy('id')
-            ->limit(40)
+            ->limit(80)
             ->get();
 
         $dataResults = [];
@@ -1331,6 +1396,10 @@ class DashboardController extends Controller
             // persis) karena sheet ini sengaja disembunyikan dari menu -
             // isi datanya tidak boleh ikut muncul di hasil pencarian.
             if (mb_strtolower(trim($sheet->nama_sheet ?? '')) === 'rekap') {
+                continue;
+            }
+
+            if ($tahun !== '' && !$this->sheetMatchesYear($sheet, $tahun) && !str_contains((string) $row->row_data, $tahun)) {
                 continue;
             }
 
@@ -1404,10 +1473,11 @@ class DashboardController extends Controller
         // "RES. MFS", "RES. SKS", dst) lewat $resVendorMap.
         $resVendorMap        = $this->buildResVendorSheetMap();
         $detailKr2026SheetId = $this->findSheetIdByNama('Detail KR', '2026');
+        $sidebarMenu = $this->buildSidebarMenu(request('tahun'));
 
         // Sheet RES
         if (strtoupper(substr($sheet->nama_sheet, 0, 3)) == 'RES') {
-            return view('sheet_res', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId'));
+            return view('sheet_res', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'sidebarMenu'));
         }
 
         // TAMBAHAN: Sheet "PELANGGAN 2026" (Monitoring Pelanggan) dipakaikan
@@ -1420,7 +1490,7 @@ class DashboardController extends Controller
         // "PELANGGAN 2025", "PER PELANGGAN 2026", atau "FILTER PELANGGAN"
         // tidak ikut terpengaruh dan tetap memakai view "sheet" seperti biasa.
         if (mb_strtoupper(trim($sheet->nama_sheet)) === 'PELANGGAN 2026') {
-            return view('sheet_pelanggan2026', compact('sheet', 'rows'));
+            return view('sheet_pelanggan2026', compact('sheet', 'rows', 'sidebarMenu'));
         }
 
         // TAMBAHAN: Sheet AMR, GANTER, COVER, PEMBESIAN (2024-2026), PENGIKAT,
@@ -1432,7 +1502,41 @@ class DashboardController extends Controller
         // Total Vendor, dst) tetap lewat cabang tampilan lama seperti semula.
         $isFlatTableSheet = $this->isFlatTableSheet($sheet->nama_sheet);
 
-        return view('sheet', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'isFlatTableSheet'));
+        return view('sheet', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'isFlatTableSheet', 'sidebarMenu'));
+    }
+
+    public function exportSheetPdf(Request $request, $id)
+    {
+        if (!Auth::check() && !session('admin')) {
+            return redirect('/login');
+        }
+
+        $sheet = Sheet::findOrFail($id);
+        if (mb_strtoupper(trim($sheet->nama_sheet ?? '')) === 'REKAP') {
+            abort(404);
+        }
+
+        $rows = SheetData::where('sheet_id', $id)
+            ->orderBy('row_number')
+            ->get();
+
+        $filters = [
+            'q'         => trim((string) $request->query('q', '')),
+            'tahun'     => trim((string) $request->query('tahun', '')),
+            'vendor'    => trim((string) $request->query('vendor', '')),
+            'pelanggan' => trim((string) $request->query('pelanggan', '')),
+            'kr'        => trim((string) $request->query('kr', '')),
+            'paket'     => trim((string) $request->query('paket', '')),
+            'lokasi'    => trim((string) $request->query('lokasi', '')),
+        ];
+
+        $file = app(\App\Services\KajianExportService::class)->exportSheetPdf($sheet, $rows, $filters);
+
+        return response($file['content'], 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $file['filename'] . '"',
+            'Cache-Control'       => 'max-age=0',
+        ]);
     }
 
     // ==========================
@@ -1639,5 +1743,29 @@ class DashboardController extends Controller
         }
 
         return $map;
+    }
+
+    /**
+     * Public wrapper untuk membaca data kuota vendor dari sheet "KUOTA VENDOR".
+     */
+    public function getKuotaVendorSummary(?string $selectedYear = null): array
+    {
+        return $this->getKuotaVendorChartData($selectedYear);
+    }
+
+    /**
+     * Public wrapper untuk struktur menu sidebar Pusat Monitoring.
+     */
+    public function getSidebarMenuData(?string $selectedYear = null): array
+    {
+        return $this->buildSidebarMenu($selectedYear);
+    }
+
+    /**
+     * Public wrapper untuk daftar tahun monitoring yang tersedia.
+     */
+    public function getAvailableYearsData(): array
+    {
+        return $this->getAvailableYears();
     }
 }

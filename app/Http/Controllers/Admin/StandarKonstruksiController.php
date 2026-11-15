@@ -38,6 +38,29 @@ class StandarKonstruksiController extends Controller
         );
     }
 
+    public function exportPdf(Request $request)
+    {
+        if ($redirect = $this->checkAdmin()) {
+            return $redirect;
+        }
+
+        $konstruksi = KonstruksiStandar::orderByRaw('urutan IS NULL, urutan asc')
+            ->orderBy('no')
+            ->orderBy('id')
+            ->get();
+
+        $file = app(\App\Services\KajianExportService::class)->exportStandarKonstruksiPdf($konstruksi, [
+            'q'     => trim((string) $request->query('q', '')),
+            'tahun' => trim((string) $request->query('tahun', '')),
+        ]);
+
+        return response($file['content'], 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $file['filename'] . '"',
+            'Cache-Control'       => 'max-age=0',
+        ]);
+    }
+
     public function import(Request $request)
     {
         if ($redirect = $this->checkAdmin()) {

@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | SIGINJAI</title>
+    <title>Login | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     @vite('resources/css/login.css')
 </head>
@@ -22,7 +27,7 @@
                 </div>
                 <div class="brand-logo">SIGINJAI</div>
                 <p class="brand-tagline">
-                    Sistem Gerbang Informasi Jasa , Anggaran & Investasi
+                    Sistem Gerbang Informasi Jasa , Anggaran &amp; Investasi
                 </p>
                 <p class="brand-org">PLN UP3 Jambi</p>
             </div>
@@ -31,11 +36,19 @@
         <!-- BAGIAN KANAN -->
         <div class="right-panel">
             <div class="login-box">
-                <h1>Log In</h1>
+                <div class="login-header">
+                    <div class="login-pln-badge">
+                        <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
+                        <span>SIGINJAI • UP3 Jambi</span>
+                    </div>
+                    <h1>Selamat Datang</h1>
+                    <p class="login-subtitle">Silakan masuk menggunakan username dan password Anda untuk mengakses dashboard.</p>
+                </div>
 
                 @if ($errors->any())
                     <div class="alert">
-                        {{ $errors->first() }}
+                        <i class="fa fa-circle-exclamation"></i>
+                        <span>{{ $errors->first() }}</span>
                     </div>
                 @endif
 
@@ -43,34 +56,72 @@
                     @csrf
 
                     <!-- KOREKSI: Ubah label dan input menjadi Username -->
-                    <label>Username :</label>
-                    <input
-                        type="text"
-                        name="username"
-                        value="{{ old('username') }}"
-                        placeholder="Masukkan Username"
-                        required
-                    >
+                    <div class="form-field">
+                        <label for="usernameInput">Username</label>
+                        <div class="input-group">
+                            <i class="fa fa-user input-icon"></i>
+                            <input
+                                id="usernameInput"
+                                type="text"
+                                name="username"
+                                value="{{ old('username') }}"
+                                placeholder="Masukkan Username"
+                                autocomplete="username"
+                                required
+                            >
+                        </div>
+                    </div>
 
-                    <label>Password :</label>
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Masukkan Password"
-                        required
-                    >
+                    <div class="form-field">
+                        <label for="passwordInput">Password</label>
+                        <div class="input-group">
+                            <i class="fa fa-lock input-icon"></i>
+                            <input
+                                id="passwordInput"
+                                type="password"
+                                name="password"
+                                placeholder="Masukkan Password"
+                                autocomplete="current-password"
+                                required
+                            >
+                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('passwordInput', this)" aria-label="Tampilkan atau sembunyikan password">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
 
                     <button type="submit" class="btn-login">
-                        Log in
+                        <i class="fa fa-right-to-bracket"></i>
+                        <span>Masuk ke Sistem</span>
                     </button>
                 </form>
 
                 <!-- KOREKSI: Tautan Registrasi telah dibumihanguskan dari sini -->
 
+                <div class="login-footer">
+                    &copy; {{ date('Y') }} PT PLN (Persero) UP3 Jambi &bull; SIGINJAI
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<script>
+function togglePasswordVisibility(inputId, btn) {
+    var input = document.getElementById(inputId);
+    if (!input) return;
+    var icon = btn.querySelector('i');
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+    } else {
+        input.type = 'password';
+        if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+    }
+}
+</script>
+
+@includeIf('partials.login-loading')
+@includeIf('partials.auth-popup')
 </body>
 </html>

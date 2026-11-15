@@ -2,68 +2,91 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Standar Konstruksi | Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Standar Konstruksi | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
     <style>
-        body{ background:#f4f7fb; }
-        .form-card-header{ background:#0B5EA8; color:#fff; padding:16px 24px; border-radius:8px 8px 0 0; }
+        .form-card { max-width: 720px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 7px; }
+        .form-control { width: 100%; padding: 11px 14px; }
+        .form-help { display: block; font-size: 12px; color: #64748b; margin-top: 6px; }
+        .req { color: #dc2626; }
+        .preview-box {
+            margin-bottom: 12px; text-align: center; padding: 16px;
+            border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;
+        }
+        .preview-box img { max-width: 220px; border-radius: 8px; border: 1px solid #cbd5e1; }
+        .preview-label { margin-top: 8px; font-size: 12px; font-weight: 700; color: #059669; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
     </style>
 </head>
-<body class="d-flex align-items-center py-5 min-vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="form-card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Edit Standar Konstruksi</h5>
-                        <a href="{{ route('admin.standar-konstruksi.index') }}" class="btn btn-sm btn-light">Batal</a>
-                    </div>
-                    <div class="card-body p-4 p-md-5">
+<body>
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+@includeIf('partials.simerah-admin-topbar', ['topSubTitle' => 'UP3 JAMBI • STANDAR KONSTRUKSI'])
 
-                        <form action="{{ route('admin.standar-konstruksi.update', $item->id) }}" method="POST">
-                            @csrf
-                            @method('PUT')
+<div class="wrapper">
+    @includeIf('partials.simerah-admin-sidebar', ['activeAdmin' => 'standar'])
 
-                            <div class="mb-3">
-                                <label>No (urutan tampil)</label>
-                                <input type="number" name="nomor" class="form-control" value="{{ old('nomor', $item->nomor) }}" min="0">
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Kontruksi SUTM 2026 <span class="text-danger">*</span></label>
-                                <input type="text" name="nama_konstruksi" class="form-control" value="{{ old('nama_konstruksi', $item->nama_konstruksi) }}" required>
-                                <small class="text-muted">Nama akan tampil PERSIS seperti yang diketik, tidak diubah sistem.</small>
-                            </div>
-
-                            <div class="mb-4">
-                                <label>Link Gambar (Google Drive) <span class="text-danger">*</span></label>
-                                <div class="mb-3 text-center p-3 border rounded bg-light">
-                                    <img src="{{ $item->gambar_url }}" class="img-thumbnail" style="max-width:220px;" alt="Preview"
-                                         onerror="this.onerror=null; this.src='{{ $item->gambar_url_alt }}'; this.onerror=function(){ this.src='https://placehold.co/220x160?text=No+Image'; };">
-                                    <div class="mt-2"><small class="text-success fw-bold">Gambar saat ini</small></div>
-                                </div>
-                                <input type="url" name="link_gambar" class="form-control" value="{{ old('link_gambar', $item->link_gambar) }}" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" required>
-                                <small class="text-muted d-block mt-1">Ganti dengan link Google Drive baru untuk mengganti gambar.</small>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold">Simpan Perubahan</button>
-                            </div>
-                        </form>
-                    </div>
+    <main class="content">
+        <div class="card form-card">
+            <div class="header-title">
+                <div>
+                    <h2>Edit Standar Konstruksi</h2>
+                    <small>Perbarui data nama konstruksi maupun tautan gambar referensi.</small>
                 </div>
+                <a href="{{ route('admin.standar-konstruksi.index') }}" class="btn-secondary">Batal</a>
             </div>
+
+            @if ($errors->any())
+                <div class="error-box">
+                    <ul style="margin-left:18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('admin.standar-konstruksi.update', $item->id) }}" method="POST">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+                    <label>No (urutan tampil)</label>
+                    <input type="number" name="nomor" class="form-control" value="{{ old('nomor', $item->nomor) }}" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Kontruksi SUTM 2026 <span class="req">*</span></label>
+                    <input type="text" name="nama_konstruksi" class="form-control" value="{{ old('nama_konstruksi', $item->nama_konstruksi) }}" required>
+                    <small class="form-help">Nama akan tampil PERSIS seperti yang diketik, tidak diubah sistem.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Link Gambar (Google Drive) <span class="req">*</span></label>
+                    <div class="preview-box">
+                        <img src="{{ $item->gambar_url }}" alt="Preview"
+                             onerror="this.onerror=null; this.src='{{ $item->gambar_url_alt }}'; this.onerror=function(){ this.src='https://placehold.co/220x160?text=No+Image'; };">
+                        <div class="preview-label">Gambar saat ini</div>
+                    </div>
+                    <input type="url" name="link_gambar" class="form-control" value="{{ old('link_gambar', $item->link_gambar) }}" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" required>
+                    <small class="form-help">Ganti dengan link Google Drive baru untuk mengganti gambar.</small>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ route('admin.standar-konstruksi.index') }}" class="btn-secondary">Kembali</a>
+                    <button type="submit" class="btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
-    </div>
+    </main>
+</div>
+
 </body>
 </html>

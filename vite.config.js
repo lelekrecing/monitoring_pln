@@ -8,9 +8,15 @@ export default defineConfig({
         laravel({
             input: [
                 'resources/css/app.css',
+                'resources/css/dashboard.css',
                 'resources/css/login.css',
                 'resources/css/registrasi.css',
                 'resources/css/input-data.css',
+                'resources/css/khs-jasa-2024.css',
+                'resources/css/update-data.css',
+                'resources/css/admin/dashboard_admin.css',
+                'resources/css/admin/khs.css',
+                'resources/css/admin/upload.css',
                 'resources/js/app.js',
             ],
             refresh: true,

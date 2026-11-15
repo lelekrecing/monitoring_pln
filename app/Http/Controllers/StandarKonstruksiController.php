@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\KonstruksiStandar;
+use App\Services\KajianExportService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class StandarKonstruksiController extends Controller
@@ -26,5 +28,28 @@ class StandarKonstruksiController extends Controller
             'standar-konstruksi',
             compact('konstruksi')
         );
+    }
+
+    public function exportPdf(Request $request, KajianExportService $exportService)
+    {
+        if (!Auth::check() && !session('admin')) {
+            return redirect()->route('login.view');
+        }
+
+        $konstruksi = KonstruksiStandar::orderByRaw('urutan IS NULL, urutan asc')
+            ->orderBy('no')
+            ->orderBy('id')
+            ->get();
+
+        $file = $exportService->exportStandarKonstruksiPdf($konstruksi, [
+            'q'     => trim((string) $request->query('q', '')),
+            'tahun' => trim((string) $request->query('tahun', '')),
+        ]);
+
+        return response($file['content'], 200, [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'attachment; filename="' . $file['filename'] . '"',
+            'Cache-Control'       => 'max-age=0',
+        ]);
     }
 }

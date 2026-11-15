@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $sheet->nama_sheet }}</title>
+    <title>{{ $sheet->nama_sheet }} | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     <style>
 
@@ -11,57 +16,68 @@
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:Calibri, Arial, Helvetica, sans-serif;
+            font-family:'Inter', 'Segoe UI', Arial, sans-serif;
         }
 
         body{
-            background:#f5f7fb;
+            background:#f8fafc;
+            color:#0f172a;
         }
 
         .container{
-            width:98%;
-            margin:20px auto 40px auto;
+            width:min(1680px, 96%);
+            margin:22px auto 44px auto;
         }
 
-        /* ================= PAGE HEADER ================= */
+        /* ================= PAGE HEADER (GAYA SIMERAH KOJA) ================= */
 
         .page-header{
-            background:#0B5EA8;
+            background:linear-gradient(135deg, #0d2137 0%, #153459 100%);
             color:#fff;
-            padding:18px 25px;
-            border-radius:10px;
+            padding:22px 26px;
+            border-radius:16px;
             margin-bottom:16px;
             display:flex;
             justify-content:space-between;
             align-items:center;
             flex-wrap:wrap;
-            gap:10px;
+            gap:12px;
+            box-shadow:0 12px 28px -8px rgba(13, 33, 55, 0.25);
+            border:1px solid rgba(255,255,255,.08);
         }
 
         .page-header h2{
-            font-size:26px;
+            font-size:23px;
+            font-weight:700;
+            letter-spacing:-0.01em;
             line-height:1.3;
         }
 
         .page-header p{
-            font-size:14px;
-            opacity:.9;
+            font-size:13px;
+            color:#cbd5e1;
+            margin-top:3px;
         }
 
         .btn{
-            background:#fff;
-            color:#0B5EA8;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:#ffffff;
+            color:#0f172a;
             text-decoration:none;
-            padding:10px 20px;
-            border-radius:8px;
-            font-weight:bold;
-            font-size:14px;
-            transition:.2s;
+            padding:9px 16px;
+            border-radius:10px;
+            font-weight:600;
+            font-size:13px;
+            transition:all .18s ease;
             white-space:nowrap;
+            box-shadow:0 1px 3px rgba(0,0,0,.15);
         }
 
         .btn:hover{
-            background:#e9ecef;
+            background:#f1f5f9;
+            transform:translateY(-1px);
         }
 
         /* TAMBAHAN: Bungkus tombol Kembali & Dashboard supaya rapi
@@ -77,10 +93,10 @@
         /* ================= INFO BAR (PELAKSANA / KONTRAK / JUDUL) ================= */
 
         .info-box{
-            background:#1565C0;
+            background:#0d2137;
             color:#fff;
-            border-radius:10px 10px 0 0;
-            padding:10px 16px;
+            border-radius:14px 14px 0 0;
+            padding:12px 18px;
             font-size:13px;
         }
 
@@ -310,6 +326,12 @@
 
 <body>
 
+@includeIf('partials.simerah-topbar', ['topSubTitle' => 'UP3 JAMBI • ' . strtoupper($sheet->nama_sheet), 'withSidebar' => true])
+
+<div class="simerah-shell">
+    @includeIf('partials.simerah-sidebar', ['activeNav' => 'sheet', 'activeSheetId' => $sheet->id])
+    <div class="simerah-main">
+
 <div class="container">
 
     <div class="page-header">
@@ -338,6 +360,8 @@
             </a>
         </div>
     </div>
+
+    @includeIf('partials.sheet-filter-bar')
 
     @php
         // TAMBAHAN: Filter server-side dari klik Vendor/Nama Pelanggan di Dashboard
@@ -833,5 +857,7 @@
 })();
 </script>
 
+    </div>
+</div>
 </body>
 </html>

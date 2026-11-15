@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $sheet->nama_sheet }}</title>
+    <title>{{ $sheet->nama_sheet }} | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
 
     <style>
 
@@ -11,57 +16,68 @@
             margin:0;
             padding:0;
             box-sizing:border-box;
-            font-family:Calibri, Arial, Helvetica, sans-serif;
+            font-family:'Inter', 'Segoe UI', Arial, sans-serif;
         }
 
         body{
-            background:#f5f7fb;
+            background:#f8fafc;
+            color:#0f172a;
         }
 
         .container{
-            width:98%;
-            margin:20px auto 40px auto;
+            width:min(1680px, 96%);
+            margin:22px auto 44px auto;
         }
 
-        /* ================= PAGE HEADER ================= */
+        /* ================= PAGE HEADER (GAYA SIMERAH KOJA) ================= */
 
         .page-header{
-            background:#0B5EA8;
+            background:linear-gradient(135deg, #0d2137 0%, #153459 100%);
             color:#fff;
-            padding:18px 25px;
-            border-radius:10px;
+            padding:22px 26px;
+            border-radius:16px;
             margin-bottom:16px;
             display:flex;
             justify-content:space-between;
             align-items:center;
             flex-wrap:wrap;
-            gap:10px;
+            gap:12px;
+            box-shadow:0 12px 28px -8px rgba(13, 33, 55, 0.25);
+            border:1px solid rgba(255,255,255,.08);
         }
 
         .page-header h2{
-            font-size:26px;
+            font-size:23px;
+            font-weight:700;
+            letter-spacing:-0.01em;
             line-height:1.3;
         }
 
         .page-header p{
-            font-size:14px;
-            opacity:.9;
+            font-size:13px;
+            color:#cbd5e1;
+            margin-top:3px;
         }
 
         .btn{
-            background:#fff;
-            color:#0B5EA8;
+            display:inline-flex;
+            align-items:center;
+            gap:6px;
+            background:#ffffff;
+            color:#0f172a;
             text-decoration:none;
-            padding:10px 20px;
-            border-radius:8px;
-            font-weight:bold;
-            font-size:14px;
-            transition:.2s;
+            padding:9px 16px;
+            border-radius:10px;
+            font-weight:600;
+            font-size:13px;
+            transition:all .18s ease;
             white-space:nowrap;
+            box-shadow:0 1px 3px rgba(0,0,0,.15);
         }
 
         .btn:hover{
-            background:#e9ecef;
+            background:#f1f5f9;
+            transform:translateY(-1px);
         }
 
         .header-actions{
@@ -93,10 +109,10 @@
         }
 
         .sheet-block-title{
-            font-weight:bold;
-            font-size:16px;
-            color:#0B5EA8;
-            margin:4px 4px 14px 2px;
+            font-weight:700;
+            font-size:15.5px;
+            color:#0d2137;
+            margin:4px 4px 12px 2px;
         }
 
         /* ================= TAMBAHAN: PANEL INFORMASI BLOK (VENDOR / NOMOR KONTRAK /
@@ -104,24 +120,24 @@
 
         .sheet-info{
             background:#fff;
-            border-radius:10px;
-            padding:14px 20px;
+            border-radius:14px;
+            padding:15px 20px;
             margin-bottom:14px;
-            box-shadow:0 2px 8px rgba(0,0,0,.08);
-            border:1px solid #e2e6ea;
+            box-shadow:0 1px 3px rgba(15,23,42,.05);
+            border:1px solid #e2e8f0;
         }
 
         .sheet-info-row{
             display:flex;
             flex-wrap:wrap;
             gap:4px 14px;
-            padding:3px 0;
+            padding:4px 0;
             font-size:13px;
-            color:#222;
+            color:#1e293b;
         }
 
         .sheet-info-row:not(:last-child){
-            border-bottom:1px dashed #e9edf2;
+            border-bottom:1px dashed #e2e8f0;
         }
 
         .sheet-info-cell:empty{
@@ -129,9 +145,9 @@
         }
 
         .sheet-section-title{
-            font-weight:bold;
+            font-weight:700;
             font-size:14px;
-            color:#0B5EA8;
+            color:#0d2137;
             margin:16px 2px 10px 2px;
         }
 
@@ -163,12 +179,12 @@
 
         .table-box{
             background:#fff;
-            border-radius:12px;
-            overflow-x:auto;
-            overflow-y:visible;
+            border-radius:14px;
+            overflow:auto;
+            max-height:74vh;
             position:relative;
-            box-shadow:0 4px 15px rgba(0,0,0,.12);
-            border:1px solid #000;
+            box-shadow:0 2px 10px rgba(15,23,42,.06);
+            border:1px solid #cbd5e1;
         }
 
         table{
@@ -194,16 +210,16 @@
            freeze ini otomatis tetap berfungsi saat tabel di-scroll
            horizontal maupun saat halaman di-scroll ke bawah. ================= */
         thead th{
-            background:#00B0F0;
-            color:#fff;
+            background:#0d2137;
+            color:#f8fafc;
             padding:8px 10px;
             height:38px;
-            border-top:1px solid #000;
-            border-left:1px solid #000;
-            border-bottom:1px solid #000;
+            border-top:1px solid #1e3a5f;
+            border-left:1px solid #1e3a5f;
+            border-bottom:1px solid #1e3a5f;
             text-align:center;
-            font-weight:bold;
-            font-size:13px;
+            font-weight:700;
+            font-size:12.5px;
             vertical-align:middle;
             white-space:normal;
             word-break:break-word;
@@ -219,14 +235,15 @@
         }
 
         thead th:last-child{
-            border-right:1px solid #000;
+            border-right:1px solid #1e3a5f;
         }
 
         tbody td{
-            padding:6px 10px;
-            border-top:1px solid #d9d9d9;
-            border-left:1px solid #d9d9d9;
+            padding:7px 10px;
+            border-top:1px solid #e2e8f0;
+            border-left:1px solid #e2e8f0;
             font-size:13px;
+            color:#1e293b;
             vertical-align:middle;
             background:#fff;
             white-space:normal;
@@ -234,19 +251,19 @@
         }
 
         tbody td:last-child{
-            border-right:1px solid #d9d9d9;
+            border-right:1px solid #e2e8f0;
         }
 
         tbody tr:last-child td{
-            border-bottom:1px solid #d9d9d9;
+            border-bottom:1px solid #e2e8f0;
         }
 
         tbody tr:nth-child(even) td{
-            background:#F7FBFF;
+            background:#f8fafc;
         }
 
         tbody tr:hover td{
-            background:#DCEEFF !important;
+            background:#eff6ff !important;
         }
 
         .text-left{ text-align:left; }
@@ -272,16 +289,16 @@
            judul terpisah. ================= */
 
         tr.row-section td{
-            background:#eaf6fd !important;
-            color:#0B5EA8;
-            font-weight:bold;
-            font-size:14px;
+            background:#f1f5f9 !important;
+            color:#0d2137;
+            font-weight:700;
+            font-size:13.5px;
             text-align:left;
         }
 
         thead th.hdr-note{
-            background:#eaf6fd;
-            color:#0B5EA8;
+            background:#eff6ff;
+            color:#0d2137;
         }
 
         /* ================= TAMBAHAN (khusus REKAP CONNECTOR): judul kecil
@@ -440,6 +457,12 @@
 
 <body>
 
+@includeIf('partials.simerah-topbar', ['topSubTitle' => 'UP3 JAMBI • ' . strtoupper($sheet->nama_sheet), 'withSidebar' => true])
+
+<div class="simerah-shell">
+    @includeIf('partials.simerah-sidebar', ['activeNav' => 'sheet', 'activeSheetId' => $sheet->id])
+    <div class="simerah-main">
+
 <div class="container">
 
     <div class="page-header">
@@ -461,19 +484,18 @@
                  ke Dashboard User sebagai fallback (kalau JS mati, atau halaman
                  ini dibuka langsung lewat URL tanpa riwayat sebelumnya). --}}
             <a href="{{ $dashboardRoute }}" class="btn" id="btnBackHistory">
-                &larr; Kembali
+                <i class="fa fa-arrow-left"></i> Kembali
             </a>
 
             {{-- TAMBAHAN: Tombol Dashboard - selalu langsung ke Dashboard User,
                  tanpa perlu menekan Kembali berkali-kali. --}}
             <a href="{{ $dashboardRoute }}" class="btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;">
-                    <path d="M3 11.5 12 4l9 7.5"></path>
-                    <path d="M5.5 10v9a1 1 0 0 0 1 1H9.5a1 1 0 0 0 1-1V15a1 1 0 0 1 1-1H12.5a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1H17.5a1 1 0 0 0 1-1v-9"></path>
-                </svg>Dashboard
+                <i class="fa fa-home"></i> Dashboard
             </a>
         </div>
     </div>
+
+    @includeIf('partials.sheet-filter-bar')
 
     @php
         // TAMBAHAN: Filter server-side dari klik Vendor/Nama Pelanggan di Dashboard
@@ -2012,5 +2034,7 @@
 })();
 </script>
 
+    </div>
+</div>
 </body>
 </html>

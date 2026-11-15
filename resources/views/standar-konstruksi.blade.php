@@ -4,68 +4,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Standar Konstruksi SUTM 2026</title>
+    <title>Standar Konstruksi SUTM 2026 | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
     <style>
-        /* =====================================================
-           RESET
-        ===================================================== */
-        *{ margin:0; padding:0; box-sizing:border-box; font-family:Calibri, Arial, sans-serif; }
-        /* =====================================================
-           BODY
-        ===================================================== */
-        body{ background:#f5f7fb; }
-        /* =====================================================
-           CONTAINER
-        ===================================================== */
-        .container{ width:98%; margin:20px auto 40px; }
-        /* =====================================================
-           HEADER
-        ===================================================== */
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Inter', 'Segoe UI', Arial, sans-serif; }
+        body{ background:#f8fafc; color:#0f172a; }
+        .container{ width:min(1680px, 96%); margin:22px auto 44px; }
         .page-header{
-            background:#0B5EA8; color:white; padding:18px 25px; border-radius:10px;
+            background:linear-gradient(135deg, #0d2137 0%, #153459 100%);
+            color:white; padding:22px 26px; border-radius:16px;
             margin-bottom:16px; display:flex; justify-content:space-between;
             align-items:center; gap:15px; flex-wrap:wrap;
+            box-shadow:0 12px 28px -8px rgba(13, 33, 55, 0.25);
+            border:1px solid rgba(255,255,255,.08);
         }
-        .page-header h2{ font-size:26px; line-height:1.3; }
-        .page-header p{ font-size:14px; opacity:.9; margin-top:3px; }
-        /* =====================================================
-           HEADER ACTIONS & BUTTON
-        ===================================================== */
-        .header-actions{ display:flex; align-items:center; gap:10px; }
+        .page-header h2{ font-size:23px; font-weight:700; line-height:1.3; }
+        .page-header p{ font-size:13px; color:#cbd5e1; margin-top:3px; }
+        .header-actions{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
         .header-btn{
-            display:inline-flex; align-items:center; justify-content:center;
-            height:38px; padding:0 16px; background:#ffffff; color:#0B5EA8;
-            border-radius:8px; text-decoration:none; font-size:13px;
+            display:inline-flex; align-items:center; justify-content:center; gap:6px;
+            height:38px; padding:0 16px; background:#ffffff; color:#0f172a;
+            border-radius:10px; text-decoration:none; font-size:13px;
             font-weight:600; white-space:nowrap; border:none; cursor:pointer;
+            box-shadow:0 1px 3px rgba(0,0,0,.15);
             transition: background .2s ease, transform .2s ease;
         }
-        .header-btn:hover{ background:#f1f5f9; color:#0B5EA8; transform:translateY(-1px); }
-        .header-btn.dashboard{ padding-left:16px; padding-right:16px; }
-        /* =====================================================
-           SEARCH BOX
-        ===================================================== */
-        .search-box{
-            background:white; padding:14px; border-radius:10px; margin-bottom:16px; border:1px solid #dfe5ec;
+        .header-btn:hover{ background:#f1f5f9; color:#0d2137; transform:translateY(-1px); }
+        .header-btn.pdf-btn{ background:#dc2626; color:#ffffff; }
+        .header-btn.pdf-btn:hover{ background:#b91c1c; color:#ffffff; }
+
+        .toolbar-card{
+            background:#ffffff; border:1px solid #e2e8f0; border-radius:14px;
+            padding:14px 18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(15, 23, 42, 0.05);
+            display:flex; gap:10px; align-items:center; flex-wrap:wrap;
         }
-        .search-box input{
-            width:100%; padding:12px 15px; border:1px solid #ccd5df; border-radius:8px; font-size:14px; outline:none;
+        .toolbar-search{
+            flex:1; min-width:220px; height:40px; padding:0 15px; border:1px solid #cbd5e1;
+            border-radius:10px; font-size:13.5px; background:#f8fafc; outline:none; color:#0f172a;
         }
-        .search-box input:focus{ border-color:#0B5EA8; box-shadow: 0 0 0 3px rgba(11,94,168,.1); }
-        /* =====================================================
-           TABLE BOX & TABLE
-        ===================================================== */
+        .toolbar-search:focus{ background:#ffffff; border-color:#0d2137; box-shadow:0 0 0 3px rgba(13,33,55,.09); }
+        .toolbar-select{
+            height:40px; padding:0 12px; border:1px solid #cbd5e1; border-radius:10px;
+            font-size:13px; font-weight:600; background:#f8fafc; color:#0f172a; outline:none; cursor:pointer;
+        }
+        .toolbar-count{
+            font-size:12.5px; font-weight:600; color:#475569; background:#f1f5f9;
+            padding:7px 12px; border-radius:999px; border:1px solid #e2e8f0;
+        }
+        .btn-pdf-toolbar{
+            display:inline-flex; align-items:center; gap:6px; height:40px; padding:0 15px;
+            border-radius:10px; background:#b91c1c; color:#ffffff; text-decoration:none;
+            font-size:13px; font-weight:700; white-space:nowrap; transition:.15s;
+        }
+        .btn-pdf-toolbar:hover{ background:#991b1b; color:#ffffff; }
+
         .table-box{
-            background:#fff; border-radius:12px; overflow-x:auto; box-shadow: 0 4px 15px rgba(0,0,0,.12); border:1px solid #000;
+            background:#fff; border-radius:14px; overflow-x:auto; box-shadow: 0 2px 10px rgba(15,23,42,.06); border:1px solid #cbd5e1;
         }
         table{ border-collapse:collapse; width:100%; min-width:850px; }
         thead th{
-            background:#00B0F0; color:#fff; padding:10px; border:1px solid #000; text-align:center; font-weight:bold; font-size:13px; vertical-align:middle;
+            background:#0d2137; color:#f8fafc; padding:11px 12px; border:1px solid #1e3a5f; text-align:center; font-weight:700; font-size:12.5px; vertical-align:middle;
         }
-        tbody td{ padding:10px; border:1px solid #000; font-size:13px; vertical-align:middle; }
-        tbody tr:nth-child(even){ background:#f5f9fc; }
-        tbody tr:hover{ background:#eef7fc; }
+        tbody td{ padding:10px 12px; border:1px solid #e2e8f0; font-size:13px; vertical-align:middle; color:#1e293b; }
+        tbody tr:nth-child(even){ background:#f8fafc; }
+        tbody tr:hover{ background:#eff6ff; }
         tr.sub-bab-row td.sub-bab-title{
-            background:#0B5EA8; color:#ffffff; font-weight:700; font-size:13px; letter-spacing:.3px; padding:10px 14px; border:1px solid #000;
+            background:#153459; color:#ffffff; font-weight:700; font-size:13px; letter-spacing:.3px; padding:10px 14px; border:1px solid #1e3a5f;
         }
         tr.sub-bab-row:hover{ background:transparent; }
         .col-no{ width:70px; text-align:center; }
@@ -74,55 +83,77 @@
         .link-gambar{ color:#0563C1; text-decoration:underline; cursor:pointer; font-weight:600; }
         .link-gambar:hover{ color:#003f7f; }
         .empty{ text-align:center; padding:30px; color:#777; }
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
+
+        .pager-card{
+            background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:12px 18px; margin-top:14px;
+            display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;
+            font-size:12.5px; color:#475569; box-shadow:0 1px 3px rgba(15,23,42,.04);
+        }
+        .pager-btns{ display:flex; gap:5px; align-items:center; flex-wrap:wrap; }
+        .pg-btn{
+            min-width:32px; height:32px; padding:0 9px; border-radius:8px; border:1px solid #cbd5e1;
+            background:#fff; color:#334155; font-size:12.5px; font-weight:600; cursor:pointer;
+        }
+        .pg-btn:hover:not(:disabled){ background:#f1f5f9; }
+        .pg-btn.active{ background:#0d2137; color:#fff; border-color:#0d2137; }
+        .pg-btn:disabled{ opacity:.45; cursor:not-allowed; }
+
+        @media print {
+            .simerah-topbar, .simerah-sidebar, .header-actions, .toolbar-card, .pager-card { display:none !important; }
+            .simerah-main { margin-left:0 !important; width:100% !important; }
+        }
         @media(max-width:700px){
             .container{ width:96%; margin-top:12px; }
             .page-header{ flex-direction:column; align-items:flex-start; padding:16px 18px; }
-            .page-header h2{ font-size:22px; }
-            .page-header p{ font-size:13px; }
+            .page-header h2{ font-size:20px; }
             .header-actions{ width:100%; justify-content:flex-end; }
-            .header-btn{ height:38px; padding:0 14px; font-size:12px; }
         }
     </style>
 </head>
 
 <body>
+
+@includeIf('partials.simerah-topbar', ['topSubTitle' => 'UP3 JAMBI • STANDAR KONSTRUKSI', 'withSidebar' => true])
+
+<div class="simerah-shell">
+    @includeIf('partials.simerah-sidebar', ['activeNav' => 'standar'])
+    <div class="simerah-main">
+
 <div class="container">
-    {{-- =====================================================
-         HEADER
-    ===================================================== --}}
     <div class="page-header">
-        {{-- JUDUL --}}
         <div>
             <h2>Standar Konstruksi SUTM 2026</h2>
-            <p>Dokumentasi Standar Konstruksi Jaringan Tegangan Menengah</p>
+            <p>Dokumentasi Standar Konstruksi Jaringan Tegangan Menengah PLN UP3 Jambi</p>
         </div>
-        {{-- =================================================
-             TOMBOL HEADER
-        ================================================== --}}
         <div class="header-actions">
-            {{-- KEMBALI --}}
+            <a href="{{ route('standar-konstruksi.export-pdf') }}" id="btnUserStandarPdfTop" target="_blank" class="header-btn pdf-btn">
+                <i class="fa fa-file-pdf"></i> Cetak PDF
+            </a>
             <a href="{{ url()->previous() }}" class="header-btn" id="btnBackHistory">← Kembali</a>
-            {{-- DASHBOARD USER --}}
-            <a href="{{ route('dashboard') }}" class="header-btn dashboard">Dashboard</a>
+            <a href="{{ route('dashboard') }}" class="header-btn">Dashboard</a>
         </div>
     </div>
 
-    {{-- =====================================================
-         SEARCH
-    ===================================================== --}}
-    <div class="search-box">
-        <input type="text" id="searchKonstruksi" placeholder="Cari nama konstruksi..." autocomplete="off">
+    <div class="toolbar-card">
+        <input type="text" id="searchKonstruksi" class="toolbar-search" placeholder="Cari nama konstruksi, sub-bab, atau nomor..." autocomplete="off">
+        <select id="userStandarYear" class="toolbar-select" aria-label="Filter Tahun">
+            <option value="">Semua Tahun</option>
+        </select>
+        <select id="userStandarPerPage" class="toolbar-select" aria-label="Tampil Data">
+            <option value="10">Tampil: 10</option>
+            <option value="25" selected>Tampil: 25</option>
+            <option value="50">Tampil: 50</option>
+            <option value="100">Tampil: 100</option>
+            <option value="all">Tampil: Semua</option>
+        </select>
+        <span class="toolbar-count" id="userStandarCount">Total: {{ $konstruksi->count() }} item</span>
+        <a href="{{ route('standar-konstruksi.export-pdf') }}" id="btnUserStandarPdf" target="_blank" class="btn-pdf-toolbar">
+            <i class="fa fa-file-pdf"></i> Cetak PDF
+        </a>
     </div>
 
-    {{-- =====================================================
-         TABLE
-    ===================================================== --}}
     <div class="table-box">
         <table id="tabelKonstruksi">
-            {{-- TABLE HEADER --}}
             <thead>
                 <tr>
                     <th class="col-no">NO</th>
@@ -130,11 +161,9 @@
                     <th class="col-link">LINK GAMBAR</th>
                 </tr>
             </thead>
-            {{-- TABLE BODY --}}
             <tbody>
                 @php $subBabTampilSaatIni = null; @endphp
                 @forelse($konstruksi as $item)
-                    {{-- JUDUL SUB-BAB --}}
                     @if($item->sub_bab_nama && $item->sub_bab_nama !== $subBabTampilSaatIni)
                         @php $subBabTampilSaatIni = $item->sub_bab_nama; @endphp
                         <tr class="sub-bab-row">
@@ -143,12 +172,9 @@
                             </td>
                         </tr>
                     @endif
-                    <tr>
-                        {{-- NO --}}
+                    <tr class="standar-item-row">
                         <td class="col-no">{{ $item->no }}</td>
-                        {{-- NAMA KONSTRUKSI --}}
                         <td class="col-nama">{{ $item->nama_konstruksi }}</td>
-                        {{-- LINK GAMBAR --}}
                         <td class="col-link">
                             @if($item->link_gambar)
                                 <a href="{{ $item->link_gambar }}" target="_blank" rel="noopener noreferrer" class="link-gambar">Lihat Gambar</a>
@@ -165,32 +191,132 @@
             </tbody>
         </table>
     </div>
+
+    <div class="pager-card" id="userStandarPager">
+        <span id="userStandarPagerInfo">Menampilkan 0 item</span>
+        <div class="pager-btns" id="userStandarPagerBtns"></div>
+    </div>
 </div>
 
-{{-- =========================================================
-     JAVASCRIPT SEARCH
-========================================================= --}}
 <script>
-/* =========================================================
-   SEARCH DATA
-========================================================= */
-const searchInput = document.getElementById('searchKonstruksi');
-const rows = document.querySelectorAll('#tabelKonstruksi tbody tr');
+(function(){
+    var searchInput = document.getElementById('searchKonstruksi');
+    var yearSelect  = document.getElementById('userStandarYear');
+    var perPageSel  = document.getElementById('userStandarPerPage');
+    var countEl     = document.getElementById('userStandarCount');
+    var pagerInfo   = document.getElementById('userStandarPagerInfo');
+    var pagerBtns   = document.getElementById('userStandarPagerBtns');
+    var pdfLinks    = [document.getElementById('btnUserStandarPdf'), document.getElementById('btnUserStandarPdfTop')];
+    var pdfBaseUrl  = {{ json_encode(route('standar-konstruksi.export-pdf')) }};
 
-searchInput.addEventListener('input', function(){
-    const keyword = this.value.toLowerCase().trim();
-    rows.forEach(function(row){
-        if (row.classList.contains('sub-bab-row')) {
+    var tbody = document.querySelector('#tabelKonstruksi tbody');
+    if (!tbody) return;
+
+    var itemRows = Array.prototype.slice.call(tbody.querySelectorAll('tr.standar-item-row'));
+    var subBabRows = Array.prototype.slice.call(tbody.querySelectorAll('tr.sub-bab-row'));
+    var yearSet = {};
+
+    itemRows.forEach(function(r){
+        var txt = (r.textContent || '').replace(/\s+/g, ' ').trim();
+        r.dataset.search = txt.toLowerCase();
+        var m = txt.match(/\b(20[1-3][0-9])\b/g) || [];
+        r.dataset.years = m.join(',');
+        m.forEach(function(y){ yearSet[y] = true; });
+    });
+
+    Object.keys(yearSet).sort(function(a,b){ return Number(b) - Number(a); }).forEach(function(y){
+        var opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = 'Tahun ' + y;
+        yearSelect.appendChild(opt);
+    });
+
+    var currentPage = 1;
+
+    function syncPdfUrls(){
+        var params = new URLSearchParams();
+        if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
+        if (yearSelect.value) params.set('tahun', yearSelect.value);
+        var url = pdfBaseUrl + (params.toString() ? '?' + params.toString() : '');
+        pdfLinks.forEach(function(a){ if (a) a.href = url; });
+    }
+
+    function renderPager(totalPages){
+        if (totalPages <= 1) {
+            pagerBtns.innerHTML = '';
             return;
         }
-        const nama = row.children[1] ? row.children[1].textContent.toLowerCase() : '';
-        row.style.display = nama.includes(keyword) ? '' : 'none';
-    });
-});
+        var html = '<button type="button" class="pg-btn" ' + (currentPage <= 1 ? 'disabled' : '') + ' data-p="' + (currentPage - 1) + '">&lsaquo;</button>';
+        var s = Math.max(1, currentPage - 2);
+        var e = Math.min(totalPages, currentPage + 2);
+        if (s > 1) html += '<button type="button" class="pg-btn" data-p="1">1</button>' + (s > 2 ? '<span>...</span>' : '');
+        for (var p = s; p <= e; p++) {
+            html += '<button type="button" class="pg-btn ' + (p === currentPage ? 'active' : '') + '" data-p="' + p + '">' + p + '</button>';
+        }
+        if (e < totalPages) html += (e < totalPages - 1 ? '<span>...</span>' : '') + '<button type="button" class="pg-btn" data-p="' + totalPages + '">' + totalPages + '</button>';
+        html += '<button type="button" class="pg-btn" ' + (currentPage >= totalPages ? 'disabled' : '') + ' data-p="' + (currentPage + 1) + '">&rsaquo;</button>';
+        pagerBtns.innerHTML = html;
+        pagerBtns.querySelectorAll('button[data-p]').forEach(function(b){
+            b.addEventListener('click', function(){
+                currentPage = parseInt(this.dataset.p, 10);
+                applyFilter(false);
+            });
+        });
+    }
 
-/* =========================================================
-   BUTTON KEMBALI
-========================================================= */
+    function applyFilter(resetPage){
+        if (resetPage) currentPage = 1;
+        var q = searchInput.value.trim().toLowerCase();
+        var y = yearSelect.value;
+        var perRaw = perPageSel.value;
+        var perPage = perRaw === 'all' ? Number.MAX_SAFE_INTEGER : (parseInt(perRaw, 10) || 25);
+
+        syncPdfUrls();
+
+        var matched = itemRows.filter(function(r){
+            var okQ = !q || (r.dataset.search || '').indexOf(q) !== -1;
+            var okY = !y || (r.dataset.years || '').split(',').indexOf(y) !== -1;
+            return okQ && okY;
+        });
+
+        var total = matched.length;
+        var totalPages = perRaw === 'all' ? 1 : Math.max(1, Math.ceil(total / perPage));
+        if (currentPage > totalPages) currentPage = totalPages;
+
+        var start = (currentPage - 1) * perPage;
+        var end = Math.min(total, start + perPage);
+        var pageSet = new Set(perRaw === 'all' ? matched : matched.slice(start, end));
+
+        itemRows.forEach(function(r){
+            r.style.display = pageSet.has(r) ? '' : 'none';
+        });
+
+        subBabRows.forEach(function(sb){
+            var hasVisible = false;
+            var nxt = sb.nextElementSibling;
+            while (nxt && !nxt.classList.contains('sub-bab-row')) {
+                if (nxt.classList.contains('standar-item-row') && nxt.style.display !== 'none') {
+                    hasVisible = true;
+                    break;
+                }
+                nxt = nxt.nextElementSibling;
+            }
+            sb.style.display = hasVisible ? '' : 'none';
+        });
+
+        countEl.textContent = 'Total: ' + total + ' item';
+        pagerInfo.textContent = total === 0
+            ? 'Menampilkan 0 dari ' + itemRows.length + ' item'
+            : 'Menampilkan ' + (start + 1) + '–' + end + ' dari ' + total + ' item';
+        renderPager(totalPages);
+    }
+
+    searchInput.addEventListener('input', function(){ applyFilter(true); });
+    yearSelect.addEventListener('change', function(){ applyFilter(true); });
+    perPageSel.addEventListener('change', function(){ applyFilter(true); });
+    applyFilter(true);
+})();
+
 const btnBack = document.getElementById('btnBackHistory');
 if(btnBack){
     btnBack.addEventListener('click', function(event){
@@ -201,5 +327,7 @@ if(btnBack){
     });
 }
 </script>
+    </div>
+</div>
 </body>
 </html>

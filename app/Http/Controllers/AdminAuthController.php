@@ -20,7 +20,11 @@ class AdminAuthController extends Controller
         }
 
         session(['admin' => $admin->id, 'nama' => $admin->nama]);
-        return redirect()->route('admin.dashboard'); // Arah ke dashboard admin
+        return redirect()->route('admin.dashboard')->with('auth_popup', [
+            'type'    => 'login',
+            'title'   => 'Login Berhasil!',
+            'message' => 'Selamat datang kembali, ' . $admin->nama . '. Anda masuk sebagai Administrator.',
+        ]); // Arah ke dashboard admin
     }
 
     public function logout(Request $request)
@@ -33,6 +37,10 @@ class AdminAuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('login.view');
+        return redirect()->route('login.view')->with('auth_popup', [
+            'type'    => 'logout',
+            'title'   => 'Logout Berhasil!',
+            'message' => 'Anda telah keluar dari panel Administrator.',
+        ]);
     }
 }

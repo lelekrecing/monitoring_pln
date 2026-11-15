@@ -3,115 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Riwayat Upload | PLN UP3 Jambi</title>
+    <title>Riwayat Upload | SIGINJAI PLN</title>
 
-    @vite('resources/css/admin/dashboard_admin.css')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #e2e8f0; display: flex; min-height: 100vh; overflow-x: hidden; }
-
-        .sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0;
-            width: 250px; min-width: 250px; height: 100vh;
-            background-color: #0f172a;
-            border-right: 1px solid rgba(255,255,255,.08);
-            display: flex; flex-direction: column; overflow-y: auto; z-index: 100;
+        .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
+        .filter-search-input {
+            flex: 1; min-width: 220px; max-width: 340px; height: 40px; padding: 0 14px;
+            border-radius: 10px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; font-size: 13.5px; outline: none;
         }
-        .logo { padding: 20px; text-align: center; margin-bottom: 10px; }
-        .sidebar-logo-pln { max-width: 70px; width: 100%; height: auto; object-fit: contain; margin: 0 auto; display: block; }
-        .sidebar ul { list-style: none; padding: 0; margin: 0; flex: 0 0 auto; }
-        .sidebar ul li { padding: 0; margin: 0; }
-        .sidebar-link {
-            display: block; width: 100%; padding: 15px 25px;
-            color: #94a3b8; text-decoration: none; font-size: 15px;
-            font-weight: 500; transition: .3s ease; border-left: 3px solid transparent;
+        .filter-search-input:focus { background: #ffffff; border-color: #0d2137; box-shadow: 0 0 0 3px rgba(13,33,55,.08); }
+        .filter-year-select {
+            height: 40px; padding: 0 12px; border-radius: 10px; border: 1px solid #cbd5e1;
+            background: #f8fafc; color: #0f172a; font-size: 13.5px; font-weight: 600; outline: none;
         }
-        .sidebar-link:hover, .sidebar-link.active {
-            background: linear-gradient(90deg, rgba(14,165,233,.15) 0%, rgba(14,165,233,.05) 100%);
-            color: #38bdf8; border-left-color: #0ea5e9;
-        }
-        .sidebar-link span { display: block; }
-        .logout-menu { margin-top: auto; border-top: 1px solid rgba(255,255,255,.08); }
-        .logout-menu a { color: #ef4444; }
-        .logout-menu a:hover { background: rgba(239,68,68,.1); border-left-color: #ef4444; }
-
-        .wrapper { display: flex; width: 100%; }
-        .content { flex: 1; padding: 40px; margin-left: 250px; min-width: 0; }
-        .card { background-color: #1e293b; border-radius: 12px; padding: 30px; border: 1px solid rgba(255,255,255,.08); }
-
-        .header-title { margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 20px; }
-        .header-title h2 { color: #f8fafc; font-size: 24px; font-weight: 600; margin-bottom: 5px; }
-        .header-title small { color: #94a3b8; font-size: 14px; display: block; }
-
-        .success-box { background: rgba(34,197,94,.1); border: 1px solid rgba(34,197,94,.2); color: #4ade80; padding: 14px; margin-bottom: 20px; border-radius: 8px; font-size: 14px; }
-        .error-box { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.2); color: #f87171; padding: 14px; margin-bottom: 20px; border-radius: 8px; font-size: 14px; }
-
-        .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 20px; flex-wrap: wrap; }
         .chip {
-            padding: 10px 20px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none;
-            color: #38bdf8; background: rgba(14,165,233,.08); border: 1px solid #0ea5e9;
+            padding: 8px 14px; border-radius: 9px; font-size: 13px; font-weight: 600; text-decoration: none;
+            color: #0d2137; background: #f1f5f9; border: 1px solid #cbd5e1;
         }
-        .chip-info { font-weight: 500; }
-        .chip-info a { color: #38bdf8; text-decoration: underline; }
-
-        .table-wrap { overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; }
-        thead th {
-            text-align: left; color: #cbd5e1; font-size: 13px; text-transform: uppercase; letter-spacing: .5px;
-            padding: 16px 20px; background: #0f172a; white-space: nowrap; font-weight: 600;
-        }
-        thead th:last-child { text-align: right; }
-        tbody td { padding: 18px 20px; border-top: 1px solid rgba(255,255,255,.06); font-size: 15px; vertical-align: middle; }
+        .chip-info { font-weight: 500; color: #475569; }
+        .chip-info a { color: #0d2137; font-weight: 700; text-decoration: underline; }
+        .table-wrap { overflow-x: auto; border: 1px solid #e2e8f0; border-radius: 12px; }
+        table thead th:last-child { text-align: right; }
         .file-pill {
-            display: inline-block; padding: 10px 20px; border-radius: 6px; background: #0f172a;
-            border: 1px solid rgba(255,255,255,.1); font-size: 14px; color: #cbd5e1; font-weight: 500; word-break: break-all;
+            display: inline-block; padding: 7px 12px; border-radius: 8px; background: #f8fafc;
+            border: 1px solid #e2e8f0; font-size: 13px; color: #0f172a; font-weight: 600; word-break: break-all;
         }
-        .badge { display: inline-block; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; text-transform: uppercase; }
-        .badge-aktif { background: rgba(34,197,94,.12); color: #4ade80; border: 1px solid rgba(34,197,94,.4); }
-        .badge-arsip { background: rgba(148,163,184,.12); color: #94a3b8; border: 1px solid rgba(148,163,184,.3); }
-        .badge-gagal { background: rgba(239,68,68,.12); color: #f87171; border: 1px solid rgba(239,68,68,.4); }
-        .badge-proses { background: rgba(245,158,11,.12); color: #fbbf24; border: 1px solid rgba(245,158,11,.4); }
-
-        .aksi { display: flex; justify-content: flex-end; gap: 14px; }
+        .badge { display: inline-block; padding: 5px 12px; border-radius: 999px; font-size: 11.5px; font-weight: 700; text-transform: uppercase; }
+        .badge-aktif { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+        .badge-arsip { background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1; }
+        .badge-gagal { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+        .badge-proses { background: #fef3c7; color: #92400e; border: 1px solid #fcd34d; }
+        .aksi { display: flex; justify-content: flex-end; gap: 10px; }
         .aksi form { display: inline; }
-        .icon-btn { background: none; border: 0; cursor: pointer; padding: 4px; line-height: 1; color: #64748b; transition: .2s; }
-        .icon-btn .material-icons { font-size: 24px; }
-        .icon-btn.activate:hover { color: #4ade80; }
-        .icon-btn.delete:hover { color: #f87171; }
-        .icon-btn:disabled { cursor: default; color: #475569; opacity: .8; }
-        .empty { padding: 30px; text-align: center; color: #94a3b8; }
-
-        @media (max-width: 768px) {
-            .sidebar { position: static; width: 100%; min-width: 0; height: auto; }
-            body { flex-direction: column; }
-            .content { margin-left: 0; padding: 20px; }
-        }
+        .icon-btn { background: none; border: 0; cursor: pointer; padding: 5px; border-radius: 8px; line-height: 1; color: #64748b; transition: .18s; }
+        .icon-btn .material-icons { font-size: 22px; }
+        .icon-btn.activate:hover { color: #16a34a; background: #dcfce7; }
+        .icon-btn.delete:hover { color: #dc2626; background: #fee2e2; }
+        .icon-btn:disabled { cursor: default; color: #cbd5e1; opacity: .75; background: transparent !important; }
+        .empty { padding: 30px; text-align: center; color: #64748b; }
     </style>
 </head>
 <body>
 
+@includeIf('partials.simerah-admin-topbar', ['topSubTitle' => 'UP3 JAMBI • RIWAYAT UPLOAD'])
+
 <div class="wrapper">
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN" class="sidebar-logo-pln">
-        </div>
-        <ul>
-            <li><a href="{{ route('admin.dashboard') }}" class="sidebar-link"><span>Dashboard</span></a></li>
-            <li><a href="{{ url('/input-data') }}" class="sidebar-link"><span>Upload Monitoring</span></a></li>
-            <li class="active"><a href="{{ url('/riwayat-upload') }}" class="sidebar-link active"><span>Riwayat Upload</span></a></li>
-            <li><a href="{{ route('admin.standar-konstruksi.index') }}" class="sidebar-link"><span>Standar Konstruksi</span></a></li>
-            @if (Route::has('admin.anggota.index'))
-                <li><a href="{{ route('admin.anggota.index') }}" class="sidebar-link"><span>Manajemen Akun</span></a></li>
-            @endif
-        </ul>
-        <div class="logout-menu">
-            <a href="{{ route('logout.admin') }}" class="sidebar-link">
-                <span style="display:flex; align-items:center; gap:8px;"><i class="material-icons" style="font-size:18px;">logout</i> Logout</span>
-            </a>
-        </div>
-    </aside>
+    @includeIf('partials.simerah-admin-sidebar', ['activeAdmin' => 'riwayat'])
 
     <main class="content">
         <div class="card">
@@ -129,6 +72,10 @@
             @endif
 
             <div class="filter-bar">
+                <input type="text" id="riwayatSearchInput" class="filter-search-input" placeholder="Cari nama file, jenis monitoring, atau status..." autocomplete="off">
+                <select id="riwayatYearSelect" class="filter-year-select" aria-label="Filter Tahun Upload">
+                    <option value="">Semua Tahun</option>
+                </select>
                 <a href="{{ url('/riwayat-upload') }}" class="chip">Semua</a>
                 @if (! $tampilkanSemua && $jumlahTersembunyi > 0)
                     <span class="chip chip-info">
@@ -139,7 +86,7 @@
             </div>
 
             <div class="table-wrap">
-                <table>
+                <table id="riwayatTable">
                     <thead>
                         <tr>
                             <th>Nama File</th>
@@ -209,6 +156,51 @@
 </div>
 
 @includeIf('partials.upload-progress-widget')
+
+<script>
+(function(){
+    var tbl = document.getElementById('riwayatTable');
+    var searchInput = document.getElementById('riwayatSearchInput');
+    var yearSelect  = document.getElementById('riwayatYearSelect');
+    if (!tbl || !searchInput || !yearSelect) return;
+
+    var tbody = tbl.querySelector('tbody');
+    if (!tbody) return;
+
+    var rows = Array.prototype.slice.call(tbody.rows).filter(function(r){
+        return !r.querySelector('td.empty');
+    });
+
+    var years = {};
+    rows.forEach(function(r){
+        var txt = (r.textContent || '').replace(/\s+/g, ' ').trim();
+        r.dataset.search = txt.toLowerCase();
+        var m = txt.match(/\b(20[1-3][0-9])\b/g) || [];
+        r.dataset.years = m.join(',');
+        m.forEach(function(y){ years[y] = true; });
+    });
+
+    Object.keys(years).sort(function(a,b){ return Number(b) - Number(a); }).forEach(function(y){
+        var opt = document.createElement('option');
+        opt.value = y;
+        opt.textContent = 'Tahun ' + y;
+        yearSelect.appendChild(opt);
+    });
+
+    function filterRiwayat(){
+        var q = searchInput.value.trim().toLowerCase();
+        var y = yearSelect.value;
+        rows.forEach(function(r){
+            var okQ = !q || (r.dataset.search || '').indexOf(q) !== -1;
+            var okY = !y || (r.dataset.years || '').split(',').indexOf(y) !== -1;
+            r.style.display = (okQ && okY) ? '' : 'none';
+        });
+    }
+
+    searchInput.addEventListener('input', filterRiwayat);
+    yearSelect.addEventListener('change', filterRiwayat);
+})();
+</script>
 
 </body>
 </html>

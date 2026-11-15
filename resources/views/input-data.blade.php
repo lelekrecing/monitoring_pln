@@ -4,138 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Upload Monitoring Excel</title>
+    <title>Upload Monitoring Excel | SIGINJAI PLN</title>
 
-    @vite('resources/css/input-data.css')
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-        /* =====================================================
-           TEMA DARK MODE & RESET UI (SINKRONISASI STANDAR)
-        ===================================================== */
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: #0f172a; color: #e2e8f0; display: flex; min-height: 100vh; overflow-x: hidden; }
-
-        /* SIDEBAR FIXED & PRESISI */
-        .sidebar {
-            position: fixed; top: 0; left: 0; bottom: 0;
-            width: 250px; min-width: 250px; height: 100vh;
-            background-color: #0f172a;
-            border-right: 1px solid rgba(255,255,255,.08);
-            display: flex; flex-direction: column; overflow-y: auto; z-index: 100;
-        }
-        .logo { padding: 20px; text-align: center; margin-bottom: 10px; }
-        .sidebar-logo-pln { max-width: 70px; width: 100%; height: auto; object-fit: contain; margin: 0 auto; display: block; }
-
-        /* RESET PADDING UL & LI AGAR HOVER FULL WIDTH */
-        .sidebar ul { list-style: none; padding: 0; margin: 0; flex: 0 0 auto; }
-        .sidebar ul li { padding: 0; margin: 0; }
-        .sidebar-link {
-            display: block; width: 100%; padding: 15px 25px;
-            color: #94a3b8; text-decoration: none; font-size: 15px;
-            font-weight: 500; transition: .3s ease; border-left: 3px solid transparent;
-        }
-        .sidebar-link:hover, .sidebar-link.active {
-            background: linear-gradient(90deg, rgba(14, 165, 233, 0.15) 0%, rgba(14, 165, 233, 0.05) 100%);
-            color: #38bdf8; border-left-color: #0ea5e9;
-        }
-        .sidebar-link span { display: block; }
-
-        .logout-menu { margin-top: auto; border-top: 1px solid rgba(255,255,255,.08); }
-        .logout-menu a { color: #ef4444; }
-        .logout-menu a:hover { background: rgba(239, 68, 68, 0.1); border-left-color: #ef4444; }
-
-        /* LAYOUT UTAMA */
-        .wrapper { display: flex; width: 100%; }
-        .content { flex: 1; padding: 40px; margin-left: 250px; }
-        .card { background-color: #1e293b; border-radius: 12px; padding: 30px; border: 1px solid rgba(255,255,255,.08); }
-
-        /* HEADER DASHBOARD */
-        .header-title { margin-bottom: 25px; border-bottom: 1px solid rgba(255,255,255,.08); padding-bottom: 20px; }
-        .header-title h2 { color: #f8fafc; font-size: 24px; font-weight: 600; margin-bottom: 5px; }
-        .header-title small { color: #94a3b8; font-size: 14px; display: block; }
-
-        /* ALERT MESSAGES */
-        .success-box { background-color: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.2); color: #4ade80; padding: 15px; margin-bottom: 20px; border-radius: 8px; font-size: 14px; }
-        .error-box { background-color: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #f87171; padding: 15px; margin-bottom: 20px; border-radius: 8px; font-size: 14px; }
         .error-box ul { margin-left: 20px; margin-top: 5px; }
-
-        /* UPLOAD SECTION UI */
-        .upload-section-title { font-size: 16px; font-weight: 600; color: #f8fafc; margin-top: 30px; margin-bottom: 5px; }
+        .upload-section-title { font-size: 16px; font-weight: 700; margin-top: 26px; margin-bottom: 5px; }
         .upload-section-title:first-of-type { margin-top: 0; }
-        .upload-section-desc { font-size: 13px; color: #94a3b8; margin-bottom: 15px; }
-        .upload-divider { border: none; border-top: 1px solid rgba(255,255,255,.08); margin: 30px 0; }
-
+        .upload-section-desc { font-size: 13px; margin-bottom: 14px; }
+        .upload-divider { border: none; margin: 28px 0; }
         .upload-box {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            padding: 40px 20px; background-color: #0f172a; border: 2px dashed rgba(255,255,255,.15);
-            border-radius: 8px; cursor: pointer; transition: all 0.3s ease; text-align: center;
+            cursor: pointer; transition: all 0.2s ease; text-align: center;
         }
-        .upload-box:hover { border-color: #0ea5e9; background-color: rgba(14, 165, 233, 0.05); }
-        .upload-box .material-icons { font-size: 40px; color: #94a3b8; margin-bottom: 10px; transition: color 0.3s ease; }
-        .upload-box:hover .material-icons { color: #38bdf8; }
-        .upload-box p { color: #cbd5e1; font-size: 14px; font-weight: 500; }
+        .upload-box .material-icons { font-size: 40px; margin-bottom: 10px; }
         .upload-box input[type="file"] { display: none; }
-
-        /* BUTTONS */
         .button-group { display: flex; gap: 10px; justify-content: flex-end; margin-top: 15px; }
-        .btn-save { background-color: #0ea5e9; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 14px; }
-        .btn-save:hover { background-color: #0284c7; }
-        .btn-cancel { background-color: transparent; color: #cbd5e1; border: 1px solid #475569; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 500; font-size: 14px; transition: 0.2s; }
-        .btn-cancel:hover { background-color: rgba(255,255,255,0.05); color: white; }
-
-        /* UI/UX: Indikator Proses Lokal */
-        .is-processing { background-color: #f59e0b !important; cursor: not-allowed !important; opacity: 0.9; }
-        .is-error { background-color: #ef4444 !important; }
-        .form-locked { opacity: 0.5; pointer-events: none; }
+        .is-processing { background-color: #f59e0b !important; border-color: #f59e0b !important; cursor: not-allowed !important; opacity: 0.92; }
+        .is-error { background-color: #ef4444 !important; border-color: #ef4444 !important; }
+        .form-locked { opacity: 0.55; pointer-events: none; }
         .spinner-inline {
             display: inline-block; width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3);
             border-top: 2px solid #fff; border-radius: 50%; animation: spin 1s linear infinite;
             margin-right: 8px; vertical-align: middle;
         }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        /* UI/UX: Progress Bar per sheet */
         .upload-progress-wrap { display: none; margin-top: 15px; }
         .upload-progress-wrap.active { display: block; }
-        .upload-progress-track { width: 100%; height: 8px; border-radius: 999px; background: rgba(255,255,255,0.08); overflow: hidden; }
-        .upload-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #0ea5e9, #38bdf8); transition: width .25s ease; }
+        .upload-progress-track { width: 100%; height: 8px; border-radius: 999px; background: #e2e8f0; overflow: hidden; }
+        .upload-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #0d2137, #0ea5e9); transition: width .25s ease; }
         .upload-progress-bar.is-error { background: #ef4444; }
-        .upload-progress-text { font-size: 13px; color: #94a3b8; margin-top: 8px; font-weight: 500; }
-
-        /* RESPONSIF */
-        @media (max-width: 768px) {
-            .sidebar { position: static; width: 100%; min-width: 0; height: auto; }
-            body { flex-direction: column; }
-            .content { margin-left: 0; padding: 20px; }
-        }
+        .upload-progress-text { font-size: 13px; color: #475569; margin-top: 8px; font-weight: 500; }
     </style>
 </head>
 <body>
 
+@includeIf('partials.simerah-admin-topbar', ['topSubTitle' => 'UP3 JAMBI • UPLOAD MONITORING'])
+
 <div class="wrapper">
-    <!-- SIDEBAR ADMIN -->
-    <aside class="sidebar">
-        <div class="logo">
-            <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN" class="sidebar-logo-pln">
-        </div>
-        <ul>
-            <li><a href="{{ route('admin.dashboard') }}" class="sidebar-link"><span>Dashboard</span></a></li>
-            <li class="active"><a href="{{ url('/input-data') }}" class="sidebar-link active"><span>Upload Monitoring</span></a></li>
-            <li><a href="{{ url('/riwayat-upload') }}" class="sidebar-link"><span>Riwayat Upload</span></a></li>
-            <li><a href="{{ route('admin.standar-konstruksi.index') }}" class="sidebar-link"><span>Standar Konstruksi</span></a></li>
-            @if (Route::has('admin.anggota.index'))
-                <li><a href="{{ route('admin.anggota.index') }}" class="sidebar-link"><span>Manajemen Akun</span></a></li>
-            @endif
-        </ul>
-        <div class="logout-menu">
-            <a href="{{ route('logout.admin') }}" class="sidebar-link">
-                <span style="display:flex; align-items:center; gap:8px;">
-                    <i class="material-icons" style="font-size: 18px;">logout</i> Logout
-                </span>
-            </a>
-        </div>
-    </aside>
+    @includeIf('partials.simerah-admin-sidebar', ['activeAdmin' => 'upload'])
 
     <!-- CONTENT -->
     <main class="content">
@@ -315,8 +227,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 text: message,
                 icon: 'error',
                 confirmButtonText: 'Mengerti',
-                background: '#1e293b',
-                color: '#fff'
+                confirmButtonColor: '#0d2137',
+                background: '#ffffff',
+                color: '#0f172a'
             });
         }
 
@@ -336,11 +249,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#334155',
+                cancelButtonColor: '#64748b',
                 confirmButtonText: 'Ya, Batalkan',
                 cancelButtonText: 'Kembali',
-                background: '#1e293b',
-                color: '#fff'
+                background: '#ffffff',
+                color: '#0f172a'
             }).then((result) => {
                 if (result.isConfirmed) {
                     form.reset();
@@ -425,8 +338,8 @@ document.addEventListener('DOMContentLoaded', function () {
                                 icon: 'success',
                                 timer: 2200,
                                 showConfirmButton: false,
-                                background: '#1e293b',
-                                color: '#fff'
+                                background: '#ffffff',
+                                color: '#0f172a'
                             });
 
                             window.location.reload();

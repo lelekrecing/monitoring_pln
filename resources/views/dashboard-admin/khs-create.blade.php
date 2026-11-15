@@ -2,49 +2,66 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Data KHS</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Memanggil file CSS khusus KHS melalui Vite -->
-    @vite('resources/css/admin/khs.css')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Data KHS | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .form-card { max-width: 720px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 7px; }
+        .form-control { width: 100%; padding: 11px 14px; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+    </style>
 </head>
-<body class="d-flex align-items-center py-5 min-vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="form-card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Tambah Data KHS Baru</h5>
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-secondary text-white">Kembali</a>
-                    </div>
-                    <div class="card-body p-4 p-md-5">
-                        <form action="{{ route('admin.khs.store') }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            <div class="mb-3">
-                                <label>Nama Proyek / KHS</label>
-                                <input type="text" name="nama_proyek" class="form-control" placeholder="Masukkan nama proyek..." required>
-                            </div>
-                            <div class="mb-3">
-                                <label>Link ArcGIS (Opsional)</label>
-                                <input type="url" name="arcgis_link" class="form-control" placeholder="https://...">
-                            </div>
-                            <div class="mb-3">
-                                <label>Upload Gambar (Opsional saat ini)</label>
-                                <input type="file" name="gambar" class="form-control" accept="image/*">
-                            </div>
-                            <div class="mb-4">
-                                <label>Upload Kontrak PDF (Opsional saat ini)</label>
-                                <input type="file" name="kontrak_pdf" class="form-control" accept="application/pdf">
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg">Simpan Data</button>
-                            </div>
-                        </form>
-                    </div>
+<body>
+
+@includeIf('partials.simerah-admin-topbar', ['topSubTitle' => 'UP3 JAMBI • DATA KHS'])
+
+<div class="wrapper">
+    @includeIf('partials.simerah-admin-sidebar', ['activeAdmin' => 'dashboard'])
+
+    <main class="content">
+        <div class="card form-card">
+            <div class="header-title">
+                <div>
+                    <h2>Tambah Data KHS Baru</h2>
+                    <small>Tambahkan data proyek KHS, link ArcGIS, gambar, dan dokumen kontrak.</small>
                 </div>
+                <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Kembali</a>
             </div>
+
+            <form action="{{ route('admin.khs.store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="form-group">
+                    <label>Nama Proyek / KHS</label>
+                    <input type="text" name="nama_proyek" class="form-control" placeholder="Masukkan nama proyek..." required>
+                </div>
+                <div class="form-group">
+                    <label>Link ArcGIS (Opsional)</label>
+                    <input type="url" name="arcgis_link" class="form-control" placeholder="https://...">
+                </div>
+                <div class="form-group">
+                    <label>Upload Gambar (Opsional saat ini)</label>
+                    <input type="file" name="gambar" class="form-control" accept="image/*">
+                </div>
+                <div class="form-group">
+                    <label>Upload Kontrak PDF (Opsional saat ini)</label>
+                    <input type="file" name="kontrak_pdf" class="form-control" accept="application/pdf">
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Batal</a>
+                    <button type="submit" class="btn-primary">Simpan Data</button>
+                </div>
+            </form>
         </div>
-    </div>
+    </main>
+</div>
+
 </body>
 </html>

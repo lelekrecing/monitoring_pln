@@ -2,68 +2,93 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Edit / Upload KHS | Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Memanggil file CSS khusus KHS melalui Vite -->
-    @vite('resources/css/admin/khs.css')
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit / Upload KHS | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <style>
+        .form-card { max-width: 720px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 7px; }
+        .form-control { width: 100%; padding: 11px 14px; }
+        .form-help { display: block; font-size: 12px; color: #64748b; margin-top: 6px; }
+        .preview-box {
+            margin-bottom: 12px; text-align: center; padding: 14px;
+            border: 1px solid #e2e8f0; border-radius: 12px; background: #f8fafc;
+        }
+        .preview-box img { width: 150px; border-radius: 8px; border: 1px solid #cbd5e1; }
+        .preview-label { margin-top: 8px; font-size: 12px; font-weight: 700; color: #059669; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
+    </style>
 </head>
-<body class="d-flex align-items-center py-5 min-vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="form-card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Edit / Upload Data KHS</h5>
-                        <a href="{{ route('admin.dashboard') }}" class="btn btn-sm btn-secondary text-white">Batal</a>
-                    </div>
-                    <div class="card-body p-4 p-md-5">
-                        <form action="{{ route('admin.khs.update', $khs->id) }}" method="POST" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            
-                            <div class="mb-4">
-                                <label>Nama Proyek / KHS</label>
-                                <input type="text" name="nama_proyek" class="form-control" value="{{ $khs->nama_proyek }}" required>
-                            </div>
-                            <div class="mb-4">
-                                <label>Link ArcGIS</label>
-                                <input type="url" name="arcgis_link" class="form-control" value="{{ $khs->arcgis_link }}" placeholder="https://www.arcgis.com/...">
-                            </div>
-                            
-                            <div class="mb-4">
-                                <label>Upload Gambar Baru</label>
-                                @if($khs->gambar)
-                                    <div class="mb-3 text-center p-3 border rounded bg-light">
-                                        <img src="{{ asset('storage/' . $khs->gambar) }}" class="img-thumbnail rounded" width="150" alt="Preview Gambar">
-                                        <div class="mt-2"><small class="text-success fw-bold">Gambar saat ini</small></div>
-                                    </div>
-                                @endif
-                                <input type="file" name="gambar" class="form-control" accept="image/*">
-                                <small class="text-muted mt-1 d-block">*Biarkan kosong jika tidak ingin mengubah gambar.</small>
-                            </div>
-                            
-                            <div class="mb-5">
-                                <label>Upload Kontrak PDF Baru</label>
-                                @if($khs->kontrak_pdf)
-                                    <div class="mb-3 p-3 border rounded bg-light text-center">
-                                        <a href="{{ asset('storage/' . $khs->kontrak_pdf) }}" target="_blank" class="btn btn-sm btn-info text-white px-3 py-2">
-                                            Buka PDF Saat Ini
-                                        </a>
-                                    </div>
-                                @endif
-                                <input type="file" name="kontrak_pdf" class="form-control" accept="application/pdf">
-                                <small class="text-muted mt-1 d-block">*Biarkan kosong jika tidak ingin mengubah file PDF.</small>
-                            </div>
-                            
-                            <div class="d-grid gap-2">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold">Simpan Perubahan</button>
-                            </div>
-                        </form>
-                    </div>
+<body>
+
+@includeIf('partials.simerah-admin-topbar', ['topSubTitle' => 'UP3 JAMBI • EDIT DATA KHS'])
+
+<div class="wrapper">
+    @includeIf('partials.simerah-admin-sidebar', ['activeAdmin' => 'dashboard'])
+
+    <main class="content">
+        <div class="card form-card">
+            <div class="header-title">
+                <div>
+                    <h2>Edit / Upload Data KHS</h2>
+                    <small>Perbarui detail proyek KHS, gambar, atau file kontrak PDF.</small>
                 </div>
+                <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Batal</a>
             </div>
+
+            <form action="{{ route('admin.khs.update', $khs->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="form-group">
+                    <label>Nama Proyek / KHS</label>
+                    <input type="text" name="nama_proyek" class="form-control" value="{{ $khs->nama_proyek }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Link ArcGIS</label>
+                    <input type="url" name="arcgis_link" class="form-control" value="{{ $khs->arcgis_link }}" placeholder="https://www.arcgis.com/...">
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Gambar Baru</label>
+                    @if($khs->gambar)
+                        <div class="preview-box">
+                            <img src="{{ asset('storage/' . $khs->gambar) }}" alt="Preview Gambar">
+                            <div class="preview-label">Gambar saat ini</div>
+                        </div>
+                    @endif
+                    <input type="file" name="gambar" class="form-control" accept="image/*">
+                    <small class="form-help">*Biarkan kosong jika tidak ingin mengubah gambar.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Upload Kontrak PDF Baru</label>
+                    @if($khs->kontrak_pdf)
+                        <div class="preview-box">
+                            <a href="{{ asset('storage/' . $khs->kontrak_pdf) }}" target="_blank" class="btn-secondary">
+                                <i class="fa fa-file-pdf"></i> Buka PDF Saat Ini
+                            </a>
+                        </div>
+                    @endif
+                    <input type="file" name="kontrak_pdf" class="form-control" accept="application/pdf">
+                    <small class="form-help">*Biarkan kosong jika tidak ingin mengubah file PDF.</small>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Batal</a>
+                    <button type="submit" class="btn-primary">Simpan Perubahan</button>
+                </div>
+            </form>
         </div>
-    </div>
+    </main>
+</div>
+
 </body>
 </html>

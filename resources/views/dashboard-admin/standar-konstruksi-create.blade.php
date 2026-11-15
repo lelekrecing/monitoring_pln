@@ -2,70 +2,90 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <title>Tambah Standar Konstruksi | Admin</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Standar Konstruksi | SIGINJAI PLN</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
     <style>
-        body{ background:#f4f7fb; }
-        .form-card-header{ background:#0B5EA8; color:#fff; padding:16px 24px; border-radius:8px 8px 0 0; }
+        .form-card { max-width: 720px; }
+        .info-note {
+            background: #f1f5f9; border: 1px solid #cbd5e1; border-left: 4px solid #0d2137;
+            border-radius: 10px; padding: 12px 15px; font-size: 13px; color: #334155; margin-bottom: 20px;
+        }
+        .info-note a { color: #0d2137; font-weight: 700; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 7px; }
+        .form-control { width: 100%; padding: 11px 14px; }
+        .form-help { display: block; font-size: 12px; color: #64748b; margin-top: 6px; }
+        .req { color: #dc2626; }
+        .form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 22px; }
     </style>
 </head>
-<body class="d-flex align-items-center py-5 min-vh-100">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8 col-lg-6">
-                <div class="card shadow-sm">
-                    <div class="form-card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Tambah Standar Konstruksi (Manual)</h5>
-                        <a href="{{ route('admin.standar-konstruksi.index') }}" class="btn btn-sm btn-light">Batal</a>
-                    </div>
-                    <div class="card-body p-4 p-md-5">
+<body>
 
-                        <div class="alert alert-secondary small">
-                            Untuk tambah/perbarui data dalam jumlah banyak, gunakan <strong>Import Excel</strong> di halaman
-                            <a href="{{ route('admin.standar-konstruksi.index') }}">Kelola Standar Konstruksi</a>.
-                            Form ini hanya untuk menambah satu data secara cepat.
-                        </div>
+@includeIf('partials.simerah-admin-topbar', ['topSubTitle' => 'UP3 JAMBI • STANDAR KONSTRUKSI'])
 
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <ul class="mb-0">
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+<div class="wrapper">
+    @includeIf('partials.simerah-admin-sidebar', ['activeAdmin' => 'standar'])
 
-                        <form action="{{ route('admin.standar-konstruksi.store') }}" method="POST">
-                            @csrf
-
-                            <div class="mb-3">
-                                <label>No (opsional, untuk urutan tampil)</label>
-                                <input type="number" name="nomor" class="form-control" value="{{ old('nomor') }}" min="0">
-                            </div>
-
-                            <div class="mb-3">
-                                <label>Kontruksi SUTM 2026 <span class="text-danger">*</span></label>
-                                <input type="text" name="nama_konstruksi" class="form-control" value="{{ old('nama_konstruksi') }}" placeholder="mis. TM 10, TM KHUSUS TYPE 3" required>
-                                <small class="text-muted">Nama akan tampil PERSIS seperti yang diketik, tidak diubah sistem.</small>
-                            </div>
-
-                            <div class="mb-4">
-                                <label>Link Gambar (Google Drive) <span class="text-danger">*</span></label>
-                                <input type="url" name="link_gambar" class="form-control" value="{{ old('link_gambar') }}" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" required>
-                                <small class="text-muted d-block mt-1">
-                                    Tempel link "Share" dari Google Drive. Pastikan akses file sudah "Anyone with the link".
-                                </small>
-                            </div>
-
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary btn-lg fw-bold">Simpan</button>
-                            </div>
-                        </form>
-                    </div>
+    <main class="content">
+        <div class="card form-card">
+            <div class="header-title">
+                <div>
+                    <h2>Tambah Standar Konstruksi (Manual)</h2>
+                    <small>Tambahkan satu item Standar Konstruksi SUTM secara cepat.</small>
                 </div>
+                <a href="{{ route('admin.standar-konstruksi.index') }}" class="btn-secondary">Batal</a>
             </div>
+
+            <div class="info-note">
+                Untuk tambah/perbarui data dalam jumlah banyak, gunakan <strong>Import Excel</strong> di halaman
+                <a href="{{ route('admin.standar-konstruksi.index') }}">Kelola Standar Konstruksi</a>.
+                Form ini hanya untuk menambah satu data secara cepat.
+            </div>
+
+            @if ($errors->any())
+                <div class="error-box">
+                    <ul style="margin-left:18px;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <form action="{{ route('admin.standar-konstruksi.store') }}" method="POST">
+                @csrf
+
+                <div class="form-group">
+                    <label>No (opsional, untuk urutan tampil)</label>
+                    <input type="number" name="nomor" class="form-control" value="{{ old('nomor') }}" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label>Kontruksi SUTM 2026 <span class="req">*</span></label>
+                    <input type="text" name="nama_konstruksi" class="form-control" value="{{ old('nama_konstruksi') }}" placeholder="mis. TM 10, TM KHUSUS TYPE 3" required>
+                    <small class="form-help">Nama akan tampil PERSIS seperti yang diketik, tidak diubah sistem.</small>
+                </div>
+
+                <div class="form-group">
+                    <label>Link Gambar (Google Drive) <span class="req">*</span></label>
+                    <input type="url" name="link_gambar" class="form-control" value="{{ old('link_gambar') }}" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" required>
+                    <small class="form-help">Tempel link "Share" dari Google Drive. Pastikan akses file sudah "Anyone with the link".</small>
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ route('admin.standar-konstruksi.index') }}" class="btn-secondary">Kembali</a>
+                    <button type="submit" class="btn-primary">Simpan</button>
+                </div>
+            </form>
         </div>
-    </div>
+    </main>
+</div>
+
 </body>
 </html>

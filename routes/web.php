@@ -13,6 +13,7 @@ use App\Http\Middleware\AdminSession;
 use App\Http\Middleware\UserArea;
 use App\Http\Controllers\Admin\AnggotaController;
 use App\Http\Controllers\Admin\RiwayatUploadController;
+use App\Http\Controllers\KajianKelayakanController;
 
 // ==========================
 // LOGIN USER
@@ -101,6 +102,9 @@ Route::get('/rekap', function () {
 Route::get('/sheet/{id}', [DashboardController::class, 'show'])
     ->name('sheet.show');
 
+Route::get('/sheet/{id}/export-pdf', [DashboardController::class, 'exportSheetPdf'])
+    ->name('sheet.export-pdf');
+
 // Live Search (Find/Search) Daftar Sheet
 Route::get('/search-sheet', [DashboardController::class, 'searchSheet'])
     ->name('search.sheet');
@@ -111,6 +115,9 @@ Route::get('/search-sheet', [DashboardController::class, 'searchSheet'])
 Route::get('/standar-konstruksi', [StandarKonstruksiController::class, 'index'])
     ->name('standar-konstruksi.index');
 
+Route::get('/standar-konstruksi/export-pdf', [StandarKonstruksiController::class, 'exportPdf'])
+    ->name('standar-konstruksi.export-pdf');
+
 // ==========================
 // STANDAR KONSTRUKSI - ADMIN (dilindungi middleware AdminSession)
 // ==========================
@@ -119,6 +126,7 @@ Route::prefix('admin/standar-konstruksi')
     ->name('admin.standar-konstruksi.')
     ->group(function () {
         Route::get('/', [AdminStandarKonstruksiController::class, 'index'])->name('index');
+        Route::get('/export-pdf', [AdminStandarKonstruksiController::class, 'exportPdf'])->name('export-pdf');
         Route::get('/create', [AdminStandarKonstruksiController::class, 'create'])->name('create');
         Route::post('/', [AdminStandarKonstruksiController::class, 'store'])->name('store');
         Route::get('/{id}/edit', [AdminStandarKonstruksiController::class, 'edit'])->name('edit');
@@ -150,3 +158,42 @@ Route::middleware(AdminSession::class)->group(function () {
     Route::post('/riwayat-upload/{id}/aktifkan', [RiwayatUploadController::class, 'aktifkan'])->name('admin.riwayat-upload.aktifkan');
     Route::delete('/riwayat-upload/{id}', [RiwayatUploadController::class, 'destroy'])->name('admin.riwayat-upload.destroy');
 });
+
+// ==========================
+// KAJIAN KELAYAKAN PROYEK (KKO/KKF, Simulasi Cepat, Kuota Kontrak)
+// ==========================
+Route::prefix('kajian-kelayakan')
+    ->middleware(UserArea::class)
+    ->name('kajian-kelayakan.')
+    ->group(function () {
+        Route::get('/', [KajianKelayakanController::class, 'userIndex'])->name('index');
+        Route::post('/simulate', [KajianKelayakanController::class, 'simulate'])->name('simulate');
+        Route::post('/store', [KajianKelayakanController::class, 'store'])->name('store');
+        Route::get('/export-excel', [KajianKelayakanController::class, 'exportExcel'])->name('export-excel');
+        Route::get('/{id}/export-excel', [KajianKelayakanController::class, 'exportSingleExcel'])->whereNumber('id')->name('single-export-excel');
+        Route::get('/export-pdf', [KajianKelayakanController::class, 'exportPdf'])->name('export-pdf');
+        Route::get('/{id}/export-pdf', [KajianKelayakanController::class, 'exportSinglePdf'])->whereNumber('id')->name('single-export-pdf');
+        Route::get('/{id}', [KajianKelayakanController::class, 'show'])->whereNumber('id')->name('show');
+        Route::post('/{id}/contract', [KajianKelayakanController::class, 'adminContract'])->whereNumber('id')->name('contract');
+        Route::delete('/{id}', [KajianKelayakanController::class, 'destroy'])->whereNumber('id')->name('destroy');
+        Route::post('/kuota', [KajianKelayakanController::class, 'storeKuota'])->name('kuota.store');
+        Route::delete('/kuota/{id}', [KajianKelayakanController::class, 'destroyKuota'])->whereNumber('id')->name('kuota.destroy');
+    });
+
+Route::prefix('admin/kajian-kelayakan')
+    ->middleware(AdminSession::class)
+    ->name('admin.kajian-kelayakan.')
+    ->group(function () {
+        Route::get('/', [KajianKelayakanController::class, 'adminIndex'])->name('index');
+        Route::post('/simulate', [KajianKelayakanController::class, 'simulate'])->name('simulate');
+        Route::post('/store', [KajianKelayakanController::class, 'store'])->name('store');
+        Route::get('/export-excel', [KajianKelayakanController::class, 'exportExcel'])->name('export-excel');
+        Route::get('/{id}/export-excel', [KajianKelayakanController::class, 'exportSingleExcel'])->whereNumber('id')->name('single-export-excel');
+        Route::get('/export-pdf', [KajianKelayakanController::class, 'exportPdf'])->name('export-pdf');
+        Route::get('/{id}/export-pdf', [KajianKelayakanController::class, 'exportSinglePdf'])->whereNumber('id')->name('single-export-pdf');
+        Route::get('/{id}', [KajianKelayakanController::class, 'show'])->whereNumber('id')->name('show');
+        Route::post('/{id}/contract', [KajianKelayakanController::class, 'adminContract'])->whereNumber('id')->name('contract');
+        Route::delete('/{id}', [KajianKelayakanController::class, 'destroy'])->whereNumber('id')->name('destroy');
+        Route::post('/kuota', [KajianKelayakanController::class, 'storeKuota'])->name('kuota.store');
+        Route::delete('/kuota/{id}', [KajianKelayakanController::class, 'destroyKuota'])->whereNumber('id')->name('kuota.destroy');
+    });

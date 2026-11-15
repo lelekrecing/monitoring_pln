@@ -36,13 +36,21 @@ class LoginController extends Controller
                     'nama'  => $user->name,
                 ]);
 
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard')->with('auth_popup', [
+                    'type'    => 'login',
+                    'title'   => 'Login Berhasil!',
+                    'message' => 'Selamat datang kembali, ' . $user->name . '. Anda masuk sebagai Administrator.',
+                ]);
             }
 
             // Akun user biasa: bersihkan sisa session admin
             session()->forget(['admin', 'nama']);
 
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')->with('auth_popup', [
+                'type'    => 'login',
+                'title'   => 'Login Berhasil!',
+                'message' => 'Selamat datang kembali, ' . $user->name . '.',
+            ]);
         }
 
         return back()
@@ -72,7 +80,11 @@ class LoginController extends Controller
                 'nama'  => $admin->nama,
             ]);
 
-            return redirect()->route('admin.dashboard');
+            return redirect()->route('admin.dashboard')->with('auth_popup', [
+                'type'    => 'login',
+                'title'   => 'Login Berhasil!',
+                'message' => 'Selamat datang kembali, ' . $admin->nama . '. Anda masuk sebagai Administrator.',
+            ]);
         }
 
         return back()
@@ -89,6 +101,10 @@ class LoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('auth_popup', [
+            'type'    => 'logout',
+            'title'   => 'Logout Berhasil!',
+            'message' => 'Anda telah keluar dari sistem. Sampai jumpa kembali!',
+        ]);
     }
 }
