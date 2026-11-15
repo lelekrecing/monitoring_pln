@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 48" width="100%">
+<defs>
+<linearGradient id="tg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F5C451"/><stop offset="1" stop-color="#EF4444"/></linearGradient>
+<clipPath id="p0"><rect class="w0" x="95" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p1"><rect class="w1" x="115" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p2"><rect class="w2" x="105" y="0" height="44" width="0"/></clipPath>
+<clipPath id="p3"><rect class="w3" x="125" y="0" height="44" width="0"/></clipPath>
+</defs>
+<style>.m{font-family:'Courier New',Courier,monospace}
+@keyframes w0{0%,1%{width:0}14%,22%{width:710px}24%,100%{width:0}}
+@keyframes c0{0%{opacity:0;transform:translateX(0)}1%{opacity:1;transform:translateX(0)}14%,22%{opacity:1;transform:translateX(710px)}24%,100%{opacity:0;transform:translateX(710px)}}
+@keyframes w1{0%,25%{width:0}39%,47%{width:670px}49%,100%{width:0}}
+@keyframes c1{0%,24%{opacity:0;transform:translateX(0)}25%{opacity:1;transform:translateX(0)}39%,47%{opacity:1;transform:translateX(670px)}49%,100%{opacity:0;transform:translateX(670px)}}
+@keyframes w2{0%,50%{width:0}64%,72%{width:690px}74%,100%{width:0}}
+@keyframes c2{0%,49%{opacity:0;transform:translateX(0)}50%{opacity:1;transform:translateX(0)}64%,72%{opacity:1;transform:translateX(690px)}74%,100%{opacity:0;transform:translateX(690px)}}
+@keyframes w3{0%,75%{width:0}89%,97%{width:650px}99%,100%{width:0}}
+@keyframes c3{0%,74%{opacity:0;transform:translateX(0)}75%{opacity:1;transform:translateX(0)}89%,97%{opacity:1;transform:translateX(650px)}99%,100%{opacity:0;transform:translateX(650px)}}
+.w0{animation:w0 20s steps(52,end) infinite}.c0{animation:c0 20s steps(52,end) infinite}
+.w1{animation:w1 20s steps(49,end) infinite}.c1{animation:c1 20s steps(49,end) infinite}
+.w2{animation:w2 20s steps(50,end) infinite}.c2{animation:c2 20s steps(50,end) infinite}
+.w3{animation:w3 20s steps(47,end) infinite}.c3{animation:c3 20s steps(47,end) infinite}
+</style>
+<text x="95" y="31" class="m" font-size="20" font-weight="bold" fill="url(#tg)" clip-path="url(#p0)">Pusat Monitoring : KHS · Tiang · Pelanggan · Kuota</text>
+<rect class="c0" x="95" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="115" y="31" class="m" font-size="20" font-weight="bold" fill="url(#tg)" clip-path="url(#p1)">Kajian Kelayakan : Simulasi KKO/KKF · Kuota Vendor</text>
+<rect class="c1" x="115" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="105" y="31" class="m" font-size="20" font-weight="bold" fill="url(#tg)" clip-path="url(#p2)">Standar Konstruksi : SUTM · Export PDF &amp; Excel</text>
+<rect class="c2" x="105" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+<text x="125" y="31" class="m" font-size="20" font-weight="bold" fill="url(#tg)" clip-path="url(#p3)">Stack : Laravel 13 · PHP 8.3 · Tailwind 4 · MySQL</text>
+<rect class="c3" x="125" y="9" width="3" height="28" rx="1.5" fill="#34D399"/>
+</svg>
