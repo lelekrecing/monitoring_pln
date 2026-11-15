@@ -678,8 +678,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ url('/riwayat-upload') }}" class="sidebar-link">
-                    <span><i class="fa fa-clock-rotate-left"></i> Riwayat Upload</span>
+                <a href="{{ route('admin.standar-konstruksi.index') }}" class="sidebar-link">
+                    <span><i class="fa fa-images"></i> Upload Standar Konstruksi</span>
                 </a>
             </li>
         </ul>
@@ -687,13 +687,13 @@
         <div class="sidebar-section-label">Referensi &amp; Pengelolaan</div>
         <ul>
             <li>
-                <a href="{{ route('admin.standar-konstruksi.index') }}" class="sidebar-link">
-                    <span><i class="fa fa-images"></i> Standar Konstruksi</span>
+                <a href="{{ route('admin.kajian-kelayakan.index') }}" class="sidebar-link">
+                    <span><i class="fa fa-calculator"></i> Kajian Kelayakan Proyek</span>
                 </a>
             </li>
             <li>
-                <a href="{{ route('admin.kajian-kelayakan.index') }}" class="sidebar-link">
-                    <span><i class="fa fa-calculator"></i> Kajian Kelayakan Proyek</span>
+                <a href="{{ url('/riwayat-upload') }}" class="sidebar-link">
+                    <span><i class="fa fa-clock-rotate-left"></i> Riwayat Upload</span>
                 </a>
             </li>
             @if (Route::has('admin.anggota.index'))
@@ -703,15 +703,6 @@
                     </a>
                 </li>
             @endif
-        </ul>
-
-        <div class="sidebar-section-label">Akun</div>
-        <ul>
-            <li>
-                <a href="{{ route('logout.admin') }}" class="sidebar-link logout-danger">
-                    <span><i class="fa fa-right-from-bracket"></i> Keluar dari Sistem</span>
-                </a>
-            </li>
         </ul>
     </aside>
 
@@ -746,29 +737,16 @@
                     </div>
                 </a>
 
-                <a href="{{ url('/riwayat-upload') }}" class="hero-module-card">
-                    <div class="hero-module-icon hi-emerald">
-                        <i class="fa fa-clock-rotate-left"></i>
-                    </div>
-                    <div class="hero-module-body">
-                        <div class="hero-module-title">
-                            <span>Riwayat Upload</span>
-                            <i class="fa fa-arrow-right"></i>
-                        </div>
-                        <div class="hero-module-desc">Lacak log unggahan &amp; kelola dataset aktif</div>
-                    </div>
-                </a>
-
                 <a href="{{ route('admin.standar-konstruksi.index') }}" class="hero-module-card">
                     <div class="hero-module-icon hi-amber">
                         <i class="fa fa-images"></i>
                     </div>
                     <div class="hero-module-body">
                         <div class="hero-module-title">
-                            <span>Standar Konstruksi</span>
+                            <span>Upload Standar Konstruksi</span>
                             <i class="fa fa-arrow-right"></i>
                         </div>
-                        <div class="hero-module-desc">Kelola katalog panduan gambar &amp; standar teknis</div>
+                        <div class="hero-module-desc">Unggah &amp; kelola katalog panduan gambar teknis</div>
                     </div>
                 </a>
 
@@ -782,6 +760,19 @@
                             <i class="fa fa-arrow-right"></i>
                         </div>
                         <div class="hero-module-desc">Lengkapi kebutuhan URAI, kelayakan &amp; kuota kontrak</div>
+                    </div>
+                </a>
+
+                <a href="{{ url('/riwayat-upload') }}" class="hero-module-card">
+                    <div class="hero-module-icon hi-emerald">
+                        <i class="fa fa-clock-rotate-left"></i>
+                    </div>
+                    <div class="hero-module-body">
+                        <div class="hero-module-title">
+                            <span>Riwayat Upload</span>
+                            <i class="fa fa-arrow-right"></i>
+                        </div>
+                        <div class="hero-module-desc">Lacak log unggahan &amp; kelola dataset aktif</div>
                     </div>
                 </a>
 

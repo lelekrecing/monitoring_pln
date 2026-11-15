@@ -470,29 +470,6 @@
             <h2>{{ $sheet->nama_sheet }}</h2>
             <p>Total Baris : {{ $sheet->total_rows }}</p>
         </div>
-
-        @php
-            // KOREKSI: Tombol Dashboard di sheet Monitoring Tiang ini khusus
-            // untuk USER - selalu mengarah ke Dashboard User (route 'dashboard'),
-            // bukan Dashboard Admin. Tidak ada percabangan role di sini.
-            $dashboardRoute = route('dashboard');
-        @endphp
-
-        <div class="header-actions">
-            {{-- PERBAIKAN: Tombol Back sekarang mengikuti riwayat navigasi (browser history)
-                 satu langkah ke belakang - bukan selalu ke Dashboard. href tetap mengarah
-                 ke Dashboard User sebagai fallback (kalau JS mati, atau halaman
-                 ini dibuka langsung lewat URL tanpa riwayat sebelumnya). --}}
-            <a href="{{ $dashboardRoute }}" class="btn" id="btnBackHistory">
-                <i class="fa fa-arrow-left"></i> Kembali
-            </a>
-
-            {{-- TAMBAHAN: Tombol Dashboard - selalu langsung ke Dashboard User,
-                 tanpa perlu menekan Kembali berkali-kali. --}}
-            <a href="{{ $dashboardRoute }}" class="btn">
-                <i class="fa fa-home"></i> Dashboard
-            </a>
-        </div>
     </div>
 
     @includeIf('partials.sheet-filter-bar')

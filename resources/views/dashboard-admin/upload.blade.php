@@ -37,7 +37,6 @@
                     <h2>Upload Excel Monitoring PLN</h2>
                     <small>Upload file Excel (.xls, .xlsx)</small>
                 </div>
-                <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Kembali</a>
             </div>
 
             <div class="form-narrow">

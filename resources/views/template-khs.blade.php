@@ -10,7 +10,6 @@
         <aside class="sidebar">...</aside>
 
         <main class="content">
-            <a href="{{ url('/dashboard') }}" class="btn-back">Kembali</a>
             <h2>📋 {{ $judul }}</h2>
 
             <div class="card">

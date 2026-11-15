@@ -339,26 +339,6 @@
             <h2>{{ $sheet->nama_sheet }}</h2>
             <p>Total Baris : {{ $sheet->total_rows }}</p>
         </div>
-
-        {{-- PERBAIKAN: Tombol Back sekarang mengikuti riwayat navigasi (browser history)
-             satu langkah ke belakang - bukan selalu ke Dashboard. href tetap mengarah
-             ke Dashboard sebagai fallback (kalau JS mati, atau halaman ini dibuka
-             langsung lewat URL tanpa riwayat sebelumnya). --}}
-        <div class="header-actions">
-            <a href="{{ route('dashboard') }}" class="btn" id="btnBackHistory">
-                &larr; Kembali
-            </a>
-
-            {{-- TAMBAHAN: Tombol Dashboard - selalu langsung ke Dashboard,
-                 sama persis desain/posisi/ikon dengan tombol Dashboard di
-                 halaman GANTER dan sheet lainnya. --}}
-            <a href="{{ route('dashboard') }}" class="btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;">
-                    <path d="M3 11.5 12 4l9 7.5"></path>
-                    <path d="M5.5 10v9a1 1 0 0 0 1 1H9.5a1 1 0 0 0 1-1V15a1 1 0 0 1 1-1H12.5a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1H17.5a1 1 0 0 0 1-1v-9"></path>
-                </svg>Dashboard
-            </a>
-        </div>
     </div>
 
     @includeIf('partials.sheet-filter-bar')

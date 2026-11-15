@@ -225,23 +225,6 @@
         </div>
     @endif
 
-    <div class="kk-hero">
-        <div>
-            <h2><i class="fa fa-calculator"></i> Kajian Kelayakan Proyek (KKO / KKF)</h2>
-            <p>
-                Simulasi cepat permohonan baru pelanggan, pengisian form kajian KKF &amp; kebutuhan jaringan URAI (ULP &amp; Perencanaan),
-                evaluasi kelayakan proyek, export PDF &amp; Excel, serta kontrol kuota kontrak vendor.
-            </p>
-        </div>
-        <div class="kk-hero-actions">
-            @if ($isAdminPortal)
-                <a href="{{ route('admin.dashboard') }}" class="kk-btn-white"><i class="fa fa-house"></i> Dashboard Admin</a>
-            @else
-                <a href="{{ route('dashboard') }}" class="kk-btn-white"><i class="fa fa-house"></i> Dashboard Utama</a>
-            @endif
-        </div>
-    </div>
-
     <div class="kk-stats">
         <div class="kk-stat-card">
             <div class="kk-stat-icon" style="background:#eff6ff;color:#1d4ed8;"><i class="fa fa-folder-tree"></i></div>
@@ -1159,11 +1142,11 @@
 </div>
 
 <script>
-const KK_CSRF = {{ json_encode(csrf_token()) }};
+const KK_CSRF = @json(csrf_token());
 const KK_ROUTES = {
-    simulate: {{ json_encode(route($routePrefix . '.simulate')) }},
-    store: {{ json_encode(route($routePrefix . '.store')) }},
-    showBase: {{ json_encode($exportBaseUrl) }}
+    simulate: @json(route($routePrefix . '.simulate')),
+    store: @json(route($routePrefix . '.store')),
+    showBase: @json($exportBaseUrl)
 };
 const KK_MASTERS = {
     tarifDefaultDaya: @json($tarifDefaultDaya),

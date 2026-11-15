@@ -1633,14 +1633,6 @@ body{
 <span><i class="fa fa-calculator"></i> Kajian Kelayakan Proyek</span>
 </a>
 
-<div class="sidebar-section-label">Akun</div>
-
-<a href="{{ route('logout') }}">
-
-<span><i class="fa fa-right-from-bracket"></i> Keluar dari Sistem</span>
-
-</a>
-
 </div>
 
 </aside>

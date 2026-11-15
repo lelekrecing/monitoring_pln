@@ -129,8 +129,6 @@
             <a href="{{ route('standar-konstruksi.export-pdf') }}" id="btnUserStandarPdfTop" target="_blank" class="header-btn pdf-btn">
                 <i class="fa fa-file-pdf"></i> Cetak PDF
             </a>
-            <a href="{{ url()->previous() }}" class="header-btn" id="btnBackHistory">← Kembali</a>
-            <a href="{{ route('dashboard') }}" class="header-btn">Dashboard</a>
         </div>
     </div>
 
@@ -207,7 +205,7 @@
     var pagerInfo   = document.getElementById('userStandarPagerInfo');
     var pagerBtns   = document.getElementById('userStandarPagerBtns');
     var pdfLinks    = [document.getElementById('btnUserStandarPdf'), document.getElementById('btnUserStandarPdfTop')];
-    var pdfBaseUrl  = {{ json_encode(route('standar-konstruksi.export-pdf')) }};
+    var pdfBaseUrl  = @json(route('standar-konstruksi.export-pdf'));
 
     var tbody = document.querySelector('#tabelKonstruksi tbody');
     if (!tbody) return;

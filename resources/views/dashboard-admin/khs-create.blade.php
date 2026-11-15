@@ -32,7 +32,6 @@
                     <h2>Tambah Data KHS Baru</h2>
                     <small>Tambahkan data proyek KHS, link ArcGIS, gambar, dan dokumen kontrak.</small>
                 </div>
-                <a href="{{ route('admin.dashboard') }}" class="btn-secondary">Kembali</a>
             </div>
 
             <form action="{{ route('admin.khs.store') }}" method="POST" enctype="multipart/form-data">

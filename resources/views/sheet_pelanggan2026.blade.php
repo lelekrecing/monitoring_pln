@@ -283,22 +283,6 @@
             <h2>{{ $sheet->nama_sheet }}</h2>
             <p>Total Baris : {{ $sheet->total_rows }}</p>
         </div>
-
-        @php
-            $dashboardRoute = route('dashboard');
-        @endphp
-
-        <div class="plg2026-header-actions">
-            <a href="{{ $dashboardRoute }}" class="plg2026-btn" id="plg2026BtnBackHistory">
-                &larr; Kembali
-            </a>
-            <a href="{{ $dashboardRoute }}" class="plg2026-btn">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px; margin-right:4px;">
-                    <path d="M3 11.5 12 4l9 7.5"></path>
-                    <path d="M5.5 10v9a1 1 0 0 0 1 1H9.5a1 1 0 0 0 1-1V15a1 1 0 0 1 1-1H12.5a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1H17.5a1 1 0 0 0 1-1v-9"></path>
-                </svg>Dashboard
-            </a>
-        </div>
     </div>
 
     @includeIf('partials.sheet-filter-bar')

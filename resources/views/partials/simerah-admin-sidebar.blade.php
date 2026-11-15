@@ -21,8 +21,8 @@
             </a>
         </li>
         <li>
-            <a href="{{ url('/riwayat-upload') }}" class="sidebar-link {{ $activeAdmin === 'riwayat' ? 'active' : '' }}">
-                <span><i class="fa fa-clock-rotate-left"></i> Riwayat Upload</span>
+            <a href="{{ route('admin.standar-konstruksi.index') }}" class="sidebar-link {{ $activeAdmin === 'standar' ? 'active' : '' }}">
+                <span><i class="fa fa-images"></i> Upload Standar Konstruksi</span>
             </a>
         </li>
     </ul>
@@ -30,13 +30,13 @@
     <div class="sidebar-section-label">Referensi &amp; Pengelolaan</div>
     <ul>
         <li>
-            <a href="{{ route('admin.standar-konstruksi.index') }}" class="sidebar-link {{ $activeAdmin === 'standar' ? 'active' : '' }}">
-                <span><i class="fa fa-images"></i> Standar Konstruksi</span>
+            <a href="{{ route('admin.kajian-kelayakan.index') }}" class="sidebar-link {{ $activeAdmin === 'kajian' ? 'active' : '' }}">
+                <span><i class="fa fa-calculator"></i> Kajian Kelayakan Proyek</span>
             </a>
         </li>
         <li>
-            <a href="{{ route('admin.kajian-kelayakan.index') }}" class="sidebar-link {{ $activeAdmin === 'kajian' ? 'active' : '' }}">
-                <span><i class="fa fa-calculator"></i> Kajian Kelayakan Proyek</span>
+            <a href="{{ url('/riwayat-upload') }}" class="sidebar-link {{ $activeAdmin === 'riwayat' ? 'active' : '' }}">
+                <span><i class="fa fa-clock-rotate-left"></i> Riwayat Upload</span>
             </a>
         </li>
         @if (Route::has('admin.anggota.index'))
@@ -46,15 +46,6 @@
                 </a>
             </li>
         @endif
-    </ul>
-
-    <div class="sidebar-section-label">Akun</div>
-    <ul>
-        <li>
-            <a href="{{ route('logout.admin') }}" class="sidebar-link logout-danger">
-                <span><i class="fa fa-right-from-bracket"></i> Keluar dari Sistem</span>
-            </a>
-        </li>
     </ul>
 </aside>
 
