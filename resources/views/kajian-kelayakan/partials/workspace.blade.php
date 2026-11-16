@@ -163,46 +163,79 @@
     .kk-page-btn.active{ background:#0d2137; color:#fff; border-color:#0d2137; }
     .kk-page-btn:disabled{ opacity:.45; cursor:not-allowed; }
 
-    /* Spreadsheet Input URAI */
+    /* Spreadsheet Input URAI (GAS KKO/KKF Palette & UX) */
     .urai-toolbar{
         display:flex; justify-content:space-between; align-items:center; gap:10px;
-        flex-wrap:wrap; margin-bottom:12px; padding:10px 12px; border-radius:12px;
+        flex-wrap:wrap; margin-bottom:10px; padding:10px 12px; border-radius:12px;
         background:#f8fafc; border:1px solid #e2e8f0;
     }
-    .urai-sheet-wrap{ overflow:auto; max-height:480px; border:1px solid #cbd5e1; border-radius:12px; background:#fff; }
-    table.urai-table{ border-collapse:collapse; width:max-content; min-width:100%; font-size:11.5px; }
+    .urai-sheet-wrap{ overflow:auto; max-height:520px; border:1px solid #cbd5e1; border-radius:12px; background:#fff; }
+    table.urai-table{ border-collapse:collapse; width:max-content; min-width:100%; font-size:11px; }
     table.urai-table thead th{
-        position:sticky; top:0; z-index:4; background:#0d2137; color:#fff;
-        padding:6px 5px; border:1px solid #1e3a5f; text-align:center; white-space:nowrap;
+        position:sticky; top:0; z-index:4; background:#e5e7eb; color:#0f172a;
+        padding:5px 4px; border:1px solid #cbd5e1; text-align:center; white-space:nowrap; font-weight:700;
     }
+    table.urai-table thead tr.urai-tophead th.ug-no{ background:#dce6f1; }
+    table.urai-table thead tr.urai-tophead th.ug-sutm,
+    table.urai-table thead tr.urai-subhead th.ug-sutm{ background:#e7b9b7; }
+    table.urai-table thead tr.urai-subhead th.ug-sutm{ background:#f6dada; }
+    table.urai-table thead tr.urai-tophead th.ug-vol150,
+    table.urai-table thead tr.urai-subhead th.ug-vol150{ background:#fde4cf; }
+    table.urai-table thead tr.urai-tophead th.ug-gw,
+    table.urai-table thead tr.urai-subhead th.ug-gw{ background:#d9ead3; }
+    table.urai-table thead tr.urai-tophead th.ug-trafo,
+    table.urai-table thead tr.urai-subhead th.ug-trafo{ background:#ead1dc; }
+    table.urai-table thead tr.urai-tophead th.ug-sutrb,
+    table.urai-table thead tr.urai-subhead th.ug-sutrb{ background:#fce5cd; }
+    table.urai-table thead tr.urai-tophead th.ug-sutrp,
+    table.urai-table thead tr.urai-subhead th.ug-sutrp{ background:#f9cb9c; }
+    table.urai-table thead tr.urai-tophead th.ug-voljtr,
+    table.urai-table thead tr.urai-subhead th.ug-voljtr{ background:#fde4cf; }
+    table.urai-table thead tr.urai-tophead th.ug-acc,
+    table.urai-table thead tr.urai-subhead th.ug-acc{ background:#d0e0e3; }
+    table.urai-table thead tr.urai-tophead th.ug-tap,
+    table.urai-table thead tr.urai-subhead th.ug-tap{ background:#fff2cc; }
+    table.urai-table thead tr.urai-tophead th.ug-pat,
+    table.urai-table thead tr.urai-subhead th.ug-pat{ background:#e2efda; }
     table.urai-table thead tr.urai-subhead th{
-        top:28px; background:#153459; font-size:11px;
+        top:27px; font-size:10px; padding:4px 4px;
     }
-    table.urai-table td{ border:1px solid #e2e8f0; padding:2px 3px; min-width:96px; background:#fff; }
+    table.urai-table td{ border:1px solid #d1d5db; padding:2px 3px; min-width:84px; background:#fff; }
     table.urai-table td.urai-row-no{
-        position:sticky; left:0; z-index:3; background:#f1f5f9; color:#334155;
-        font-weight:700; text-align:center; min-width:42px; width:42px;
+        position:sticky; left:0; z-index:3; background:#f8fafc; color:#334155;
+        font-weight:700; text-align:center; min-width:38px; width:38px;
     }
     table.urai-table select, table.urai-table input[type="text"], table.urai-table input[type="number"]{
-        width:100%; min-width:86px; border:none; padding:4px 5px; font-size:11.5px;
+        width:100%; min-width:74px; border:none; padding:4px 4px; font-size:11px;
         background:transparent; color:#0f172a; outline:none; border-radius:4px;
     }
     table.urai-table input:focus, table.urai-table select:focus{
         background:#eff6ff; box-shadow:inset 0 0 0 1px #2563eb;
     }
     .urai-override-cell{
-        display:flex; align-items:center; gap:4px; min-width:84px;
+        display:flex; align-items:center; gap:3px; min-width:76px;
     }
     .urai-override-cell input[type="text"]{
-        min-width:54px; text-align:center; font-weight:700;
+        min-width:46px; text-align:center; font-weight:700; cursor:pointer;
     }
-    .urai-override-cell input.is-auto{ background:#eff6ff; color:#0369a1; }
-    .urai-override-cell input.is-override{ background:#fef3c7; color:#92400e; }
+    .urai-override-cell input.is-auto{ background:#e9edf1; color:#0f172a; }
+    .urai-override-cell input.is-override{ background:#ffe1b8; color:#92400e; cursor:text; }
     .urai-ov-cb{
-        width:14px !important; min-width:14px !important; height:14px; margin:0 2px;
+        width:13px !important; min-width:13px !important; height:13px; margin:0 1px;
         cursor:pointer; accent-color:#d97706;
     }
     .urai-col-hidden{ display:none !important; }
+    .kk-status-banner{
+        margin-top:10px; padding:9px 12px; border-radius:10px; font-size:12.5px; font-weight:600;
+        display:none;
+    }
+    .kk-status-banner.ok{ display:block; background:#e8f5e9; color:#1b5e20; border:1px solid #a7f3d0; }
+    .kk-status-banner.err{ display:block; background:#ffebee; color:#b71c1c; border:1px solid #fecaca; }
+    .kk-status-banner.info{ display:block; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
+    .kk-mini-grid{ display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:10px; }
+    .kk-mini-box{ background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; }
+    .kk-mini-box .lbl{ font-size:11px; color:#64748b; font-weight:600; }
+    .kk-mini-box .val{ font-size:15px; font-weight:800; color:#0f172a; margin-top:2px; }
 
     .kk-progress-bg{ width:100%; height:8px; background:#e2e8f0; border-radius:999px; overflow:hidden; margin-top:6px; }
     .kk-progress-bar{ height:100%; border-radius:999px; transition:width .25s ease; }
@@ -263,11 +296,11 @@
     </div>
 
     <div class="kk-tabs" role="tablist">
-        <button type="button" class="kk-tab-btn active" data-tab="tabSimulasi" onclick="switchKkTab('tabSimulasi', this)">
-            <i class="fa fa-bolt-lightning"></i> Simulasi Cepat Pelanggan Baru
+        <button type="button" class="kk-tab-btn active" data-tab="tabKkf" onclick="switchKkTab('tabKkf', this)">
+            <i class="fa fa-table-cells"></i> Kajian KKF &amp; Input URAI (ULP / Perencanaan)
         </button>
-        <button type="button" class="kk-tab-btn" data-tab="tabKkf" onclick="switchKkTab('tabKkf', this)">
-            <i class="fa fa-table-cells"></i> Kajian KKF &amp; Kebutuhan URAI (ULP / Perencanaan)
+        <button type="button" class="kk-tab-btn" data-tab="tabSimulasi" onclick="switchKkTab('tabSimulasi', this)">
+            <i class="fa fa-bolt-lightning"></i> Simulasi Cepat Pelanggan Baru
         </button>
         <button type="button" class="kk-tab-btn" data-tab="tabDaftar" onclick="switchKkTab('tabDaftar', this)">
             <i class="fa fa-file-contract"></i> Daftar Kajian, Export &amp; Kuota Kontrak
@@ -275,7 +308,7 @@
     </div>
 
     {{-- ================= TAB 1: SIMULASI CEPAT ================= --}}
-    <div id="tabSimulasi" class="kk-tab-panel active">
+    <div id="tabSimulasi" class="kk-tab-panel">
         <div class="kk-grid-2">
             <div class="kk-card">
                 <div class="kk-card-head">
@@ -462,80 +495,113 @@
     </div>
 
     {{-- ================= TAB 2: FORM KAJIAN KKF & URAI ================= --}}
-    <div id="tabKkf" class="kk-tab-panel">
+    <div id="tabKkf" class="kk-tab-panel active">
         <div class="kk-card">
             <div class="kk-card-head">
                 <div>
                     <div class="kk-card-title">
                         <i class="fa fa-file-pen" style="color:#1d4ed8;"></i>
-                        <span id="kkfFormTitle">Form Kajian Kelayakan Finansial (KKF) &amp; Kebutuhan URAI</span>
+                        <span id="kkfFormTitle">KAJIAN FINANSIAL (KKO / KKF) &amp; INPUT URAI — PLN UP3 JAMBI</span>
                     </div>
                     <div class="kk-card-sub">
-                        Alur KKO–KKF PLN UP3 Jambi: <strong>1. Identitas Proyek</strong> &rarr; <strong>2. Data Pelanggan PB/PD</strong> &rarr; <strong>3. Input URAI (23 Kolom)</strong> &rarr; <strong>4. Hasil &amp; Export PDF/Excel</strong>.
+                        Input Permohonan Pelanggan PB/PD &amp; Kebutuhan Material URAI 23 Kolom. Klik <strong>Buka Kajian</strong> untuk membuka proyek dari database, atau isi kajian baru lalu simpan.
                     </div>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
                     <span id="kkfBadgeKode" class="kk-badge kk-badge-blue">Kajian Baru</span>
                     <a id="kkfBtnExportPdf" href="#" target="_blank" class="kk-btn kk-btn-pdf kk-btn-sm" style="display:none;">
-                        <i class="fa fa-file-pdf"></i> Export PDF KKF
+                        <i class="fa fa-file-pdf"></i> Export PDF
                     </a>
                     <a id="kkfBtnExportExcel" href="#" class="kk-btn kk-btn-excel kk-btn-sm" style="display:none;">
-                        <i class="fa fa-file-excel"></i> Export Excel KKF
+                        <i class="fa fa-file-excel"></i> Export Excel
                     </a>
+                    <button type="button" class="kk-btn kk-btn-amber kk-btn-sm" onclick="testCalculateKajian()">
+                        <i class="fa fa-calculator"></i> Hitung Kajian (Uji)
+                    </button>
                     <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="resetKkfForm()">
-                        <i class="fa fa-rotate-left"></i> Form Baru / Reset
+                        <i class="fa fa-rotate-left"></i> Reset Formulir
                     </button>
                 </div>
             </div>
 
             <input type="hidden" id="kkfId" value="">
 
-            <div class="kk-grid-4">
-                <div class="kk-field">
-                    <label class="kk-label">ULP Pemohon *</label>
-                    <select id="kkfUlp" class="kk-select">
-                        @foreach($ulpList as $ulp)
-                            <option value="{{ $ulp }}">{{ $ulp }}</option>
-                        @endforeach
-                    </select>
+            {{-- META PROYEK & BUKA KAJIAN TERSIMPAN (MIRIP GAS META BAR) --}}
+            <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;margin-bottom:14px;">
+                <div class="kk-grid-4" style="margin-bottom:4px;">
+                    <div class="kk-field">
+                        <label class="kk-label">Buka Kajian Tersimpan (Database)</label>
+                        <div style="display:flex;gap:6px;">
+                            <select id="kkfSavedProjectSelect" class="kk-select" style="flex:1;" onchange="onSelectSavedProject(this.value)">
+                                <option value="">-- Pilih Proyek Tersimpan ({{ $projects->count() }}) --</option>
+                                @foreach($projects as $proj)
+                                    <option value="{{ $proj->id }}" data-kode="{{ $proj->kode_kajian }}">
+                                        {{ $proj->kode_kajian }} — {{ $proj->nama_pekerjaan }} ({{ $proj->ulp }})
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="kk-field">
+                        <label class="kk-label">ID Kajian (untuk membuka)</label>
+                        <div style="display:flex;gap:6px;">
+                            <input type="text" id="kkfKodeLookup" class="kk-input" placeholder="001/KKF/ULP-.../X/2026" style="flex:1;">
+                            <button type="button" class="kk-btn kk-btn-primary kk-btn-sm" onclick="openProjectByInput()">
+                                <i class="fa fa-folder-open"></i> Buka Kajian
+                            </button>
+                        </div>
+                    </div>
+                    <div class="kk-field">
+                        <label class="kk-label">ULP *</label>
+                        <select id="kkfUlp" class="kk-select">
+                            @foreach($ulpList as $ulp)
+                                <option value="{{ $ulp }}">{{ $ulp }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="kk-field">
+                        <label class="kk-label">Jarak Proyek dari Gudang (km)</label>
+                        <input type="number" id="kkfJarak" class="kk-input" min="0" step="0.1" value="0" oninput="recalcUraiTotals()" placeholder="Contoh: 12.5">
+                    </div>
                 </div>
-                <div class="kk-field">
-                    <label class="kk-label">Nama Pekerjaan / Proyek *</label>
-                    <input type="text" id="kkfNama" class="kk-input" placeholder="Contoh: PB Pabrik / Perluasan JTM & Gardu ...">
-                </div>
-                <div class="kk-field">
-                    <label class="kk-label">Jarak dari Gudang (km)</label>
-                    <input type="number" id="kkfJarak" class="kk-input" min="0" step="0.5" value="10" oninput="recalcUraiTotals()">
-                </div>
-                <div class="kk-field">
-                    <label class="kk-label">Tahun</label>
-                    <input type="text" id="kkfTahun" class="kk-input" value="{{ date('Y') }}">
-                </div>
-            </div>
 
-            <div class="kk-grid-2">
-                <div class="kk-field">
-                    <label class="kk-label">Catatan ULP (Lokasi, Kondisi Lapangan, Target Nyala)</label>
-                    <textarea id="kkfCatatanUlp" rows="2" class="kk-textarea" placeholder="Jika ULP belum mengetahui kebutuhan tiang/material rinci, tuliskan kondisi lapangan di sini untuk dilengkapi Perencanaan..."></textarea>
+                <div class="kk-grid-3" style="margin-top:6px;">
+                    <div class="kk-field" style="grid-column:span 2 / span 2;">
+                        <label class="kk-label">Nama Pekerjaan *</label>
+                        <input type="text" id="kkfNama" class="kk-input" placeholder="Isi nama pekerjaan / judul kajian proyek...">
+                    </div>
+                    <div class="kk-field">
+                        <label class="kk-label">Tahun Anggaran</label>
+                        <input type="text" id="kkfTahun" class="kk-input" value="{{ date('Y') }}">
+                    </div>
                 </div>
-                <div class="kk-field">
-                    <label class="kk-label">Catatan Perencanaan / Evaluasi Teknis</label>
-                    <textarea id="kkfCatatanPerencanaan" rows="2" class="kk-textarea" placeholder="Catatan hasil verifikasi teknis Perencanaan, penyesuaian RAB, atau rekomendasi kontrak..."></textarea>
+
+                <div class="kk-grid-2">
+                    <div class="kk-field" style="margin-bottom:0;">
+                        <label class="kk-label">Catatan ULP (Lokasi, Kondisi Lapangan, Target Nyala)</label>
+                        <textarea id="kkfCatatanUlp" rows="2" class="kk-textarea" placeholder="Jika ULP belum mengetahui kebutuhan tiang/material rinci, tuliskan kondisi lapangan di sini..."></textarea>
+                    </div>
+                    <div class="kk-field" style="margin-bottom:0;">
+                        <label class="kk-label">Catatan Perencanaan / Evaluasi Teknis</label>
+                        <textarea id="kkfCatatanPerencanaan" rows="2" class="kk-textarea" placeholder="Catatan hasil verifikasi teknis Perencanaan, penyesuaian RAB, atau rekomendasi kontrak..."></textarea>
+                    </div>
                 </div>
+
+                <div id="kkfStatusBanner" class="kk-status-banner"></div>
             </div>
         </div>
 
-        {{-- ENTRY PELANGGAN PB / PD --}}
+        {{-- ENTRY PELANGGAN PB / PD (MIRIP GAS #pelangganPanel) --}}
         <div class="kk-card">
             <div class="kk-card-head">
                 <div>
-                    <div class="kk-card-title"><i class="fa fa-users" style="color:#0284c7;"></i> 1. Entry Kelompok Pelanggan (PB / PD — Maks 12 Kelompok)</div>
-                    <div class="kk-card-sub">Pilih Tarif resmi PLN (40 pilihan), sistem otomatis mengisi default Daya Sesudah (kVA). Ubah Daya Sebelum/Sesudah sesuai kebutuhan PB/PD.</div>
+                    <div class="kk-card-title"><i class="fa fa-users" style="color:#0284c7;"></i> 1. Entry Data Permohonan Pelanggan (PB / PD — Maks 12 Kelompok Tarif)</div>
+                    <div class="kk-card-sub">Pilih Jenis Permohonan (PB/PD), Kategori (R/S/B/I/P), dan Kelompok Tarif (40 standar EDIR 0014). Opsi daya otomatis menyesuaikan batas tarif.</div>
                 </div>
                 <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    <span class="kk-badge kk-badge-blue" id="kkfTotalPlgBadge">0 Pelanggan &bull; 0 kVA</span>
+                    <span class="kk-badge kk-badge-blue" id="kkfTotalPlgBadge">0 Pelanggan &bull; +0 kVA</span>
                     <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="addCustomerRow()">
-                        <i class="fa fa-plus"></i> Tambah Baris Pelanggan
+                        <i class="fa fa-plus"></i> Tambah Kelompok Tarif
                     </button>
                 </div>
             </div>
@@ -544,14 +610,15 @@
                 <table class="kk-table" id="customerTable">
                     <thead>
                         <tr>
-                            <th style="width:45px;">#</th>
-                            <th style="width:105px;">Permohonan</th>
-                            <th style="min-width:250px;">Tarif / Golongan</th>
-                            <th style="width:110px;">Jml Plg</th>
-                            <th style="width:140px;">Daya Sebelum (kVA)</th>
-                            <th style="width:140px;">Daya Sesudah (kVA)</th>
-                            <th style="width:145px;">Tambahan Daya (kVA)</th>
-                            <th style="width:60px;">Aksi</th>
+                            <th style="width:40px;">#</th>
+                            <th style="width:105px;">Jenis Permohonan</th>
+                            <th style="width:85px;">Kategori</th>
+                            <th style="min-width:235px;">Kelompok Tarif</th>
+                            <th style="width:100px;">Jumlah Pelanggan</th>
+                            <th style="width:130px;">Daya Sebelum (kVA)</th>
+                            <th style="width:130px;">Daya Sesudah (kVA)</th>
+                            <th style="width:135px;">Penambahan Daya (kVA)</th>
+                            <th style="width:55px;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="customerTableBody"></tbody>
@@ -565,12 +632,14 @@
                 <div>
                     <div class="kk-card-title"><i class="fa fa-table" style="color:#7c3aed;"></i> 2. Input URAI — 23 Kolom Kebutuhan Jaringan &amp; Material (PLN UP3 Jambi)</div>
                     <div class="kk-card-sub">
-                        Kolom biru (<code>BA</code>, <code>BD</code>, <code>DS</code>, <code>DU</code>) terhitung otomatis. Centang kotak <strong>Override</strong> pada sel tersebut untuk mengisi nilai manual (kuning), atau matikan centang untuk reset otomatis.
+                        Sel abu-abu (<code>BA</code>, <code>BD</code>, <code>DS</code>, <code>DU</code>) dihitung otomatis dari konstruksi <code>AL</code> / <code>DP</code>. <strong>Double-click</strong> atau centang kotak untuk override manual (kuning); <strong>klik kanan</strong> sel atau lepas centang untuk reset otomatis. Mendukung Ctrl+V paste langsung dari Excel.
                     </div>
                 </div>
                 <div style="display:flex;gap:6px;flex-wrap:wrap;">
-                    <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="openRowCountModal()"><i class="fa fa-sliders"></i> Atur Jumlah Baris (1–2.000)</button>
                     <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="addUraiRows(10)">+10 Baris</button>
+                    <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="addUraiRows(50)">+50 Baris</button>
+                    <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="addUraiRows(100)">+100 Baris</button>
+                    <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="openRowCountModal()"><i class="fa fa-sliders"></i> Atur Baris (1–2.000)</button>
                     <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="openPasteModal()"><i class="fa fa-paste"></i> Tempel dari Excel</button>
                     <button type="button" class="kk-btn kk-btn-danger kk-btn-sm" onclick="clearUraiRows()"><i class="fa fa-trash"></i> Bersihkan</button>
                 </div>
@@ -616,38 +685,44 @@
                 <table class="urai-table" id="uraiTable">
                     <thead>
                         <tr class="urai-tophead">
-                            <th rowspan="2">No</th>
-                            <th colspan="5" data-head-group="sutm">SUTM</th>
-                            <th colspan="2" data-head-group="sutm">GW / HGW</th>
-                            <th colspan="3" data-head-group="sutm">TRAFO / GARDU</th>
-                            <th colspan="2" data-head-group="sutr">SUTR BONGKAR</th>
-                            <th colspan="9" data-head-group="sutr">SUTR PASANG &amp; AKSESORIS</th>
-                            <th colspan="2" data-head-group="pating">PATING</th>
+                            <th rowspan="2" class="ug-no">NO</th>
+                            <th colspan="4" class="ug-sutm" data-head-group="sutm">SUTM</th>
+                            <th colspan="1" class="ug-vol150" data-head-group="sutm">VOLUME SUTM</th>
+                            <th colspan="1" class="ug-gw" data-head-group="sutm">GW</th>
+                            <th colspan="1" class="ug-gw" data-head-group="sutm">HGW</th>
+                            <th colspan="3" class="ug-trafo" data-head-group="sutm">TRAFO</th>
+                            <th colspan="2" class="ug-sutrb" data-head-group="sutr">SUTR BONGKAR</th>
+                            <th colspan="2" class="ug-sutrp" data-head-group="sutr">SUTR PASANG</th>
+                            <th colspan="1" class="ug-voljtr" data-head-group="sutr">VOLUME SUTR</th>
+                            <th colspan="2" class="ug-acc" data-head-group="sutr">SCHOER / GW-TR</th>
+                            <th colspan="2" class="ug-acc" data-head-group="sutr">CROSS / HGW-TR</th>
+                            <th colspan="2" class="ug-tap" data-head-group="sutr">TAP CONNECTOR</th>
+                            <th colspan="2" class="ug-pat" data-head-group="pating">PATING</th>
                         </tr>
                         <tr class="urai-subhead">
-                            <th data-ucol="AJ">Tiang TM (AJ)</th>
-                            <th data-ucol="AK">Jenis (AK)</th>
-                            <th data-ucol="AL">Konst (AL)</th>
-                            <th data-ucol="AM">Konduktor (AM)</th>
-                            <th data-ucol="VOL150">VOL150</th>
-                            <th data-ucol="BA">GW (BA)</th>
-                            <th data-ucol="BD">HGW (BD)</th>
-                            <th data-ucol="BG">Trafo kVA (BG)</th>
-                            <th data-ucol="CANTOL">Cantol</th>
-                            <th data-ucol="PORTAL">Portal</th>
-                            <th data-ucol="DN">Bongkar TR (DN)</th>
-                            <th data-ucol="DO">Jenis (DO)</th>
-                            <th data-ucol="DP">Konst (DP)</th>
-                            <th data-ucol="DQ">Konduktor (DQ)</th>
-                            <th data-ucol="VOLJTR">VOLJTR</th>
-                            <th data-ucol="DR">Schoer (DR)</th>
-                            <th data-ucol="DS">Cross (DS)</th>
-                            <th data-ucol="DT">TAP (DT)</th>
-                            <th data-ucol="DU">Dead End (DU)</th>
-                            <th data-ucol="DV">Line Tap (DV)</th>
-                            <th data-ucol="DW">Ground (DW)</th>
-                            <th data-ucol="PTM">PTM</th>
-                            <th data-ucol="PTR">PTR</th>
+                            <th class="ug-sutm" data-ucol="AJ">BONGKAR</th>
+                            <th class="ug-sutm" data-ucol="AK">EKS</th>
+                            <th class="ug-sutm" data-ucol="AL">BARU</th>
+                            <th class="ug-sutm" data-ucol="AM">TANPA TIANG</th>
+                            <th class="ug-vol150" data-ucol="VOL150">VOL150</th>
+                            <th class="ug-gw" data-ucol="BA">BARU</th>
+                            <th class="ug-gw" data-ucol="BD">BARU</th>
+                            <th class="ug-trafo" data-ucol="BG">BARU</th>
+                            <th class="ug-trafo" data-ucol="CANTOL">CANTOL</th>
+                            <th class="ug-trafo" data-ucol="PORTAL">PORTAL</th>
+                            <th class="ug-sutrb" data-ucol="DN">MURNI</th>
+                            <th class="ug-sutrb" data-ucol="DO">TANPA TIANG</th>
+                            <th class="ug-sutrp" data-ucol="DP">MURNI</th>
+                            <th class="ug-sutrp" data-ucol="DQ">TANPA TIANG</th>
+                            <th class="ug-voljtr" data-ucol="VOLJTR">VOLJTR</th>
+                            <th class="ug-acc" data-ucol="DR">BONGKAR</th>
+                            <th class="ug-acc" data-ucol="DS">PASANG</th>
+                            <th class="ug-acc" data-ucol="DT">BONGKAR</th>
+                            <th class="ug-acc" data-ucol="DU">PASANG</th>
+                            <th class="ug-tap" data-ucol="DV">BONGKAR</th>
+                            <th class="ug-tap" data-ucol="DW">PASANG</th>
+                            <th class="ug-pat" data-ucol="PTM">PTM</th>
+                            <th class="ug-pat" data-ucol="PTR">PTR</th>
                         </tr>
                     </thead>
                     <tbody id="uraiTableBody"></tbody>
@@ -675,6 +750,9 @@
                 </div>
 
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button type="button" class="kk-btn kk-btn-amber" onclick="testCalculateKajian()">
+                        <i class="fa fa-calculator"></i> Hitung Kajian (Uji)
+                    </button>
                     <button type="button" class="kk-btn kk-btn-outline" onclick="saveKkfForm('draft')">
                         <i class="fa fa-floppy-disk"></i> Simpan Draft
                     </button>
@@ -684,6 +762,41 @@
                     <button type="button" class="kk-btn kk-btn-emerald" onclick="saveKkfForm('dilengkapi_perencanaan')">
                         <i class="fa fa-check-double"></i> Simpan Kebutuhan (Perencanaan)
                     </button>
+                </div>
+            </div>
+
+            {{-- PANEL HASIL UJI PERHITUNGAN MASTER (KKO / KKF / MDU / BOX APP) --}}
+            <div id="kkfCalcResultCard" style="display:none;margin-top:16px;padding:18px;border-radius:14px;background:#fff;border:1px solid #cbd5e1;box-shadow:0 2px 10px rgba(15,23,42,.05);">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #f1f5f9;">
+                    <div>
+                        <strong style="font-size:14.5px;color:#0d2137;"><i class="fa fa-chart-column"></i> Hasil Uji Perhitungan KKO &amp; KKF (EDIR 0014 + Rekap MDU + Box APP)</strong>
+                        <div style="font-size:12px;color:#64748b;margin-top:2px;">Hasil simulasi langsung dari form Pelanggan PB/PD &amp; tabel URAI sebelum/sesudah disimpan ke database.</div>
+                    </div>
+                    <span id="calcVerdictBadge" class="kk-badge kk-badge-slate">-</span>
+                </div>
+
+                <div class="kk-mini-grid" style="margin-bottom:12px;">
+                    <div class="kk-mini-box"><div class="lbl">Est. Nilai RAB</div><div class="val" id="calcRabRp">Rp 0</div></div>
+                    <div class="kk-mini-box"><div class="lbl">BP (EDIR 0014)</div><div class="val" id="calcBpRp">Rp 0</div></div>
+                    <div class="kk-mini-box"><div class="lbl">UJL (EDIR 0014)</div><div class="val" id="calcUjlRp">Rp 0</div></div>
+                    <div class="kk-mini-box"><div class="lbl">Est. Pendapatan / Thn</div><div class="val" id="calcRevRp" style="color:#059669;">Rp 0</div></div>
+                    <div class="kk-mini-box"><div class="lbl">Payback Period</div><div class="val" id="calcPayback">-</div></div>
+                    <div class="kk-mini-box"><div class="lbl">Vendor Kuota Cukup</div><div class="val" id="calcKuota" style="color:#0369a1;">0 / 0</div></div>
+                </div>
+
+                <div class="kk-grid-3" style="gap:12px;">
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;font-size:12px;">
+                        <strong style="color:#0d2137;display:block;margin-bottom:6px;">Rekap MDU &amp; Jaringan</strong>
+                        <div id="calcMduSummary" style="line-height:1.7;color:#334155;"></div>
+                    </div>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;font-size:12px;">
+                        <strong style="color:#0d2137;display:block;margin-bottom:6px;">Rekap Konfigurasi Trafo (Cantol / Portal)</strong>
+                        <div id="calcTrafoSummary" style="line-height:1.7;color:#334155;"></div>
+                    </div>
+                    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;font-size:12px;">
+                        <strong style="color:#0d2137;display:block;margin-bottom:6px;">Rekap Kebutuhan Box APP (53–197 kVA)</strong>
+                        <div id="calcBoxAppSummary" style="line-height:1.7;color:#334155;"></div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -1151,6 +1264,8 @@ const KK_ROUTES = {
 const KK_MASTERS = {
     tarifDefaultDaya: @json($tarifDefaultDaya),
     tarifDaya: @json($tarifDayaList),
+    edirTarifSpecs: {!! json_encode($edirTarifSpecs ?? []) !!},
+    boxAppCapacities: {!! json_encode($boxAppCapacities ?? [53, 66, 82.5, 105, 131, 147, 164, 197]) !!},
     dayaOptions: @json($dayaOptions),
     trafoOptions: @json($trafoOptions),
     uraiMasters: @json($uraiMasters),
@@ -1199,25 +1314,77 @@ function closeModal(id){
     if (el) el.classList.remove('open');
 }
 
-function getDefaultDayaFromTarif(tarifStr){
-    const raw = String(tarifStr || '').trim();
-    if (Object.prototype.hasOwnProperty.call(KK_MASTERS.tarifDefaultDaya, raw)) {
-        return Number(KK_MASTERS.tarifDefaultDaya[raw]) || 0;
+function setKkfStatus(msg, type = 'info'){
+    const el = document.getElementById('kkfStatusBanner');
+    if (!el) return;
+    if (!msg) {
+        el.className = 'kk-status-banner';
+        el.textContent = '';
+        return;
     }
-    const mKva = raw.match(/([\d.,]+)\s*kVA/i);
+    el.className = 'kk-status-banner ' + (type === 'ok' ? 'ok' : (type === 'err' ? 'err' : 'info'));
+    el.textContent = msg;
+}
+
+function normTarifStr(v){
+    return String(v ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function resolveCanonicalTarif(raw){
+    const n = normTarifStr(raw).toLowerCase();
+    if (!n) return '';
+    return KK_MASTERS.tarifDaya.find(t => normTarifStr(t).toLowerCase() === n) || normTarifStr(raw);
+}
+
+function getDefaultDayaFromTarif(tarifStr){
+    const canon = resolveCanonicalTarif(tarifStr);
+    if (canon && Object.prototype.hasOwnProperty.call(KK_MASTERS.tarifDefaultDaya, canon)) {
+        return Number(KK_MASTERS.tarifDefaultDaya[canon]) || 0;
+    }
+    const mKva = canon.match(/([\d.,]+)\s*kVA/i);
     if (mKva) return parseFloat(mKva[1].replace(/\./g, '').replace(',', '.')) || 0;
-    const mVa = raw.match(/([\d.,]+)\s*VA/i);
+    const mVa = canon.match(/([\d.,]+)\s*VA/i);
     if (mVa) return (parseFloat(mVa[1].replace(/[.,]/g, '')) || 0) / 1000;
     return 0;
 }
 
-function makeDayaSelectOptions(selectedVal, includeZero = false){
+const GAS_MASTER_DAYA = [0.22,0.45,0.9,1.3,2.2,3.5,4.4,5.5,6.6,7.7,10.6,11,13.2,16.5,22,23,33,41.5,53,66,82.5,105,131,147,164,197,200,30000];
+function dayaSesuaiTarif(tarifStr){
+    const def = getDefaultDayaFromTarif(tarifStr);
+    const semua = [...new Set([...GAS_MASTER_DAYA, ...(KK_MASTERS.dayaOptions || []), def].filter(n => Number.isFinite(Number(n)) && Number(n) > 0))].sort((a,b) => a - b);
+    const t = normTarifStr(tarifStr).replace(/s\.d/gi, 's/d').replace(/(\d+)\.(\d{3})/g, '$1$2').replace(',', '.');
+    const parseToken = (s, u) => (/kva/i.test(u) || !/va/i.test(u)) ? Number(s) : Number(s) / 1000;
+    let m = t.match(/(\d+(?:\.\d+)?)\s*(kva|va)?\s*s\/d\s*(\d+(?:\.\d+)?)\s*(kva|va)?/i);
+    if (m) {
+        const u2 = m[4] || m[2] || 'VA', u1 = m[2] || u2;
+        const a = parseToken(m[1], u1), b = parseToken(m[3], u2);
+        const list = semua.filter(n => n >= a - 1e-6 && n <= b + 1e-6);
+        return list.length ? list : [def || a];
+    }
+    m = t.match(/(\d+(?:\.\d+)?)\s*(kva|va)\s*ke\s*atas|(\d+(?:\.\d+)?)\s*(kva|va)\s*keatas/i);
+    if (m) {
+        const num = m[1] || m[3], unit = m[2] || m[4];
+        const a = parseToken(num, unit);
+        const list = semua.filter(n => n >= a - 1e-6);
+        return list.length ? list : [a];
+    }
+    m = t.match(/>\s*(\d+(?:\.\d+)?)\s*(kva|va)/i);
+    if (m) {
+        const a = parseToken(m[1], m[2]);
+        const list = semua.filter(n => n > a + 1e-6);
+        return list.length ? list : [def || a];
+    }
+    return def ? [def] : semua;
+}
+
+function makeDayaSelectOptions(selectedVal, includeZero = false, tarifStr = null){
     const target = Number(selectedVal);
+    const baseList = tarifStr ? dayaSesuaiTarif(tarifStr) : KK_MASTERS.dayaOptions;
     let hasMatch = false;
     let html = includeZero ? `<option value="0" ${target === 0 ? 'selected' : ''}>0 kVA</option>` : '';
     if (includeZero && target === 0) hasMatch = true;
 
-    KK_MASTERS.dayaOptions.forEach(d => {
+    baseList.forEach(d => {
         const isSel = Math.abs(Number(d) - target) < 0.001;
         if (isSel) hasMatch = true;
         const label = Number(d).toLocaleString('id-ID', { minimumFractionDigits: d < 10 ? 2 : 0, maximumFractionDigits: 2 }) + ' kVA';
@@ -1378,11 +1545,22 @@ function promoteSimulationToKkf(){
 }
 
 /* ==================== TAB 2: PELANGGAN & INPUT URAI ==================== */
-function makeTarifOptions(selected){
-    const raw = String(selected || '').trim();
+function inferKategoriFromTarif(tarif){
+    const m = normTarifStr(tarif).toUpperCase().match(/^([RSBIP])\b|^([RSBIP])\./);
+    return m ? (m[1] || m[2]) : 'R';
+}
+
+function makeTarifOptions(selected, kategoriFilter = ''){
+    const raw = resolveCanonicalTarif(selected || '');
+    const rawNorm = normTarifStr(raw).toLowerCase();
+    const list = kategoriFilter
+        ? KK_MASTERS.tarifDaya.filter(t => inferKategoriFromTarif(t) === kategoriFilter)
+        : KK_MASTERS.tarifDaya;
+    const items = list.length ? list : KK_MASTERS.tarifDaya;
+
     let hasSel = false;
-    let html = KK_MASTERS.tarifDaya.map(t => {
-        const isSel = t === raw;
+    let html = items.map(t => {
+        const isSel = normTarifStr(t).toLowerCase() === rawNorm;
         if (isSel) hasSel = true;
         return `<option value="${escapeHtml(t)}" ${isSel ? 'selected' : ''}>${escapeHtml(t)}</option>`;
     }).join('');
@@ -1392,13 +1570,34 @@ function makeTarifOptions(selected){
     return html;
 }
 
-function onCustomerTarifChange(selEl){
+function onCustomerKategoriChange(katEl){
+    const tr = katEl.closest('tr');
+    const kat = katEl.value;
+    const tarifEl = tr.querySelector('.cust-tarif');
+    if (tarifEl) {
+        const current = tarifEl.value;
+        const nextList = KK_MASTERS.tarifDaya.filter(t => inferKategoriFromTarif(t) === kat);
+        const keepCurrent = nextList.some(t => normTarifStr(t).toLowerCase() === normTarifStr(current).toLowerCase());
+        const nextTarif = keepCurrent ? current : (nextList[0] || current);
+        tarifEl.innerHTML = makeTarifOptions(nextTarif, kat);
+        tarifEl.value = nextTarif;
+        onCustomerTarifChange(tarifEl, false);
+        return;
+    }
+    recalcCustomers();
+}
+
+function onCustomerTarifChange(selEl, syncKat = true){
     const tr = selEl.closest('tr');
+    if (syncKat) {
+        const katEl = tr.querySelector('.cust-kategori');
+        if (katEl) katEl.value = inferKategoriFromTarif(selEl.value);
+    }
     const defKva = getDefaultDayaFromTarif(selEl.value);
     const sesudahEl = tr.querySelector('.cust-sesudah');
     if (sesudahEl) {
-        sesudahEl.innerHTML = makeDayaSelectOptions(defKva, false);
-        sesudahEl.value = String(defKva);
+        sesudahEl.innerHTML = makeDayaSelectOptions(defKva, false, selEl.value);
+        sesudahEl.value = String(sesudahEl.value || defKva);
     }
     recalcCustomers();
 }
@@ -1411,10 +1610,14 @@ function addCustomerRow(row = {}){
     }
     const idx = tbody.children.length + 1;
     const jenis = row.jenis_permohonan || 'PB';
-    const tarif = row.kelompok_tarif || 'R.1 / 2.200 VA';
+    const tarif = resolveCanonicalTarif(row.kelompok_tarif || 'R.1 / 2.200 VA');
+    const kat = row.kategori || inferKategoriFromTarif(tarif);
     const jml = row.jumlah_pelanggan ?? 1;
     const sebelum = row.daya_sebelum_kva ?? 0;
-    const sesudah = row.daya_sesudah_kva ?? getDefaultDayaFromTarif(tarif);
+    const defKva = getDefaultDayaFromTarif(tarif);
+    const sesudah = (row.daya_sesudah_kva !== undefined && row.daya_sesudah_kva !== null && row.daya_sesudah_kva !== '')
+        ? Number(row.daya_sesudah_kva)
+        : defKva;
 
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -1426,8 +1629,17 @@ function addCustomerRow(row = {}){
             </select>
         </td>
         <td>
+            <select class="kk-select cust-kategori" style="padding:6px 8px;" onchange="onCustomerKategoriChange(this)">
+                <option value="R" ${kat === 'R' ? 'selected' : ''}>R (Rumah Tangga)</option>
+                <option value="S" ${kat === 'S' ? 'selected' : ''}>S (Sosial)</option>
+                <option value="B" ${kat === 'B' ? 'selected' : ''}>B (Bisnis)</option>
+                <option value="I" ${kat === 'I' ? 'selected' : ''}>I (Industri)</option>
+                <option value="P" ${kat === 'P' ? 'selected' : ''}>P (Pemerintah)</option>
+            </select>
+        </td>
+        <td>
             <select class="kk-select cust-tarif" style="padding:6px 8px;" onchange="onCustomerTarifChange(this)">
-                ${makeTarifOptions(tarif)}
+                ${makeTarifOptions(tarif, kat)}
             </select>
         </td>
         <td><input type="number" class="kk-input cust-jml" min="1" value="${jml}" style="padding:6px 8px;" oninput="recalcCustomers()"></td>
@@ -1438,7 +1650,7 @@ function addCustomerRow(row = {}){
         </td>
         <td>
             <select class="kk-select cust-sesudah" style="padding:6px 8px;" onchange="recalcCustomers()">
-                ${makeDayaSelectOptions(sesudah, false)}
+                ${makeDayaSelectOptions(sesudah, false, tarif)}
             </select>
         </td>
         <td class="cust-delta" style="font-weight:700;color:#0369a1;">0 kVA</td>
@@ -1516,12 +1728,44 @@ function buildSelectCell(col, optionsList, currentVal, triggerAuto = false){
     return `<select data-col="${col}" onchange="onUraiInput(this, ${triggerAuto ? 'true' : 'false'})">${opts}</select>`;
 }
 
+function enableUraiOverrideInput(inp){
+    const td = inp.closest('.urai-override-cell');
+    const cb = td ? td.querySelector('.urai-ov-cb') : null;
+    if (cb && !cb.checked) {
+        cb.checked = true;
+        toggleUraiOverride(cb);
+    } else if (inp) {
+        inp.removeAttribute('readonly');
+        inp.dataset.override = '1';
+        inp.classList.remove('is-auto');
+        inp.classList.add('is-override');
+        inp.focus();
+    }
+}
+
+function resetUraiOverrideInput(e, inp){
+    if (e) e.preventDefault();
+    const td = inp.closest('.urai-override-cell');
+    const cb = td ? td.querySelector('.urai-ov-cb') : null;
+    if (cb) {
+        cb.checked = false;
+        toggleUraiOverride(cb);
+    } else if (inp) {
+        inp.setAttribute('readonly', 'readonly');
+        inp.dataset.override = '0';
+        inp.classList.remove('is-override');
+        inp.classList.add('is-auto');
+        recalcUraiRowAuto(inp.closest('tr'));
+        recalcUraiTotals();
+    }
+}
+
 function buildOverrideCell(col, currentVal, ov){
     const isOv = Boolean(ov && ov[col]);
     const v = escapeHtml(currentVal ?? '');
     return `
         <div class="urai-override-cell">
-            <input type="text" data-col="${col}" value="${v}" class="${isOv ? 'is-override' : 'is-auto'}" data-override="${isOv ? '1' : '0'}" ${isOv ? '' : 'readonly'} oninput="onUraiInput(this)" title="Auto-hitung. Centang kotak di kanan untuk override manual.">
+            <input type="text" data-col="${col}" value="${v}" class="${isOv ? 'is-override' : 'is-auto'}" data-override="${isOv ? '1' : '0'}" ${isOv ? '' : 'readonly'} oninput="onUraiInput(this)" ondblclick="enableUraiOverrideInput(this)" oncontextmenu="resetUraiOverrideInput(event, this)" title="Auto-hitung (abu-abu). Double-click / centang untuk override manual (oranye); klik kanan untuk reset otomatis.">
             <input type="checkbox" class="urai-ov-cb" data-ov-for="${col}" ${isOv ? 'checked' : ''} onchange="toggleUraiOverride(this)" title="Override manual ${col}">
         </div>
     `;
@@ -1644,7 +1888,7 @@ function recalcUraiRowAuto(tr){
         dsEl.value = !dp ? '' : ((dp === 'Tr.3' || dp === 'Tr.2') ? 1 : 0);
     }
     if (duEl && duEl.dataset.override !== '1') {
-        duEl.value = !dp ? '' : ((dp === 'Tr.3' || dp === 'Tr.4') ? 1 : 0);
+        duEl.value = '';
     }
 }
 
@@ -1732,8 +1976,8 @@ function jumpToUraiColumn(col){
 
 function getUraiRowsPayload(){
     const list = [];
-    document.querySelectorAll('#uraiTableBody tr').forEach(tr => {
-        const obj = { overrides: {} };
+    document.querySelectorAll('#uraiTableBody tr').forEach((tr, idx) => {
+        const obj = { row_number: idx + 1, overrides: {} };
         let hasData = false;
         KK_MASTERS.uraiCols.forEach(c => {
             const inp = tr.querySelector(`[data-col="${c}"]`);
@@ -1745,6 +1989,12 @@ function getUraiRowsPayload(){
         if (hasData) list.push(obj);
     });
     return list;
+}
+
+function parseKvaFromBg(bgStr){
+    const s = String(bgStr || '').replace(',', '.');
+    const m = s.match(/(\d+(?:\.\d+)?)/);
+    return m ? (parseFloat(m[1]) || 0) : 0;
 }
 
 function recalcUraiTotals(){
@@ -1762,11 +2012,11 @@ function recalcUraiTotals(){
 
         if (aj || al) tiangTm++;
         if (dn || dp) tiangTr++;
-        if (vptm) ptm += parseInt(vptm, 10) || 1;
-        if (vptr) ptr += parseInt(vptr, 10) || 1;
+        if (vptm) ptm += parseFloat(vptm.replace(',', '.')) || 1;
+        if (vptr) ptr += parseFloat(vptr.replace(',', '.')) || 1;
         if (bg) {
             trafoCount++;
-            trafoKva += parseFloat(bg) || 0;
+            trafoKva += parseKvaFromBg(bg);
         }
         vol150 += v150;
         volJtr += vjtr;
@@ -1774,7 +2024,7 @@ function recalcUraiTotals(){
 
     const sutmKm = vol150 >= 20 ? +(vol150 / 1000).toFixed(3) : +vol150.toFixed(3);
     const sutrKm = volJtr >= 20 ? +(volJtr / 1000).toFixed(3) : +volJtr.toFixed(3);
-    const tiangTot = tiangTm + tiangTr + ptm + ptr;
+    const tiangTot = Math.round(tiangTm + tiangTr + ptm + ptr);
 
     const cust = getCustomerRowsPayload();
     const totalPlg = cust.reduce((s, r) => s + r.jumlah_pelanggan, 0);
@@ -1814,25 +2064,30 @@ function openPasteModal(){
     document.getElementById('pasteUraiModal').classList.add('open');
 }
 
-function applyExcelPaste(){
-    const raw = document.getElementById('pasteUraiText').value;
-    if (!raw.trim()) {
-        closeModal('pasteUraiModal');
-        return;
-    }
-    const lines = raw.split(/\r?\n/).filter(l => l.trim() !== '');
+function applyExcelPasteRaw(raw, startRowIdx = 0, startColIdx = 0){
+    if (!raw || !raw.trim()) return 0;
+    const lines = raw.replace(/\r\n/g, '\n').replace(/\r/g, '\n').split('\n');
+    while (lines.length && lines[lines.length - 1] === '') lines.pop();
+    if (!lines.length) return 0;
+
     const tbody = document.getElementById('uraiTableBody');
-    if (tbody.children.length < lines.length) {
-        addUraiRows(lines.length - tbody.children.length);
+    const needed = Math.min(2000, startRowIdx + lines.length);
+    if (tbody.children.length < needed) {
+        addUraiRows(needed - tbody.children.length);
     }
     const rows = tbody.querySelectorAll('tr');
+    const overrideCols = ['BA', 'BD', 'DS', 'DU'];
+    let pastedCount = 0;
+
     lines.forEach((line, rIdx) => {
-        const tr = rows[rIdx];
+        const tr = rows[startRowIdx + rIdx];
         if (!tr) return;
         const cells = line.split('\t');
-        KK_MASTERS.uraiCols.forEach((col, cIdx) => {
-            if (cIdx >= cells.length) return;
-            const val = (cells[cIdx] || '').trim();
+        cells.forEach((rawCell, offset) => {
+            const cIdx = startColIdx + offset;
+            if (cIdx >= KK_MASTERS.uraiCols.length) return;
+            const col = KK_MASTERS.uraiCols[cIdx];
+            const val = String(rawCell ?? '').trim();
             const inp = tr.querySelector(`[data-col="${col}"]`);
             if (!inp) return;
             if (inp.tagName === 'SELECT' && val && !Array.from(inp.options).some(o => o.value === val)) {
@@ -1841,13 +2096,53 @@ function applyExcelPaste(){
                 opt.textContent = val;
                 inp.appendChild(opt);
             }
+            if (overrideCols.includes(col) && val !== '') {
+                const cb = tr.querySelector(`.urai-ov-cb[data-ov-for="${col}"]`);
+                if (cb && !cb.checked) {
+                    cb.checked = true;
+                    inp.removeAttribute('readonly');
+                    inp.dataset.override = '1';
+                    inp.classList.remove('is-auto');
+                    inp.classList.add('is-override');
+                }
+            }
             inp.value = val;
         });
         recalcUraiRowAuto(tr);
+        pastedCount++;
     });
+
     renderUraiPagination();
     recalcUraiTotals();
+    return pastedCount;
+}
+
+function applyExcelPaste(){
+    const raw = document.getElementById('pasteUraiText').value;
+    const pasted = applyExcelPasteRaw(raw, 0, 0);
+    if (pasted > 0) {
+        setKkfStatus(`Berhasil menempel ${pasted} baris data Excel ke tabel URAI.`, 'ok');
+    }
     closeModal('pasteUraiModal');
+}
+
+function bindUraiDirectPaste(){
+    const tbody = document.getElementById('uraiTableBody');
+    if (!tbody) return;
+    tbody.addEventListener('paste', function(e){
+        const text = (e.clipboardData || window.clipboardData)?.getData('text/plain') || '';
+        if (!text.includes('\t') && !text.includes('\n')) return;
+        const target = e.target;
+        const tr = target ? target.closest('tr') : null;
+        const col = target ? target.getAttribute('data-col') : null;
+        const rowIdx = tr ? Array.from(tbody.children).indexOf(tr) : 0;
+        const colIdx = col ? Math.max(0, KK_MASTERS.uraiCols.indexOf(col)) : 0;
+        e.preventDefault();
+        const pasted = applyExcelPasteRaw(text, Math.max(0, rowIdx), colIdx);
+        if (pasted > 0) {
+            setKkfStatus(`Berhasil paste langsung ${pasted} baris dari Excel mulai baris ${Math.max(1, rowIdx + 1)}.`, 'ok');
+        }
+    });
 }
 
 function syncKkfExportButtons(id){
@@ -1866,12 +2161,19 @@ function syncKkfExportButtons(id){
 
 function resetKkfForm(){
     document.getElementById('kkfId').value = '';
+    const selSaved = document.getElementById('kkfSavedProjectSelect');
+    if (selSaved) selSaved.value = '';
+    const kodeInp = document.getElementById('kkfKodeLookup');
+    if (kodeInp) kodeInp.value = '';
     document.getElementById('kkfNama').value = '';
-    document.getElementById('kkfJarak').value = '10';
+    document.getElementById('kkfJarak').value = '0';
     document.getElementById('kkfTahun').value = '{{ date("Y") }}';
     document.getElementById('kkfCatatanUlp').value = '';
     document.getElementById('kkfCatatanPerencanaan').value = '';
     document.getElementById('kkfBadgeKode').textContent = 'Kajian Baru';
+    const calcCard = document.getElementById('kkfCalcResultCard');
+    if (calcCard) calcCard.style.display = 'none';
+    setKkfStatus('');
     syncKkfExportButtons(null);
     setCustomerRows([]);
     document.getElementById('uraiTableBody').innerHTML = '';
@@ -1887,11 +2189,13 @@ async function saveKkfForm(targetStatus){
         return;
     }
     const pelanggans = getCustomerRowsPayload();
-    if (!pelanggans.length) {
-        alert('Minimal isi 1 baris kelompok pelanggan.');
+    const uraiRows = getUraiRowsPayload();
+    if (!pelanggans.length && !uraiRows.length) {
+        alert('Minimal isi 1 kelompok pelanggan atau 1 baris URAI sebelum menyimpan.');
         return;
     }
 
+    const totalGridRows = document.querySelectorAll('#uraiTableBody tr').length;
     const payload = {
         id: document.getElementById('kkfId').value || null,
         mode: 'kajian',
@@ -1899,13 +2203,15 @@ async function saveKkfForm(targetStatus){
         ulp: document.getElementById('kkfUlp').value,
         nama_pekerjaan: nama,
         jarak_gudang_km: parseFloat(document.getElementById('kkfJarak').value || '0'),
+        row_count: Math.max(25, totalGridRows),
         tahun: document.getElementById('kkfTahun').value || '{{ date("Y") }}',
         catatan_ulp: document.getElementById('kkfCatatanUlp').value,
         catatan_perencanaan: document.getElementById('kkfCatatanPerencanaan').value,
         pelanggans: pelanggans,
-        urai_rows: getUraiRowsPayload()
+        urai_rows: uraiRows
     };
 
+    setKkfStatus('Menyimpan data kajian & URAI ke database...', 'info');
     const res = await fetch(KK_ROUTES.store, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': KK_CSRF },
@@ -1913,25 +2219,154 @@ async function saveKkfForm(targetStatus){
     });
     const json = await res.json();
     if (!res.ok) {
+        setKkfStatus(json.message || 'Gagal menyimpan kajian.', 'err');
         alert(json.message || 'Gagal menyimpan kajian.');
         return;
     }
+    setKkfStatus(json.message || 'Data kajian berhasil disimpan.', 'ok');
     alert(json.message);
     window.location.reload();
 }
 
+function renderKkfCalcResult(simJson){
+    const card = document.getElementById('kkfCalcResultCard');
+    if (!card || !simJson || !simJson.feasibility) return;
+
+    const f = simJson.feasibility;
+    const u = simJson.urai_summary || {};
+    card.style.display = 'block';
+
+    document.getElementById('calcRabRp').textContent = formatRp(f.estimasi_nilai_rab || 0);
+    document.getElementById('calcBpRp').textContent = formatRp(f.total_bp_rp || 0);
+    document.getElementById('calcUjlRp').textContent = formatRp(f.total_ujl_rp || 0);
+    document.getElementById('calcRevRp').textContent = formatRp(f.estimasi_pendapatan_tahun || 0);
+    document.getElementById('calcPayback').textContent = f.payback_tahun !== null && f.payback_tahun !== undefined
+        ? `${Number(f.payback_tahun).toFixed(2)} Tahun`
+        : '-';
+    document.getElementById('calcKuota').textContent = `${simJson.kuota_tersedia ?? 0} / ${simJson.kuota_total ?? 0}`;
+
+    const badge = document.getElementById('calcVerdictBadge');
+    badge.className = 'kk-badge ' + (f.layak_otomatis ? 'kk-badge-green' : 'kk-badge-red');
+    badge.textContent = f.hasil_ringkas || '-';
+
+    document.getElementById('calcMduSummary').innerHTML = `
+        <div>Tiang TM / PTM: <strong>${u.jumlah_tiang_tm ?? 0} btg</strong> (PTM: ${u.total_ptm ?? 0})</div>
+        <div>Tiang TR / PTR: <strong>${u.jumlah_tiang_tr ?? 0} btg</strong> (PTR: ${u.total_ptr ?? 0})</div>
+        <div>SUTM 150mm: <strong>${u.total_vol150_m ?? 0} m</strong> (${u.estimasi_sutm_km ?? 0} km)</div>
+        <div>SUTR / JTR: <strong>${u.total_voljtr_m ?? 0} m</strong> (${u.estimasi_sutr_km ?? 0} km)</div>
+        <div>Guy Wire (BA) / HGW (BD): <strong>${u.total_gw ?? 0} / ${u.total_hgw ?? 0}</strong></div>
+        <div>Row URAI Terisi: <strong>${u.jumlah_baris_urai ?? 0} baris</strong></div>
+    `;
+
+    const cantolEntries = Object.entries(u.trafo_cantol || {});
+    const portalEntries = Object.entries(u.trafo_portal || {});
+    let trafoHtml = `<div>Total Trafo (BG): <strong>${u.jumlah_trafo ?? 0} bh (${u.kapasitas_trafo_kva ?? 0} kVA)</strong></div>`;
+    if (cantolEntries.length) {
+        trafoHtml += `<div style="margin-top:4px;"><strong>Cantol:</strong> ` + cantolEntries.map(([k,v]) => `${escapeHtml(k)} (${v})`).join(', ') + `</div>`;
+    }
+    if (portalEntries.length) {
+        trafoHtml += `<div style="margin-top:2px;"><strong>Portal:</strong> ` + portalEntries.map(([k,v]) => `${escapeHtml(k)} (${v})`).join(', ') + `</div>`;
+    }
+    if (!cantolEntries.length && !portalEntries.length) {
+        trafoHtml += `<div style="color:#64748b;">Belum ada kolom Cantol/Portal dipilih.</div>`;
+    }
+    document.getElementById('calcTrafoSummary').innerHTML = trafoHtml;
+
+    const boxAppEntries = Object.entries(f.box_app || {}).filter(([,cnt]) => Number(cnt) > 0);
+    document.getElementById('calcBoxAppSummary').innerHTML = boxAppEntries.length
+        ? boxAppEntries.map(([cap, cnt]) => `<div>Box APP ${escapeHtml(cap)} kVA: <strong>${cnt} bh</strong></div>`).join('')
+        : '<div style="color:#64748b;">Tidak ada daya pelanggan kategori Box APP (53–197 kVA).</div>';
+}
+
+async function testCalculateKajian(){
+    const pelanggans = getCustomerRowsPayload();
+    const uraiRows = getUraiRowsPayload();
+    if (!pelanggans.length && !uraiRows.length) {
+        setKkfStatus('Isi minimal data pelanggan atau URAI untuk menjalankan Uji Hitung.', 'err');
+        return;
+    }
+
+    setKkfStatus('Menghitung EDIR 0014 (BP/UJL), Rekap MDU, Trafo, & Box APP...', 'info');
+    try {
+        const res = await fetch(KK_ROUTES.simulate, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json', 'X-CSRF-TOKEN': KK_CSRF },
+            body: JSON.stringify({
+                ulp: document.getElementById('kkfUlp').value,
+                tahun: document.getElementById('kkfTahun').value || '{{ date("Y") }}',
+                jarak_gudang_km: parseFloat(document.getElementById('kkfJarak').value || '0') || 0,
+                pelanggans: pelanggans,
+                urai_rows: uraiRows
+            })
+        });
+        const json = await res.json();
+        if (!res.ok) {
+            setKkfStatus(json.message || 'Gagal melakukan uji perhitungan.', 'err');
+            return;
+        }
+        renderKkfCalcResult(json);
+        setKkfStatus(`Uji perhitungan selesai: ${json.feasibility?.hasil_ringkas || 'OK'}`, 'ok');
+    } catch (e) {
+        console.error(e);
+        setKkfStatus('Terjadi kesalahan jaringan saat menghitung kajian.', 'err');
+    }
+}
+
+function onSelectSavedProject(id){
+    if (!id) return;
+    const sel = document.getElementById('kkfSavedProjectSelect');
+    const opt = sel ? sel.options[sel.selectedIndex] : null;
+    if (opt && opt.dataset.kode) {
+        const inp = document.getElementById('kkfKodeLookup');
+        if (inp) inp.value = opt.dataset.kode;
+    }
+    loadProjectIntoKkf(id);
+}
+
+function openProjectByInput(){
+    const raw = (document.getElementById('kkfKodeLookup')?.value || '').trim().toLowerCase();
+    if (!raw) {
+        setKkfStatus('Masukkan ID / Kode Kajian atau pilih proyek dari dropdown.', 'err');
+        return;
+    }
+    const sel = document.getElementById('kkfSavedProjectSelect');
+    if (!sel) return;
+    let matchedId = '';
+    for (const opt of sel.options) {
+        if (!opt.value) continue;
+        const kode = (opt.dataset.kode || '').trim().toLowerCase();
+        if (kode === raw || opt.value === raw || kode.includes(raw)) {
+            matchedId = opt.value;
+            break;
+        }
+    }
+    if (!matchedId) {
+        setKkfStatus(`Kode kajian "${raw}" tidak ditemukan di database.`, 'err');
+        return;
+    }
+    sel.value = matchedId;
+    loadProjectIntoKkf(matchedId);
+}
+
 async function loadProjectIntoKkf(id){
+    setKkfStatus('Memuat data kajian dari database...', 'info');
     const res = await fetch(`${KK_ROUTES.showBase}/${id}`, { headers: { 'Accept': 'application/json' } });
     const json = await res.json();
     if (!res.ok || !json.data) {
+        setKkfStatus('Gagal memuat detail kajian dari database.', 'err');
         alert('Gagal memuat detail kajian.');
         return;
     }
     const p = json.data;
     document.getElementById('kkfId').value = p.id;
+    const selSaved = document.getElementById('kkfSavedProjectSelect');
+    if (selSaved) selSaved.value = String(p.id);
+    const kodeInp = document.getElementById('kkfKodeLookup');
+    if (kodeInp) kodeInp.value = p.kode_kajian || '';
+
     document.getElementById('kkfUlp').value = p.ulp;
     document.getElementById('kkfNama').value = p.nama_pekerjaan;
-    document.getElementById('kkfJarak').value = p.jarak_gudang_km;
+    document.getElementById('kkfJarak').value = p.jarak_gudang_km ?? 0;
     document.getElementById('kkfTahun').value = p.tahun;
     document.getElementById('kkfCatatanUlp').value = p.catatan_ulp || '';
     document.getElementById('kkfCatatanPerencanaan').value = p.catatan_perencanaan || '';
@@ -1943,16 +2378,31 @@ async function loadProjectIntoKkf(id){
     const tbody = document.getElementById('uraiTableBody');
     tbody.innerHTML = '';
     const urais = p.urai_rows || [];
-    const totalToRender = Math.max(uraiState.perPage, urais.length);
-    for (let i = 0; i < totalToRender; i++) {
+    const byRow = {};
+    let maxRowNum = 0;
+    urais.forEach((u, i) => {
+        const rn = parseInt(u.row_number || (i + 1), 10) || (i + 1);
+        byRow[rn] = u.row_data || {};
+        if (rn > maxRowNum) maxRowNum = rn;
+    });
+    const totalToRender = Math.max(uraiState.perPage, parseInt(p.row_count || '0', 10) || 0, maxRowNum, urais.length);
+    for (let i = 1; i <= totalToRender; i++) {
         const tr = document.createElement('tr');
-        tr.innerHTML = createUraiRowHtml(i + 1, (urais[i] && urais[i].row_data) ? urais[i].row_data : {});
+        tr.innerHTML = createUraiRowHtml(i, byRow[i] || {});
         tbody.appendChild(tr);
     }
     uraiState.page = 1;
     applyUraiColumnGroup();
     renderUraiPagination();
     recalcUraiTotals();
+
+    const calcCard = document.getElementById('kkfCalcResultCard');
+    if (calcCard) calcCard.style.display = 'none';
+
+    const uraiCount = urais.length;
+    const plgCount = (p.pelanggans || []).length;
+    setKkfStatus(`Kajian "${p.kode_kajian}" dimuat (${plgCount} slot pelanggan, ${uraiCount} baris URAI terisi, status: ${p.status}).`, 'ok');
+
     switchKkTab('tabKkf', document.querySelector('[data-tab="tabKkf"]'));
 }
 
@@ -2184,6 +2634,16 @@ document.addEventListener('DOMContentLoaded', function(){
     syncSimDefaultDaya();
     setCustomerRows([]);
     addUraiRows(uraiState.perPage);
+    bindUraiDirectPaste();
+    const kodeInp = document.getElementById('kkfKodeLookup');
+    if (kodeInp) {
+        kodeInp.addEventListener('keydown', function(e){
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                openProjectByInput();
+            }
+        });
+    }
     filterProjectsTable(true);
     applyQuotaPagination(1);
     runQuickSimulation(true);

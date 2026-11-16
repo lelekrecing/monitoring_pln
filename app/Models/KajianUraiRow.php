@@ -13,6 +13,7 @@ class KajianUraiRow extends Model
         'kajian_proyek_id',
         'row_number',
         'row_data',
+        'updated_by',
     ];
 
     protected $casts = [

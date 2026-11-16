@@ -19,5 +19,8 @@ class DatabaseSeeder extends Seeder
 
         // Data awal Standar Konstruksi (katalog gambar SUTM)
         $this->call(KonstruksiStandarSeeder::class);
+
+        // Data master tarif EDIR 0014 & proyek KKO/KKF Web App
+        $this->call(KajianKelayakanDatabaseSeeder::class);
     }
 }

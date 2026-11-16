@@ -1,0 +1,1217 @@
+{
+  "proyek": [
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "ulp": "Kota Baru",
+      "nama_pekerjaan": "Proyek 1",
+      "created_at": "2026-10-20 11:48:25",
+      "updated_at": "2026-10-20 11:48:25",
+      "row_count": 25
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "ulp": "Telanai Pura",
+      "nama_pekerjaan": "PROYEK PERCOBAAN",
+      "created_at": "2026-10-20 15:42:24",
+      "updated_at": "2026-10-20 23:59:10",
+      "row_count": 25
+    },
+    {
+      "project_id": "001/KKF/ULP-KUALA-TUNGKAL/X/2026",
+      "ulp": "Kuala Tungkal",
+      "nama_pekerjaan": "xxx",
+      "created_at": "2026-10-20 15:54:21",
+      "updated_at": "2026-10-20 15:54:21",
+      "row_count": 25
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "ulp": "Muara Bulian",
+      "nama_pekerjaan": "XXXX",
+      "created_at": "2026-10-20 16:08:00",
+      "updated_at": "2026-10-20 16:08:00",
+      "row_count": 25
+    },
+    {
+      "project_id": "002/KKF/ULP-KOTA-BARU/X/2026",
+      "ulp": "Kota Baru",
+      "nama_pekerjaan": "PERUMAHAN PLN",
+      "created_at": "2026-10-21 16:08:49",
+      "updated_at": "2026-10-21 16:08:49",
+      "row_count": 25
+    }
+  ],
+  "param": [
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "parameter": "cantol",
+      "value": "2JRS - 2JRS",
+      "updated_at": "2026-10-20 11:48:27"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "parameter": "portal",
+      "value": "TNP PHB",
+      "updated_at": "2026-10-20 11:48:27"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "parameter": "jarakGudang",
+      "value": "70.0",
+      "updated_at": "2026-10-20 23:59:11"
+    },
+    {
+      "project_id": "002/KKF/ULP-KOTA-BARU/X/2026",
+      "parameter": "jarakGudang",
+      "value": "30.0",
+      "updated_at": "2026-10-21 16:08:50"
+    }
+  ],
+  "pelanggan": [
+    {
+      "project_id": "001/KKF/ULP-KUALA-TUNGKAL/X/2026",
+      "slot": 1,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1 / 450  VA I",
+      "daya_kva": 0.45,
+      "updated_at": "2026-10-20 15:54:22",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 0.45,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 1,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1 / 450  VA I",
+      "daya_kva": 0.45,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 0.45,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 2,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1 / 900  VA I",
+      "daya_kva": 0.9,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 0.9,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 3,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1M / 900  VA I",
+      "daya_kva": 0.9,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 0.9,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 4,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1 / 1.300  VA",
+      "daya_kva": 1.3,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 1.3,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 5,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1 / 2.200  VA",
+      "daya_kva": 2.2,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 2.2,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 6,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.2 / 3.500  VA s/d 5.500",
+      "daya_kva": 3.5,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 3.5,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 7,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.2 / 3.500  VA s/d 5.500",
+      "daya_kva": 4.4,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 4.4,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-MUARA-BULIAN/X/2026",
+      "slot": 8,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.2 / 3.500  VA s/d 5.500",
+      "daya_kva": 5.5,
+      "updated_at": "2026-10-20 16:08:01",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 5.5,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 1,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "R.1 / 450  VA I",
+      "daya_kva": 0.45,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 0.45,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 2,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "S.2 / 900  VA I",
+      "daya_kva": 0.9,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 0.9,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 3,
+      "jumlah_pelanggan": 100,
+      "kelompok_tarif": "B.1 / 1.300 VA",
+      "daya_kva": 1.3,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 1.3,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 4,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "I.1 / 2.200 VA",
+      "daya_kva": 2.2,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 2.2,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 5,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": " P.1 / 3.500 VA s/d 5.500 V ",
+      "daya_kva": 4.4,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 4.4,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 6,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "B.2 / 105 kVA s/d 200 kVA",
+      "daya_kva": 156.3,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 7.7,
+      "daya_sesudah_kva": 164.0,
+      "jenis_permohonan": "PD"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 7,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "B.2 / 105 kVA s/d 200 kVA",
+      "daya_kva": 105.0,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 105.0,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "slot": 8,
+      "jumlah_pelanggan": 1,
+      "kelompok_tarif": "B.2 / 6.600 VA s/d 82,5 kVA",
+      "daya_kva": 66.0,
+      "updated_at": "2026-10-20 23:59:11",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 66.0,
+      "jenis_permohonan": "PB"
+    },
+    {
+      "project_id": "002/KKF/ULP-KOTA-BARU/X/2026",
+      "slot": 1,
+      "jumlah_pelanggan": 100,
+      "kelompok_tarif": "R.1 / 1.300  VA",
+      "daya_kva": 1.3,
+      "updated_at": "2026-10-21 16:08:50",
+      "daya_sebelum_kva": 0.0,
+      "daya_sesudah_kva": 1.3,
+      "jenis_permohonan": "PB"
+    }
+  ],
+  "urai": [
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 6,
+      "column_letter": "VOL150",
+      "value": "50.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 6,
+      "column_letter": "AL",
+      "value": "TM-4",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 7,
+      "column_letter": "AL",
+      "value": "TM-1",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 7,
+      "column_letter": "VOL150",
+      "value": "50.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 8,
+      "column_letter": "AL",
+      "value": "TM-1",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 8,
+      "column_letter": "VOL150",
+      "value": "51.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 9,
+      "column_letter": "AL",
+      "value": "TM-PORTAL",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 9,
+      "column_letter": "VOL150",
+      "value": "53.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 9,
+      "column_letter": "PORTAL",
+      "value": "TNP PHB",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 9,
+      "column_letter": "BG",
+      "value": "250 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 10,
+      "column_letter": "VOL150",
+      "value": "52.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 10,
+      "column_letter": "AL",
+      "value": "TM-3",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 10,
+      "column_letter": "PTM",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 11,
+      "column_letter": "VOL150",
+      "value": "55.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 11,
+      "column_letter": "PTM",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 11,
+      "column_letter": "BA",
+      "value": "0.0",
+      "is_override": true,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 11,
+      "column_letter": "AL",
+      "value": "TM-3",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 12,
+      "column_letter": "AL",
+      "value": "TM-1",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 12,
+      "column_letter": "VOL150",
+      "value": "52.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "CANTOL",
+      "value": "2JRS - 2JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "AL",
+      "value": "TM-4",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "DW",
+      "value": "4.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "DP",
+      "value": "Tr.7",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "VOL150",
+      "value": "50.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "BG",
+      "value": "50 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 13,
+      "column_letter": "VOLJTR",
+      "value": "40.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 14,
+      "column_letter": "VOLJTR",
+      "value": "40.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 14,
+      "column_letter": "DP",
+      "value": "Tr.1",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 15,
+      "column_letter": "VOLJTR",
+      "value": "42.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 15,
+      "column_letter": "DP",
+      "value": "Tr.1",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 16,
+      "column_letter": "VOLJTR",
+      "value": "45.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 16,
+      "column_letter": "PTR",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-KOTA-BARU/X/2026",
+      "row_number": 16,
+      "column_letter": "DP",
+      "value": "Tr.3",
+      "is_override": false,
+      "updated_at": "2026-10-20 11:48:24",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 6,
+      "column_letter": "VOL150",
+      "value": "50.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 6,
+      "column_letter": "AL",
+      "value": "TM-1",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 6,
+      "column_letter": "BG",
+      "value": "25 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 6,
+      "column_letter": "CANTOL",
+      "value": "2JRS - 2JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 7,
+      "column_letter": "AL",
+      "value": "TM-3",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 7,
+      "column_letter": "BG",
+      "value": "50 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 7,
+      "column_letter": "CANTOL",
+      "value": "2JRS - 1JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 7,
+      "column_letter": "VOL150",
+      "value": "51.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 7,
+      "column_letter": "BA",
+      "value": "0.0",
+      "is_override": true,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 8,
+      "column_letter": "AL",
+      "value": "TM-4",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 8,
+      "column_letter": "BG",
+      "value": "C 100 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 8,
+      "column_letter": "VOL150",
+      "value": "52.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 8,
+      "column_letter": "CANTOL",
+      "value": "TNP PHB",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 9,
+      "column_letter": "VOL150",
+      "value": "53.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 9,
+      "column_letter": "BG",
+      "value": "C 100 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 9,
+      "column_letter": "AL",
+      "value": "TM-4X",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 9,
+      "column_letter": "CANTOL",
+      "value": "TRAFO BAE",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 10,
+      "column_letter": "PTR",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 10,
+      "column_letter": "VOL150",
+      "value": "54.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 10,
+      "column_letter": "PORTAL",
+      "value": "4JRS - 4JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 10,
+      "column_letter": "AL",
+      "value": "TM-5",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 10,
+      "column_letter": "BG",
+      "value": "P 100 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 11,
+      "column_letter": "AL",
+      "value": "TM-8",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 11,
+      "column_letter": "VOL150",
+      "value": "55.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 11,
+      "column_letter": "PORTAL",
+      "value": "4JRS - 2JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 11,
+      "column_letter": "BG",
+      "value": "P 100 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 12,
+      "column_letter": "BG",
+      "value": "160 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 12,
+      "column_letter": "AL",
+      "value": "TM-10",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 12,
+      "column_letter": "PORTAL",
+      "value": "TNP PHB",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 12,
+      "column_letter": "VOL150",
+      "value": "56.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 12,
+      "column_letter": "PTM",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 13,
+      "column_letter": "PORTAL",
+      "value": "2JRS - 2JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 13,
+      "column_letter": "VOL150",
+      "value": "57.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 13,
+      "column_letter": "BG",
+      "value": "200 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 13,
+      "column_letter": "AL",
+      "value": "TM-8X",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 14,
+      "column_letter": "AL",
+      "value": "TM-PORTAL",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 14,
+      "column_letter": "BG",
+      "value": "200 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 14,
+      "column_letter": "VOL150",
+      "value": "58.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 14,
+      "column_letter": "PORTAL",
+      "value": "2JRS - 1JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 15,
+      "column_letter": "PORTAL",
+      "value": "TRAFO BAE",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 15,
+      "column_letter": "PTR",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 15,
+      "column_letter": "VOL150",
+      "value": "59.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 15,
+      "column_letter": "BG",
+      "value": "250 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 15,
+      "column_letter": "AL",
+      "value": "TM_PTPS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 16,
+      "column_letter": "VOL150",
+      "value": "60.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 16,
+      "column_letter": "AL",
+      "value": "TM-KOOI",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 17,
+      "column_letter": "VOL150",
+      "value": "59.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 17,
+      "column_letter": "BG",
+      "value": "P 100 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 17,
+      "column_letter": "AL",
+      "value": "TM-KOIGAR",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 17,
+      "column_letter": "PORTAL",
+      "value": "4JRS - 4JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 17,
+      "column_letter": "VOLJTR",
+      "value": "40.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 17,
+      "column_letter": "DP",
+      "value": "Tr.1",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "VOLJTR",
+      "value": "41.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "BG",
+      "value": "50 kVA",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "AL",
+      "value": "TM-KOPOR",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "PTM",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "DP",
+      "value": "Tr.2",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "VOL150",
+      "value": "58.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 18,
+      "column_letter": "CANTOL",
+      "value": "2JRS - 2JRS",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 19,
+      "column_letter": "VOLJTR",
+      "value": "42.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 19,
+      "column_letter": "DP",
+      "value": "Tr.3",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 20,
+      "column_letter": "VOLJTR",
+      "value": "43.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 20,
+      "column_letter": "DP",
+      "value": "Tr.4",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 21,
+      "column_letter": "PTR",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 21,
+      "column_letter": "VOLJTR",
+      "value": "44.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 21,
+      "column_letter": "DP",
+      "value": "Tr.5",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 22,
+      "column_letter": "DP",
+      "value": "Tr.6",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 22,
+      "column_letter": "VOLJTR",
+      "value": "45.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 23,
+      "column_letter": "VOLJTR",
+      "value": "46.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 23,
+      "column_letter": "DW",
+      "value": "4.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 23,
+      "column_letter": "PTM",
+      "value": "1.0",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    },
+    {
+      "project_id": "001/KKF/ULP-TELANAI-PURA/X/2026",
+      "row_number": 23,
+      "column_letter": "DP",
+      "value": "Tr.7",
+      "is_override": false,
+      "updated_at": "2026-10-20 23:59:08",
+      "updated_by": "anggi.adilta6@gmail.com"
+    }
+  ]
+}

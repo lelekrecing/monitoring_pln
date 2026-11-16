@@ -15,6 +15,7 @@ class KajianProyek extends Model
         'ulp',
         'nama_pekerjaan',
         'jarak_gudang_km',
+        'row_count',
         'tahun',
         'total_pelanggan',
         'total_daya_kva',
@@ -32,6 +33,8 @@ class KajianProyek extends Model
         'catatan_ulp',
         'catatan_perencanaan',
         'kebutuhan_jaringan',
+        'hasil_isolator',
+        'analisa_kkf',
         'vendor_kontrak',
         'no_kontrak',
         'nilai_kontrak_pakai',
@@ -44,6 +47,7 @@ class KajianProyek extends Model
 
     protected $casts = [
         'jarak_gudang_km' => 'float',
+        'row_count' => 'integer',
         'total_pelanggan' => 'integer',
         'total_daya_kva' => 'float',
         'jumlah_trafo' => 'integer',
@@ -56,6 +60,8 @@ class KajianProyek extends Model
         'payback_tahun' => 'float',
         'layak_otomatis' => 'boolean',
         'kebutuhan_jaringan' => 'array',
+        'hasil_isolator' => 'array',
+        'analisa_kkf' => 'array',
         'nilai_kontrak_pakai' => 'float',
         'terkontrak_at' => 'datetime',
     ];
@@ -68,5 +74,10 @@ class KajianProyek extends Model
     public function uraiRows(): HasMany
     {
         return $this->hasMany(KajianUraiRow::class, 'kajian_proyek_id')->orderBy('row_number');
+    }
+
+    public function params(): HasMany
+    {
+        return $this->hasMany(KajianParam::class, 'kajian_proyek_id')->orderBy('parameter');
     }
 }

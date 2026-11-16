@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\KajianParam;
 use App\Models\KajianPelanggan;
 use App\Models\KajianProyek;
 use App\Models\KajianUraiRow;
@@ -48,6 +49,8 @@ class KajianKelayakanController extends Controller
             'ulpList'         => array_keys(KajianKelayakanService::ULP_CODES),
             'tarifDefaultDaya'=> KajianKelayakanService::TARIF_DEFAULT_DAYA,
             'tarifDayaList'   => array_keys(KajianKelayakanService::TARIF_DEFAULT_DAYA),
+            'edirTarifSpecs'  => KajianKelayakanService::EDIR_TARIF_SPECS,
+            'boxAppCapacities'=> KajianKelayakanService::BOX_APP_CAPACITIES,
             'dayaOptions'     => KajianKelayakanService::DAYA_OPTIONS,
             'trafoOptions'    => KajianKelayakanService::TRAFO_OPTIONS,
             'uraiMasters'     => KajianKelayakanService::URAI_MASTERS,
@@ -94,6 +97,8 @@ class KajianKelayakanController extends Controller
             'ulpList'         => array_keys(KajianKelayakanService::ULP_CODES),
             'tarifDefaultDaya'=> KajianKelayakanService::TARIF_DEFAULT_DAYA,
             'tarifDayaList'   => array_keys(KajianKelayakanService::TARIF_DEFAULT_DAYA),
+            'edirTarifSpecs'  => KajianKelayakanService::EDIR_TARIF_SPECS,
+            'boxAppCapacities'=> KajianKelayakanService::BOX_APP_CAPACITIES,
             'dayaOptions'     => KajianKelayakanService::DAYA_OPTIONS,
             'trafoOptions'    => KajianKelayakanService::TRAFO_OPTIONS,
             'uraiMasters'     => KajianKelayakanService::URAI_MASTERS,
@@ -138,6 +143,7 @@ class KajianKelayakanController extends Controller
             'estimasi_sutr_km'    => $sutrKm,
             'jumlah_tiang'        => $jumlahTiang,
             'estimasi_nilai_rab'  => $request->input('estimasi_nilai_rab'),
+            'pelanggans'          => $customerSummary['groups'],
         ]);
 
         $tahun = (string) ($request->input('tahun') ?: date('Y'));
@@ -161,7 +167,7 @@ class KajianKelayakanController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $proyek = KajianProyek::with(['pelanggans', 'uraiRows'])->findOrFail($id);
+        $proyek = KajianProyek::with(['pelanggans', 'uraiRows', 'params'])->findOrFail($id);
 
         return response()->json([
             'status' => 'success',
@@ -182,6 +188,7 @@ class KajianKelayakanController extends Controller
             'ulp'                  => 'required|string|max:100',
             'nama_pekerjaan'       => 'required|string|max:255',
             'jarak_gudang_km'      => 'nullable|numeric|min:0',
+            'row_count'            => 'nullable|integer|min:1|max:2000',
             'tahun'                => 'nullable|string|max:10',
             'status'               => 'nullable|in:draft,diajukan,dilengkapi_perencanaan,layak,tidak_layak,terkontrak',
             'total_pelanggan'      => 'nullable|integer|min:0',
@@ -233,6 +240,7 @@ class KajianKelayakanController extends Controller
             'estimasi_sutr_km'    => $sutrKm,
             'jumlah_tiang'        => $jumlahTiang,
             'estimasi_nilai_rab'  => $validated['estimasi_nilai_rab'] ?? null,
+            'pelanggans'          => $pelanggans['groups'],
         ]);
 
         // Validasi kuota vendor STRICT sebelum terkontrak (berlaku untuk halaman User Perencanaan maupun Admin)
@@ -295,6 +303,7 @@ class KajianKelayakanController extends Controller
             $proyek->ulp = $validated['ulp'];
             $proyek->nama_pekerjaan = $validated['nama_pekerjaan'];
             $proyek->jarak_gudang_km = round((float) ($validated['jarak_gudang_km'] ?? 0), 2);
+            $proyek->row_count = max(1, min(2000, (int) ($validated['row_count'] ?? ($proyek->row_count ?: 25))));
             $proyek->tahun = $tahun;
             $proyek->total_pelanggan = $totalPelanggan;
             $proyek->total_daya_kva = $totalDayaKva;
@@ -314,6 +323,11 @@ class KajianKelayakanController extends Controller
                 $proyek->catatan_perencanaan = $validated['catatan_perencanaan'];
             }
             $proyek->kebutuhan_jaringan = $uraiSummary;
+            $proyek->analisa_kkf = [
+                'total_bp_rp'  => $feasibility['total_bp_rp'] ?? 0,
+                'total_ujl_rp' => $feasibility['total_ujl_rp'] ?? 0,
+                'box_app'      => $feasibility['box_app'] ?? [],
+            ];
             $proyek->updated_by_name = $actorName;
 
             if ($requestedStatus === 'terkontrak') {
@@ -329,6 +343,12 @@ class KajianKelayakanController extends Controller
             }
 
             $proyek->save();
+
+            // Sync parameter jarakGudang pada kajian_params
+            KajianParam::updateOrCreate(
+                ['kajian_proyek_id' => $proyek->id, 'parameter' => 'jarakGudang'],
+                ['value' => (string) $proyek->jarak_gudang_km]
+            );
 
             // Replace pelanggans jika array pelanggans dikirim
             if (array_key_exists('pelanggans', $validated)) {
@@ -346,11 +366,12 @@ class KajianKelayakanController extends Controller
                         'kajian_proyek_id' => $proyek->id,
                         'row_number'       => $row['row_number'],
                         'row_data'         => $row['row_data'],
+                        'updated_by'       => $actorName,
                     ]);
                 }
             }
 
-            return $proyek->load(['pelanggans', 'uraiRows']);
+            return $proyek->load(['pelanggans', 'uraiRows', 'params']);
         });
 
         return response()->json([
