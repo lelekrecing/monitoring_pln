@@ -325,12 +325,6 @@
                 <i class="fa fa-list-check"></i>
                 <span id="sheetFilterCountText">Memuat data...</span>
             </span>
-            @if(isset($sheet))
-                <a href="{{ route('sheet.export-pdf', $sheet->id) }}" id="btnSheetExportPdf" target="_blank" class="sheet-pdf-btn" data-base-url="{{ route('sheet.export-pdf', $sheet->id) }}">
-                    <i class="fa fa-file-pdf"></i>
-                    <span>Cetak PDF</span>
-                </a>
-            @endif
             <button type="button" class="sheet-reset-btn" id="sheetFilterResetBtn">
                 <i class="fa fa-rotate-left"></i>
                 <span>Reset</span>
@@ -411,11 +405,37 @@
         tables.forEach(function(tbl){
             var tbody = tbl.querySelector('tbody');
             if (!tbody) return;
+            var blockYears = [];
+            var block = tbl.closest('.sheet-block');
+            if (block) {
+                var infoEls = block.querySelectorAll('.sheet-info, .sheet-section-title, .sheet-block-title, .sheet-info-box');
+                infoEls.forEach(function(el){
+                    extractYears(el.textContent || '').forEach(function(y){
+                        if (blockYears.indexOf(y) === -1) blockYears.push(y);
+                        yearSet[y] = true;
+                    });
+                });
+                var prev = block.previousElementSibling;
+                if (prev && (prev.classList.contains('sheet-section-title') || prev.classList.contains('sheet-block'))) {
+                    var prevTitle = prev.querySelector('.sheet-section-title');
+                    var titleSrc = prev.classList.contains('sheet-section-title') ? prev : prevTitle;
+                    if (titleSrc && !prev.querySelector('table')) {
+                        extractYears(titleSrc.textContent || '').forEach(function(y){
+                            if (blockYears.indexOf(y) === -1) blockYears.push(y);
+                            yearSet[y] = true;
+                        });
+                    }
+                }
+            }
+
             Array.prototype.forEach.call(tbody.rows, function(tr){
                 if (isStructuralRow(tr)) return;
                 var txt = (tr.textContent || '').replace(/\s+/g, ' ').trim();
                 if (!txt) return;
                 var years = extractYears(txt);
+                blockYears.forEach(function(by){
+                    if (years.indexOf(by) === -1) years.push(by);
+                });
                 years.forEach(function(y){ yearSet[y] = true; });
                 tr.dataset.sfText  = txt.toLowerCase();
                 tr.dataset.sfYears = years.join(',');
@@ -592,6 +612,10 @@
             if (noMatchEl) {
                 noMatchEl.classList.toggle('show', hasFilter && totalMatched === 0 && allDataRows.length > 0);
             }
+
+            document.dispatchEvent(new CustomEvent('sheetFilterReady', {
+                detail: { totalMatched: totalMatched, totalAll: allDataRows.length }
+            }));
         }
 
         searchInput.addEventListener('input', function(){ applyFilter(true); });

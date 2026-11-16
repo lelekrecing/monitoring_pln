@@ -125,11 +125,6 @@
             <h2>Standar Konstruksi SUTM 2026</h2>
             <p>Dokumentasi Standar Konstruksi Jaringan Tegangan Menengah PLN UP3 Jambi</p>
         </div>
-        <div class="header-actions">
-            <a href="{{ route('standar-konstruksi.export-pdf') }}" id="btnUserStandarPdfTop" target="_blank" class="header-btn pdf-btn">
-                <i class="fa fa-file-pdf"></i> Cetak PDF
-            </a>
-        </div>
     </div>
 
     <div class="toolbar-card">
@@ -204,7 +199,7 @@
     var countEl     = document.getElementById('userStandarCount');
     var pagerInfo   = document.getElementById('userStandarPagerInfo');
     var pagerBtns   = document.getElementById('userStandarPagerBtns');
-    var pdfLinks    = [document.getElementById('btnUserStandarPdf'), document.getElementById('btnUserStandarPdfTop')];
+    var pdfLinks    = [document.getElementById('btnUserStandarPdf')];
     var pdfBaseUrl  = @json(route('standar-konstruksi.export-pdf'));
 
     var tbody = document.querySelector('#tabelKonstruksi tbody');

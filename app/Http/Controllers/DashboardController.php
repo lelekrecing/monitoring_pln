@@ -1473,11 +1473,12 @@ class DashboardController extends Controller
         // "RES. MFS", "RES. SKS", dst) lewat $resVendorMap.
         $resVendorMap        = $this->buildResVendorSheetMap();
         $detailKr2026SheetId = $this->findSheetIdByNama('Detail KR', '2026');
-        $sidebarMenu = $this->buildSidebarMenu(request('tahun'));
+        $sidebarMenu         = $this->buildSidebarMenu(request('tahun'));
+        $siblingYearSheets   = $this->getSiblingYearSheets($sheet);
 
         // Sheet RES
         if (strtoupper(substr($sheet->nama_sheet, 0, 3)) == 'RES') {
-            return view('sheet_res', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'sidebarMenu'));
+            return view('sheet_res', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'sidebarMenu', 'siblingYearSheets'));
         }
 
         // TAMBAHAN: Sheet "PELANGGAN 2026" (Monitoring Pelanggan) dipakaikan
@@ -1490,7 +1491,7 @@ class DashboardController extends Controller
         // "PELANGGAN 2025", "PER PELANGGAN 2026", atau "FILTER PELANGGAN"
         // tidak ikut terpengaruh dan tetap memakai view "sheet" seperti biasa.
         if (mb_strtoupper(trim($sheet->nama_sheet)) === 'PELANGGAN 2026') {
-            return view('sheet_pelanggan2026', compact('sheet', 'rows', 'sidebarMenu'));
+            return view('sheet_pelanggan2026', compact('sheet', 'rows', 'sidebarMenu', 'siblingYearSheets'));
         }
 
         // TAMBAHAN: Sheet AMR, GANTER, COVER, PEMBESIAN (2024-2026), PENGIKAT,
@@ -1502,7 +1503,7 @@ class DashboardController extends Controller
         // Total Vendor, dst) tetap lewat cabang tampilan lama seperti semula.
         $isFlatTableSheet = $this->isFlatTableSheet($sheet->nama_sheet);
 
-        return view('sheet', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'isFlatTableSheet', 'sidebarMenu'));
+        return view('sheet', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'isFlatTableSheet', 'sidebarMenu', 'siblingYearSheets'));
     }
 
     public function exportSheetPdf(Request $request, $id)
@@ -1523,6 +1524,7 @@ class DashboardController extends Controller
         $filters = [
             'q'         => trim((string) $request->query('q', '')),
             'tahun'     => trim((string) $request->query('tahun', '')),
+            'block'     => trim((string) $request->query('block', '')),
             'vendor'    => trim((string) $request->query('vendor', '')),
             'pelanggan' => trim((string) $request->query('pelanggan', '')),
             'kr'        => trim((string) $request->query('kr', '')),
@@ -1767,5 +1769,68 @@ class DashboardController extends Controller
     public function getAvailableYearsData(): array
     {
         return $this->getAvailableYears();
+    }
+
+    /**
+     * Cari sheet aktif lain dalam grup nama yang sama lintas tahun
+     * (mis. KHS JASA 2024, KHS JASA 2025, KHS JASA 2026; DETAIL KR 2024/2025/2026).
+     */
+    private function getSiblingYearSheets(Sheet $sheet): array
+    {
+        $normalizeBase = function (?string $name): string {
+            $s = mb_strtoupper(trim((string) $name));
+            $s = preg_replace('/\b20[1-3][0-9]\s*[-\/–]\s*20[1-3][0-9]\b/', '', $s);
+            $s = preg_replace('/\b20[1-3][0-9]\b/', '', $s);
+            $s = preg_replace('/[\s\-_]+/', ' ', trim($s));
+            return trim($s, " -/");
+        };
+
+        $extractYearInfo = function (Sheet $item): array {
+            $name = trim((string) ($item->nama_sheet ?? ''));
+            if (preg_match('/\b(20[1-3][0-9])\s*[-\/–]\s*(20[1-3][0-9])\b/', $name, $m)) {
+                return ['sort' => (int) $m[1], 'year' => $m[1], 'label' => $m[1] . ' - ' . $m[2]];
+            }
+            if (preg_match('/\b(20[1-3][0-9])\b/', $name, $m)) {
+                return ['sort' => (int) $m[1], 'year' => $m[1], 'label' => 'Tahun ' . $m[1]];
+            }
+            $yr = trim((string) ($item->tahun ?? ''));
+            if ($yr !== '') {
+                return ['sort' => (int) $yr, 'year' => $yr, 'label' => 'Tahun ' . $yr];
+            }
+            return ['sort' => 0, 'year' => '', 'label' => $name];
+        };
+
+        $baseName = $normalizeBase($sheet->nama_sheet);
+        if ($baseName === '') {
+            return [];
+        }
+
+        $candidates = Sheet::query()
+            ->where('is_active', 1)
+            ->when(!empty($sheet->jenis_monitoring), fn ($q) => $q->where('jenis_monitoring', $sheet->jenis_monitoring))
+            ->get();
+
+        $siblings = [];
+        foreach ($candidates as $cand) {
+            if (mb_strtoupper(trim($cand->nama_sheet ?? '')) === 'REKAP') {
+                continue;
+            }
+            if ($normalizeBase($cand->nama_sheet) !== $baseName) {
+                continue;
+            }
+            $info = $extractYearInfo($cand);
+            $siblings[] = [
+                'id'         => (int) $cand->id,
+                'nama_sheet' => (string) $cand->nama_sheet,
+                'year'       => $info['year'],
+                'label'      => $info['label'],
+                'sort'       => $info['sort'],
+                'is_current' => (int) $cand->id === (int) $sheet->id,
+            ];
+        }
+
+        usort($siblings, fn ($a, $b) => ($a['sort'] <=> $b['sort']) ?: ($a['id'] <=> $b['id']));
+
+        return $siblings;
     }
 }

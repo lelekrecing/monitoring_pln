@@ -718,6 +718,10 @@ UNTUK PD TM','bg'=>'#FF0000','wrap'=>true],
                 </tbody>
             </table>
         </div>
+        @includeIf('partials.sheet-table-footer', [
+            'isBlockFooter' => false,
+            'rowCount'      => count($dataRows ?? []),
+        ])
     @endif
 
 </div>

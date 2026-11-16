@@ -796,6 +796,10 @@
 
         </table>
     </div>
+    @includeIf('partials.sheet-table-footer', [
+        'isBlockFooter' => false,
+        'rowCount'      => count($dataRows ?? []),
+    ])
 
 </div>
 

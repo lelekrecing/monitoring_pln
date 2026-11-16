@@ -1168,6 +1168,10 @@
                     </tbody>
                 </table>
             </div>
+            @includeIf('partials.sheet-table-footer', [
+                'isBlockFooter' => false,
+                'rowCount'      => count($dataRowsF ?? []),
+            ])
         @endif
     @else
     @php
@@ -1678,13 +1682,53 @@
         </div>
     @endif
 
-    @foreach($blocks as $block)
+    @php
+        $lastSectionTitle = '';
+        $headerBlockCount = 0;
+        foreach ($blocks as $hb) {
+            if ($hb['headerRow'] !== null) {
+                $headerBlockCount++;
+            }
+        }
+    @endphp
+    @foreach($blocks as $blockIdx => $block)
         @php
             $infoLines = [];
             foreach ($block['infoRows'] as $r) {
                 if (!$isBlankCells($r['cells'])) { $infoLines[] = $r; }
             }
             $onlyTitleLine = count($infoLines) === 1 && $block['headerRow'] === null;
+
+            $blockCtxParts = [];
+            if ($onlyTitleLine) {
+                $tVal = trim((string) ($infoLines[0]['cells'][0] ?? ''));
+                if ($tVal !== '') {
+                    $lastSectionTitle = $tVal;
+                }
+            } else {
+                foreach ($infoLines as $il) {
+                    $nonEmpty = array_values(array_filter($il['cells'], fn ($v) => trim((string) $v) !== ''));
+                    if (!empty($nonEmpty)) {
+                        $blockCtxParts[] = implode(' • ', array_slice($nonEmpty, 0, 3));
+                    }
+                }
+            }
+            $blockLabel = '';
+            if (!empty($blockCtxParts)) {
+                $blockLabel = $blockCtxParts[0];
+                $lastSectionTitle = '';
+            } elseif ($lastSectionTitle !== '' && $block['headerRow'] !== null) {
+                $blockLabel = $lastSectionTitle;
+                $lastSectionTitle = '';
+            }
+            if (mb_strlen($blockLabel) > 65) {
+                $blockLabel = mb_substr($blockLabel, 0, 62) . '...';
+            }
+            $blockAllInfoText = implode(' ', $blockCtxParts) . ' ' . $blockLabel;
+            $blockYear = '';
+            if (preg_match('/\b(20[1-3][0-9])\b/', $blockAllInfoText, $ym)) {
+                $blockYear = $ym[1];
+            }
 
             // TAMBAHAN: baris judul section seperti "FUNGSI PEMASARAN" / "FUNGSI
             // DISTRIBUSI" (hanya 1 sel terisi, memenuhi lebar baris - tanpa
@@ -1965,6 +2009,13 @@
                             </tbody>
                         </table>
                     </div>
+                    @includeIf('partials.sheet-table-footer', [
+                        'isBlockFooter' => $headerBlockCount > 1,
+                        'blockIndex'    => $blockIdx,
+                        'blockLabel'    => $blockLabel,
+                        'blockYear'     => $blockYear,
+                        'rowCount'      => count($dataRows ?? []),
+                    ])
                 @endif
             </div>
         @endif
