@@ -635,8 +635,8 @@
                 <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
             </div>
             <div class="topbar-brand-text">
-                <span class="topbar-brand-name">SIGINJAI PLN</span>
-                <span class="topbar-brand-sub">UP3 JAMBI • PANEL ADMINISTRATOR</span>
+                <span class="topbar-brand-name">SIGINJAI</span>
+                <span class="topbar-brand-sub">Sistem Gerbang Informasi Jasa , Anggaran &amp; Investasi</span>
             </div>
         </a>
     </div>
@@ -665,7 +665,7 @@
         <ul>
             <li>
                 <a href="{{ route('admin.dashboard') }}" class="sidebar-link active">
-                    <span><i class="fa fa-home"></i> Dashboard utama</span>
+                    <span><i class="fa fa-home"></i> Dashboard Utama</span>
                 </a>
             </li>
         </ul>
@@ -684,7 +684,7 @@
             </li>
         </ul>
 
-        <div class="sidebar-section-label">Referensi &amp; Pengelolaan</div>
+        <div class="sidebar-section-label">Informasi &amp; Kajian</div>
         <ul>
             <li>
                 <a href="{{ route('admin.kajian-kelayakan.index') }}" class="sidebar-link">

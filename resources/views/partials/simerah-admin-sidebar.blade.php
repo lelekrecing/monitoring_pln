@@ -8,7 +8,7 @@
     <ul>
         <li>
             <a href="{{ route('admin.dashboard') }}" class="sidebar-link {{ $activeAdmin === 'dashboard' ? 'active' : '' }}">
-                <span><i class="fa fa-home"></i> Dashboard utama</span>
+                <span><i class="fa fa-home"></i> Dashboard Utama</span>
             </a>
         </li>
     </ul>
@@ -27,7 +27,7 @@
         </li>
     </ul>
 
-    <div class="sidebar-section-label">Referensi &amp; Pengelolaan</div>
+    <div class="sidebar-section-label">Informasi &amp; Kajian</div>
     <ul>
         <li>
             <a href="{{ route('admin.kajian-kelayakan.index') }}" class="sidebar-link {{ $activeAdmin === 'kajian' ? 'active' : '' }}">

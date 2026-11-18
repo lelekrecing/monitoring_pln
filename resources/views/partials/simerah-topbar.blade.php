@@ -188,8 +188,8 @@
                 <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
             </div>
             <div class="simerah-topbar-text">
-                <span class="simerah-topbar-name">SIGINJAI PLN</span>
-                <span class="simerah-topbar-sub">{{ $topSubTitle }}</span>
+                <span class="simerah-topbar-name">SIGINJAI</span>
+                <span class="simerah-topbar-sub">Sistem Gerbang Informasi Jasa , Anggaran &amp; Investasi</span>
             </div>
         </a>
     </div>

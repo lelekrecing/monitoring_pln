@@ -42,8 +42,11 @@ class StandarKonstruksiController extends Controller
             ->get();
 
         $file = $exportService->exportStandarKonstruksiPdf($konstruksi, [
-            'q'     => trim((string) $request->query('q', '')),
-            'tahun' => trim((string) $request->query('tahun', '')),
+            'q'        => trim((string) $request->query('q', '')),
+            'tahun'    => trim((string) $request->query('tahun', '')),
+            'per_page' => trim((string) $request->query('per_page', '')),
+            'page'     => trim((string) $request->query('page', '')),
+            'ids'      => trim((string) $request->query('ids', '')),
         ]);
 
         return response($file['content'], 200, [

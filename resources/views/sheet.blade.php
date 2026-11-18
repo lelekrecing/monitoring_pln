@@ -115,6 +115,29 @@
             margin:4px 4px 12px 2px;
         }
 
+        .sheet-year-section{
+            margin-bottom:32px;
+        }
+
+        .sheet-year-section:last-child{
+            margin-bottom:0;
+        }
+
+        .sheet-year-banner{
+            background:linear-gradient(135deg, #0d2137 0%, #1e3a5f 100%);
+            color:#ffffff;
+            padding:12px 18px;
+            border-radius:12px;
+            margin-bottom:10px;
+            font-size:15px;
+            font-weight:700;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:10px;
+            box-shadow:0 4px 12px rgba(13, 33, 55, 0.14);
+        }
+
         /* ================= TAMBAHAN: PANEL INFORMASI BLOK (VENDOR / NOMOR KONTRAK /
            TANGGAL / VOLUME / FUNGSI, dst) - DI LUAR TABEL, TIDAK IKUT SCROLL/FREEZE ================= */
 
@@ -467,22 +490,13 @@
 
     <div class="page-header">
         <div>
-            <h2>{{ $sheet->nama_sheet }}</h2>
-            <p>Total Baris : {{ $sheet->total_rows }}</p>
+            <h2>{{ $groupTitle ?? $sheet->nama_sheet }}</h2>
         </div>
     </div>
 
     @includeIf('partials.sheet-filter-bar')
 
     @php
-        // TAMBAHAN: Filter server-side dari klik Vendor/Nama Pelanggan di Dashboard
-        // PERBAIKAN: tambahkan filter "kr" (klik kolom Uraian Pekerjaan (KR) di KHS JASA 2026)
-        // TAMBAHAN: filter "paket" (klik kolom PAKET pada panel Detail
-        // Vendor di Dashboard) dan "lokasi" (klik kolom Detail
-        // Pekerjaan/Lokasi Pekerjaan pada panel yang sama) - keduanya
-        // memakai pola navigasi yang SAMA seperti vendor/pelanggan/kr di
-        // atas (route sheet.show + query filter), tidak mengubah filter
-        // yang sudah ada.
         $filterValue = trim((string) request('vendor', request('pelanggan', request('kr', request('paket', request('lokasi', ''))))));
         $filterLabel = request()->has('vendor')
             ? 'Penyedia'
@@ -490,13 +504,6 @@
     @endphp
 
     @php
-        // TAMBAHAN: Peringatan saat sebuah Vendor/Penyedia TIDAK memiliki
-        // sheet RES sendiri sehingga link-nya di-fallback ke DETAIL KR 2026
-        // (lihat buildResVendorSheetMap() & fallback link vendor di bawah).
-        // Ditampilkan hanya saat sedang membuka DETAIL KR 2026 lewat filter
-        // ?vendor=... dan vendor tsb memang tidak ada di $resVendorMap - tidak
-        // mempengaruhi filter Nama Pelanggan/Uraian Pekerjaan (KR)/Paket/Lokasi
-        // maupun tampilan sheet lain.
         $vendorFallbackWarning = null;
         if ($filterLabel === 'Penyedia' && $filterValue !== '' && $detailKr2026SheetId && (int) $sheet->id === (int) $detailKr2026SheetId) {
             $vendorKeyForWarning  = \App\Http\Controllers\DashboardController::normalizeVendorKey($filterValue);
@@ -520,6 +527,27 @@
             <a href="{{ url()->current() }}">Tampilkan Semua Data</a>
         </div>
     @endif
+
+    @php
+        $sectionsToRender = !empty($multiYearSheets)
+            ? $multiYearSheets
+            : [['sheet' => $sheet, 'rows' => $rows, 'isFlatTableSheet' => $isFlatTableSheet]];
+        $hasMultipleYearSections = count($sectionsToRender) > 1;
+    @endphp
+
+    @foreach($sectionsToRender as $yearSection)
+        @php
+            $sheet = $yearSection['sheet'];
+            $rows = $yearSection['rows'];
+            $isFlatTableSheet = $yearSection['isFlatTableSheet'];
+        @endphp
+
+        <div class="sheet-year-section" id="sheet-section-{{ $sheet->id }}" data-sheet-id="{{ $sheet->id }}">
+            @if($hasMultipleYearSections)
+                <div class="sheet-year-banner">
+                    <span><i class="fa fa-table"></i> {{ $sheet->nama_sheet }}</span>
+                </div>
+            @endif
 
     @if($isFlatTableSheet)
         {{--
@@ -2021,6 +2049,8 @@
         @endif
     @endforeach
     @endif
+        </div>
+    @endforeach
 
 </div>
 

@@ -250,13 +250,8 @@ class DashboardController extends Controller
                 // terpisah-pisah di Sidebar. Tahun baru yang di-upload nanti
                 // otomatis ikut masuk ke sini juga karena hanya dicek dari
                 // awalan kategorinya.
-                if (str_starts_with($subKategori, 'KHS PEMBESIAN')) {
-                    // TAMBAHAN: label ditulis kapital semua ("KHS PEMBESIAN")
-                    // supaya konsisten dengan penulisan menu KHS lain yang
-                    // memang tampil uppercase (mis. "KHS JASA", "KHS COVER
-                    // 2024-2026"). Hanya mengubah label tampilan di Sidebar,
-                    // bukan nama sheet di database.
-                    $menu['KHS']['children']['KHS PEMBESIAN'][$subKategori][] = $sheet;
+                if (str_starts_with(mb_strtoupper($subKategori), 'KHS PEMBESIAN')) {
+                    $menu['KHS']['children']['KHS PEMBESIAN'][] = $sheet;
                 } else {
                     $menu['KHS']['children'][$subKategori][] = $sheet;
                 }
@@ -1503,7 +1498,55 @@ class DashboardController extends Controller
         // Total Vendor, dst) tetap lewat cabang tampilan lama seperti semula.
         $isFlatTableSheet = $this->isFlatTableSheet($sheet->nama_sheet);
 
-        return view('sheet', compact('sheet', 'rows', 'resVendorMap', 'detailKr2026SheetId', 'isFlatTableSheet', 'sidebarMenu', 'siblingYearSheets'));
+        $multiYearSheets = [];
+        $hasSpecificRowTarget = request()->has('highlight_row');
+        if (count($siblingYearSheets) > 1 && !$hasSpecificRowTarget) {
+            foreach ($siblingYearSheets as $sibInfo) {
+                $sibSheet = (int) $sibInfo['id'] === (int) $sheet->id
+                    ? $sheet
+                    : Sheet::find($sibInfo['id']);
+                if (!$sibSheet) {
+                    continue;
+                }
+                $sibRows = (int) $sibSheet->id === (int) $sheet->id
+                    ? $rows
+                    : SheetData::where('sheet_id', $sibSheet->id)->orderBy('row_number')->get();
+                $multiYearSheets[] = [
+                    'sheet'            => $sibSheet,
+                    'rows'             => $sibRows,
+                    'isFlatTableSheet' => $this->isFlatTableSheet($sibSheet->nama_sheet),
+                    'yearLabel'        => $sibInfo['label'] ?? '',
+                ];
+            }
+        }
+        if (empty($multiYearSheets)) {
+            $multiYearSheets[] = [
+                'sheet'            => $sheet,
+                'rows'             => $rows,
+                'isFlatTableSheet' => $isFlatTableSheet,
+                'yearLabel'        => (string) ($sheet->tahun ?? ''),
+            ];
+        }
+
+        $groupTitle = count($multiYearSheets) > 1
+            ? trim((string) preg_replace(
+                '/\s+/',
+                ' ',
+                preg_replace('/\b20[1-3][0-9](?:\s*[-\/–]\s*20[1-3][0-9])?\b/', '', (string) $sheet->nama_sheet)
+            ), " -/")
+            : (string) $sheet->nama_sheet;
+
+        return view('sheet', compact(
+            'sheet',
+            'rows',
+            'resVendorMap',
+            'detailKr2026SheetId',
+            'isFlatTableSheet',
+            'sidebarMenu',
+            'siblingYearSheets',
+            'multiYearSheets',
+            'groupTitle'
+        ));
     }
 
     public function exportSheetPdf(Request $request, $id)
@@ -1525,6 +1568,9 @@ class DashboardController extends Controller
             'q'         => trim((string) $request->query('q', '')),
             'tahun'     => trim((string) $request->query('tahun', '')),
             'block'     => trim((string) $request->query('block', '')),
+            'per_page'  => trim((string) $request->query('per_page', '')),
+            'page'      => trim((string) $request->query('page', '')),
+            'rows'      => trim((string) $request->query('rows', '')),
             'vendor'    => trim((string) $request->query('vendor', '')),
             'pelanggan' => trim((string) $request->query('pelanggan', '')),
             'kr'        => trim((string) $request->query('kr', '')),
@@ -1829,7 +1875,7 @@ class DashboardController extends Controller
             ];
         }
 
-        usort($siblings, fn ($a, $b) => ($a['sort'] <=> $b['sort']) ?: ($a['id'] <=> $b['id']));
+        usort($siblings, fn ($a, $b) => ($b['sort'] <=> $a['sort']) ?: ($b['id'] <=> $a['id']));
 
         return $siblings;
     }

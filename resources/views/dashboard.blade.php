@@ -596,16 +596,17 @@ body{
 }
 
 .welcome h2{
-    font-size:25px;
+    font-size:28px;
     font-weight:700;
     letter-spacing:-0.02em;
     color:#ffffff;
-    margin-bottom:6px;
+    margin-bottom:8px;
 }
 
 .welcome p{
-    font-size:13.5px;
-    color:#cbd5e1;
+    font-size:18px;
+    font-weight:600;
+    color:#e2e8f0;
     line-height:1.5;
 }
 
@@ -1385,8 +1386,8 @@ body{
                 <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
             </div>
             <div class="topbar-brand-text">
-                <span class="topbar-brand-name">SIGINJAI PLN</span>
-                <span class="topbar-brand-sub">UP3 JAMBI • MONITORING PERENCANAAN</span>
+                <span class="topbar-brand-name">SIGINJAI</span>
+                <span class="topbar-brand-sub">Sistem Gerbang Informasi Jasa , Anggaran &amp; Investasi</span>
             </div>
         </a>
     </div>
@@ -1432,7 +1433,7 @@ body{
 </div>
 
 <a href="{{ route('dashboard') }}" class="active-nav">
-<span><i class="fa fa-home"></i> Dashboard utama</span>
+<span><i class="fa fa-home"></i> Dashboard Utama</span>
 </a>
 
 <div class="sidebar-section-label">Modul Monitoring</div>
@@ -1461,133 +1462,61 @@ body{
 
 @if(($monitoringGroup['type'] ?? 'flat') === 'monitoring-khs')
 
-    {{-- ================= MONITORING KHS: pakai struktur lama (KHS/Reservasi/Rekap) ================= --}}
-
     @foreach($monitoringGroup['groups'] as $topLabel => $topGroup)
+        @if(($topGroup['type'] ?? 'flat') === 'nested')
+            <a href="#" onclick="toggleSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}');return false;">
+                <span>{{ $topLabel }}</span>
+                <i class="fa fa-chevron-down"></i>
+            </a>
 
-    <a href="#" onclick="toggleSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}');return false;">
+            <div class="subsubsubmenu" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}">
+                @foreach($topGroup['children'] as $subLabel => $sheetsInSub)
+                    @php
+                        $flatSubSheets = [];
+                        foreach ((array) $sheetsInSub as $entry) {
+                            if (is_array($entry)) {
+                                foreach ($entry as $nestedSheet) {
+                                    if (is_object($nestedSheet)) $flatSubSheets[] = $nestedSheet;
+                                }
+                            } elseif (is_object($entry)) {
+                                $flatSubSheets[] = $entry;
+                            }
+                        }
+                        $primarySubSheet = collect($flatSubSheets)->sortByDesc(fn ($s) => (int) ($s->tahun ?? 0))->first() ?? ($flatSubSheets[0] ?? null);
+                        $displaySubLabel = count($flatSubSheets) === 1 && $primarySubSheet ? $primarySubSheet->nama_sheet : $subLabel;
+                    @endphp
+                    @if($primarySubSheet)
+                        <a href="{{ route('sheet.show', $primarySubSheet->id) }}" class="menu-lvl4-item">
+                            {{ $displaySubLabel }}
+                        </a>
+                    @endif
+                @endforeach
+            </div>
+        @elseif(in_array($topLabel, ['Reservasi', 'Rekap'], true))
+            <a href="#" onclick="toggleSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}');return false;">
+                <span>{{ $topLabel }}</span>
+                <i class="fa fa-chevron-down"></i>
+            </a>
 
-    <span>{{ $topLabel }}</span>
-
-    <i class="fa fa-chevron-down"></i>
-
-    </a>
-
-    <div class="subsubsubmenu" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}">
-
-    @if(($topGroup['type'] ?? 'flat') === 'nested')
-
-        @foreach($topGroup['children'] as $subLabel => $sheetsInSub)
-
-        @if($subLabel === 'KHS PEMBESIAN')
-
-        {{-- TAMBAHAN: Menu induk "KHS PEMBESIAN" - menggabungkan seluruh
-             submenu per tahun (2024, 2025-2026, dst) yang sebelumnya
-             tampil sebagai menu terpisah-pisah. --}}
-        <a href="#" class="menu-lvl4-item" onclick="toggleSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}');return false;">
-
-        <span>{{ $subLabel }}</span>
-
-        <i class="fa fa-chevron-down"></i>
-
-        </a>
-
-        <div class="menu-lvl4" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}">
-
-        @foreach($sheetsInSub as $pembesianLabel => $sheetsInPembesian)
-
-        @if(count($sheetsInPembesian) === 1)
-
-        <a href="{{ route('sheet.show', $sheetsInPembesian[0]->id) }}" class="menu-lvl5-item">
-
-        {{ $sheetsInPembesian[0]->nama_sheet }}
-
-        </a>
-
+            <div class="subsubsubmenu" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}">
+                @foreach($topGroup['items'] as $sheet)
+                    <a href="{{ route('sheet.show', $sheet->id) }}" class="menu-lvl4-item">
+                        {{ $sheet->nama_sheet }}
+                    </a>
+                @endforeach
+            </div>
         @else
-
-        <a href="#" class="menu-lvl5-item" onclick="toggleSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel.'-'.$pembesianLabel) }}');return false;">
-
-        <span>{{ $pembesianLabel }}</span>
-
-        <i class="fa fa-chevron-down"></i>
-
-        </a>
-
-        <div class="menu-lvl5" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel.'-'.$pembesianLabel) }}">
-
-        @foreach($sheetsInPembesian as $sheet)
-
-        <a href="{{ route('sheet.show',$sheet->id) }}">
-
-        {{ $sheet->nama_sheet }}
-
-        </a>
-
-        @endforeach
-
-        </div>
-
+            @php
+                $groupItems = $topGroup['items'] ?? [];
+                $primaryTopSheet = collect($groupItems)->sortByDesc(fn ($s) => (int) ($s->tahun ?? 0))->first() ?? ($groupItems[0] ?? null);
+                $displayTopLabel = count($groupItems) === 1 && $primaryTopSheet ? $primaryTopSheet->nama_sheet : $topLabel;
+            @endphp
+            @if($primaryTopSheet)
+                <a href="{{ route('sheet.show', $primaryTopSheet->id) }}">
+                    <span>{{ $displayTopLabel }}</span>
+                </a>
+            @endif
         @endif
-
-        @endforeach
-
-        </div>
-
-        @elseif(count($sheetsInSub) === 1)
-
-        {{-- TAMBAHAN: Sub-kategori dengan hanya 1 sheet langsung ditampilkan,
-             tanpa dropdown tambahan. --}}
-        <a href="{{ route('sheet.show', $sheetsInSub[0]->id) }}" class="menu-lvl4-item">
-
-        {{ $sheetsInSub[0]->nama_sheet }}
-
-        </a>
-
-        @else
-
-        <a href="#" class="menu-lvl4-item" onclick="toggleSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}');return false;">
-
-        <span>{{ $subLabel }}</span>
-
-        <i class="fa fa-chevron-down"></i>
-
-        </a>
-
-        <div class="menu-lvl4" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}">
-
-        @foreach($sheetsInSub as $sheet)
-
-        <a href="{{ route('sheet.show',$sheet->id) }}">
-
-        {{ $sheet->nama_sheet }}
-
-        </a>
-
-        @endforeach
-
-        </div>
-
-        @endif
-
-        @endforeach
-
-    @else
-
-        @foreach($topGroup['items'] as $sheet)
-
-        <a href="{{ route('sheet.show',$sheet->id) }}" class="menu-lvl4-item">
-
-        {{ $sheet->nama_sheet }}
-
-        </a>
-
-        @endforeach
-
-    @endif
-
-    </div>
-
     @endforeach
 
 @else
@@ -1616,14 +1545,7 @@ body{
 
 </div>
 
-<!-- ================= TAMBAHAN: DOKUMEN & ASSESSMENT =================
-     Section baru TERPISAH di BAWAH "Pusat Monitoring" (tidak mengubah
-     posisi/tampilan Pusat Monitoring di atas). Berisi menu Standar
-     Konstruksi (katalog/galeri gambar konstruksi SUTM, read-only untuk
-     User). Memakai class/komponen yang sama (menu a) supaya desainnya
-     mengikuti Sidebar yang sudah ada. -->
-
-<div class="sidebar-section-label">Referensi &amp; Dokumen</div>
+<div class="sidebar-section-label">Informasi &amp; Kajian</div>
 
 <a href="{{ route('standar-konstruksi.index') }}">
 <span><i class="fa fa-images"></i> Standar Konstruksi</span>
@@ -1641,7 +1563,6 @@ body{
 
 <div class="page-header">
     <div class="title">Dashboard Perencanaan</div>
-    <div class="subtitle">Ringkasan monitoring progress, sisa kuota vendor, dan standar konstruksi PLN UP3 Jambi.</div>
 </div>
 
 <div class="welcome">
@@ -1654,7 +1575,7 @@ body{
     <h2>Selamat {{ $salamWaktu }}, {{ $userName }}.</h2>
 
     <p>
-        Pantau progress proyek, sisa kuota vendor, dan telusuri seluruh sheet monitoring secara terpusat.
+        Pantau Progress, Wujudkan Hasil yang Terbaik!
     </p>
 
     <div class="hero-modules">

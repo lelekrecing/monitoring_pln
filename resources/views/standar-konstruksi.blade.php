@@ -128,18 +128,20 @@
     </div>
 
     <div class="toolbar-card">
+        <div style="display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:#334155;">
+            <span>Show</span>
+            <select id="userStandarPerPage" class="toolbar-select" aria-label="Show entries" style="min-width:74px;">
+                <option value="10" selected>10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+            </select>
+            <span>entries</span>
+        </div>
         <input type="text" id="searchKonstruksi" class="toolbar-search" placeholder="Cari nama konstruksi, sub-bab, atau nomor..." autocomplete="off">
         <select id="userStandarYear" class="toolbar-select" aria-label="Filter Tahun">
             <option value="">Semua Tahun</option>
         </select>
-        <select id="userStandarPerPage" class="toolbar-select" aria-label="Tampil Data">
-            <option value="10">Tampil: 10</option>
-            <option value="25" selected>Tampil: 25</option>
-            <option value="50">Tampil: 50</option>
-            <option value="100">Tampil: 100</option>
-            <option value="all">Tampil: Semua</option>
-        </select>
-        <span class="toolbar-count" id="userStandarCount">Total: {{ $konstruksi->count() }} item</span>
         <a href="{{ route('standar-konstruksi.export-pdf') }}" id="btnUserStandarPdf" target="_blank" class="btn-pdf-toolbar">
             <i class="fa fa-file-pdf"></i> Cetak PDF
         </a>
@@ -165,7 +167,7 @@
                             </td>
                         </tr>
                     @endif
-                    <tr class="standar-item-row">
+                    <tr class="standar-item-row" data-id="{{ $item->id }}">
                         <td class="col-no">{{ $item->no }}</td>
                         <td class="col-nama">{{ $item->nama_konstruksi }}</td>
                         <td class="col-link">
@@ -185,8 +187,7 @@
         </table>
     </div>
 
-    <div class="pager-card" id="userStandarPager">
-        <span id="userStandarPagerInfo">Menampilkan 0 item</span>
+    <div class="pager-card" id="userStandarPager" style="justify-content:flex-end;">
         <div class="pager-btns" id="userStandarPagerBtns"></div>
     </div>
 </div>
@@ -196,8 +197,6 @@
     var searchInput = document.getElementById('searchKonstruksi');
     var yearSelect  = document.getElementById('userStandarYear');
     var perPageSel  = document.getElementById('userStandarPerPage');
-    var countEl     = document.getElementById('userStandarCount');
-    var pagerInfo   = document.getElementById('userStandarPagerInfo');
     var pagerBtns   = document.getElementById('userStandarPagerBtns');
     var pdfLinks    = [document.getElementById('btnUserStandarPdf')];
     var pdfBaseUrl  = @json(route('standar-konstruksi.export-pdf'));
@@ -226,10 +225,17 @@
 
     var currentPage = 1;
 
-    function syncPdfUrls(){
+    function syncPdfUrls(visibleRows, perPage){
         var params = new URLSearchParams();
         if (searchInput.value.trim()) params.set('q', searchInput.value.trim());
         if (yearSelect.value) params.set('tahun', yearSelect.value);
+        params.set('per_page', String(perPage));
+        params.set('page', String(currentPage));
+        var ids = [];
+        (visibleRows || []).forEach(function(r){
+            if (r.dataset.id) ids.push(r.dataset.id);
+        });
+        if (ids.length > 0) params.set('ids', ids.join(','));
         var url = pdfBaseUrl + (params.toString() ? '?' + params.toString() : '');
         pdfLinks.forEach(function(a){ if (a) a.href = url; });
     }
@@ -261,10 +267,7 @@
         if (resetPage) currentPage = 1;
         var q = searchInput.value.trim().toLowerCase();
         var y = yearSelect.value;
-        var perRaw = perPageSel.value;
-        var perPage = perRaw === 'all' ? Number.MAX_SAFE_INTEGER : (parseInt(perRaw, 10) || 25);
-
-        syncPdfUrls();
+        var perPage = parseInt(perPageSel.value, 10) || 10;
 
         var matched = itemRows.filter(function(r){
             var okQ = !q || (r.dataset.search || '').indexOf(q) !== -1;
@@ -273,12 +276,13 @@
         });
 
         var total = matched.length;
-        var totalPages = perRaw === 'all' ? 1 : Math.max(1, Math.ceil(total / perPage));
+        var totalPages = Math.max(1, Math.ceil(total / perPage));
         if (currentPage > totalPages) currentPage = totalPages;
 
         var start = (currentPage - 1) * perPage;
         var end = Math.min(total, start + perPage);
-        var pageSet = new Set(perRaw === 'all' ? matched : matched.slice(start, end));
+        var visibleSlice = matched.slice(start, end);
+        var pageSet = new Set(visibleSlice);
 
         itemRows.forEach(function(r){
             r.style.display = pageSet.has(r) ? '' : 'none';
@@ -297,10 +301,7 @@
             sb.style.display = hasVisible ? '' : 'none';
         });
 
-        countEl.textContent = 'Total: ' + total + ' item';
-        pagerInfo.textContent = total === 0
-            ? 'Menampilkan 0 dari ' + itemRows.length + ' item'
-            : 'Menampilkan ' + (start + 1) + '–' + end + ' dari ' + total + ' item';
+        syncPdfUrls(visibleSlice, perPage);
         renderPager(totalPages);
     }
 

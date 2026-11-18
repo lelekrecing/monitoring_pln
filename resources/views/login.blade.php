@@ -37,10 +37,6 @@
         <div class="right-panel">
             <div class="login-box">
                 <div class="login-header">
-                    <div class="login-pln-badge">
-                        <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
-                        <span>SIGINJAI • UP3 Jambi</span>
-                    </div>
                     <h1>Selamat Datang</h1>
                     <p class="login-subtitle">Silakan masuk menggunakan username dan password Anda untuk mengakses dashboard.</p>
                 </div>

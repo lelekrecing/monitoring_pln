@@ -524,6 +524,19 @@ class KajianExportService
         $rows = collect($rows);
         $q = mb_strtolower(trim((string) ($filters['q'] ?? '')));
         $tahun = trim((string) ($filters['tahun'] ?? ''));
+        $perPage = max(0, (int) ($filters['per_page'] ?? 0));
+        $page = max(1, (int) ($filters['page'] ?? 1));
+
+        $allowedRowMap = [];
+        $rawRowNums = trim((string) ($filters['rows'] ?? ''));
+        if ($rawRowNums !== '') {
+            foreach (explode(',', $rawRowNums) as $rn) {
+                $rnInt = (int) trim($rn);
+                if ($rnInt > 0) {
+                    $allowedRowMap[$rnInt] = true;
+                }
+            }
+        }
 
         $extraTerms = [];
         foreach (['vendor', 'pelanggan', 'kr', 'paket', 'lokasi'] as $fk) {
@@ -533,16 +546,65 @@ class KajianExportService
             }
         }
 
+        $sheetNameUpper = mb_strtoupper(trim((string) ($sheet->nama_sheet ?? '')));
+        $isKuotaVendorSheet = str_contains($sheetNameUpper, 'KUOTA VENDOR');
+        $isRekapConnectorSheet = $sheetNameUpper === 'REKAP CONNECTOR';
+        $isRekapPembesian2026Sheet = $sheetNameUpper === 'REKAP PEMBESIAN 2026';
+
         $decodedRows = [];
         foreach ($rows as $row) {
             $cells = is_array($row->row_data ?? null)
                 ? $row->row_data
                 : (json_decode((string) ($row->row_data ?? '[]'), true) ?: []);
             if (!is_array($cells)) {
-                $decodedRows[] = [];
-                continue;
+                $cells = [];
             }
-            $decodedRows[] = array_map(fn ($v) => trim((string) ($v ?? '')), $cells);
+            $decodedRows[] = [
+                'number' => (int) ($row->row_number ?? 0),
+                'cells'  => array_map(fn ($v) => trim((string) ($v ?? '')), $cells),
+            ];
+        }
+
+        if ($isKuotaVendorSheet && !empty($decodedRows)) {
+            $firstColAlwaysEmpty = true;
+            foreach ($decodedRows as $dr) {
+                if (($dr['cells'][0] ?? '') !== '') {
+                    $firstColAlwaysEmpty = false;
+                    break;
+                }
+            }
+            if ($firstColAlwaysEmpty) {
+                foreach ($decodedRows as &$dr) {
+                    array_shift($dr['cells']);
+                }
+                unset($dr);
+            }
+        }
+
+        if ($isRekapPembesian2026Sheet && !empty($decodedRows)) {
+            $dupKeep = null;
+            $dupDrop = null;
+            foreach ($decodedRows as $dr) {
+                $c = $dr['cells'];
+                for ($ci = 0; $ci < count($c) - 1; $ci++) {
+                    if (mb_strtoupper($c[$ci] ?? '') === 'MATERIAL' && mb_strtoupper($c[$ci + 1] ?? '') === 'MATERIAL') {
+                        $dupKeep = $ci;
+                        $dupDrop = $ci + 1;
+                        break 2;
+                    }
+                }
+            }
+            if ($dupDrop !== null) {
+                foreach ($decodedRows as &$dr) {
+                    if (array_key_exists($dupDrop, $dr['cells'])) {
+                        $kv = $dr['cells'][$dupKeep] ?? '';
+                        $dv = $dr['cells'][$dupDrop] ?? '';
+                        $dr['cells'][$dupKeep] = ($dv === '' || $dv === $kv) ? $kv : ($kv === '' ? $dv : (str_contains($dv, $kv) ? $dv : (str_contains($kv, $dv) ? $kv : ($kv . ' / ' . $dv))));
+                        array_splice($dr['cells'], $dupDrop, 1);
+                    }
+                }
+                unset($dr);
+            }
         }
 
         $isBlankCells = function (array $cells): bool {
@@ -555,8 +617,8 @@ class KajianExportService
         };
 
         $totalCols = 1;
-        foreach ($decodedRows as $cells) {
-            $totalCols = max($totalCols, count($cells));
+        foreach ($decodedRows as $dr) {
+            $totalCols = max($totalCols, count($dr['cells']));
         }
 
         $isHeaderCandidate = function (array $cells) use ($totalCols): bool {
@@ -595,8 +657,8 @@ class KajianExportService
 
         // Pecah blok persis seperti sheet.blade.php agar index ?block= cocok 1:1
         $vendorAnchors = [];
-        foreach ($decodedRows as $i => $cells) {
-            if (mb_strtoupper(trim((string) ($cells[0] ?? ''))) === 'VENDOR') {
+        foreach ($decodedRows as $i => $dr) {
+            if (mb_strtoupper(trim((string) ($dr['cells'][0] ?? ''))) === 'VENDOR') {
                 $vendorAnchors[] = $i;
             }
         }
@@ -607,7 +669,7 @@ class KajianExportService
                 $pre = array_slice($decodedRows, 0, $vendorAnchors[0]);
                 $hasContent = false;
                 foreach ($pre as $r) {
-                    if (!$isBlankCells($r)) {
+                    if (!$isBlankCells($r['cells'])) {
                         $hasContent = true;
                         break;
                     }
@@ -623,7 +685,7 @@ class KajianExportService
         } else {
             $current = [];
             foreach ($decodedRows as $r) {
-                if ($isBlankCells($r)) {
+                if ($isBlankCells($r['cells'])) {
                     if (!empty($current)) {
                         $rawBlocks[] = $current;
                         $current = [];
@@ -644,14 +706,14 @@ class KajianExportService
             $scanLimit = min(80, count($blockRows));
 
             for ($i = 0; $i < $scanLimit; $i++) {
-                if (mb_strtoupper(trim((string) ($blockRows[$i][0] ?? ''))) === 'NO') {
+                if (mb_strtoupper(trim((string) ($blockRows[$i]['cells'][0] ?? ''))) === 'NO') {
                     $headerIdx = $i;
                     break;
                 }
             }
             if ($headerIdx === null) {
                 for ($i = 0; $i < $scanLimit; $i++) {
-                    if ($isHeaderCandidate($blockRows[$i])) {
+                    if ($isHeaderCandidate($blockRows[$i]['cells'])) {
                         $headerIdx = $i;
                         break;
                     }
@@ -659,7 +721,7 @@ class KajianExportService
             }
 
             $infoRows = $headerIdx !== null ? array_slice($blockRows, 0, $headerIdx) : $blockRows;
-            $headerRow = $headerIdx !== null ? $blockRows[$headerIdx] : null;
+            $headerRow = $headerIdx !== null ? $blockRows[$headerIdx]['cells'] : null;
             $subHeaderRow = null;
             $dataStart = $headerIdx !== null ? $headerIdx + 1 : count($blockRows);
 
@@ -667,7 +729,7 @@ class KajianExportService
                 $groups = $buildGroups($headerRow);
                 $groupedCols = array_filter($groups, fn ($g) => $g['width'] > 1);
                 if (!empty($groupedCols) && isset($blockRows[$headerIdx + 1])) {
-                    $next = $blockRows[$headerIdx + 1];
+                    $next = $blockRows[$headerIdx + 1]['cells'];
                     $ok = true;
                     foreach ($groups as $g) {
                         $slice = array_slice($next, $g['start'], $g['width']);
@@ -696,8 +758,8 @@ class KajianExportService
 
             $infoTexts = [];
             foreach ($infoRows as $ir) {
-                if (!$isBlankCells($ir)) {
-                    $parts = array_values(array_filter($ir, fn ($v) => $v !== ''));
+                if (!$isBlankCells($ir['cells'])) {
+                    $parts = array_values(array_filter($ir['cells'], fn ($v) => $v !== ''));
                     if (!empty($parts)) {
                         $infoTexts[] = implode(' • ', array_slice($parts, 0, 4));
                     }
@@ -714,7 +776,7 @@ class KajianExportService
             }
 
             $dataRows = $headerRow !== null
-                ? array_values(array_filter(array_slice($blockRows, $dataStart), fn ($r) => !$isBlankCells($r)))
+                ? array_values(array_filter(array_slice($blockRows, $dataStart), fn ($r) => !$isBlankCells($r['cells'])))
                 : [];
 
             $parsedBlocks[$bIdx] = [
@@ -737,20 +799,36 @@ class KajianExportService
             if (isset($parsedBlocks[$reqBlockIdx]) && $parsedBlocks[$reqBlockIdx]['headerRow'] !== null) {
                 $blocksToRender[] = $parsedBlocks[$reqBlockIdx];
             }
+        } elseif (!empty($allowedRowMap) && count($blocksWithHeader) > 1) {
+            // Jika rows spesifik dikirim (mis. dari tabel flat/single yang terdeteksi >1 blok di Excel),
+            // gabungkan atau ambil blok yang memiliki baris di $allowedRowMap
+            foreach ($blocksWithHeader as $b) {
+                $hasMatch = false;
+                foreach ($b['dataRows'] as $dr) {
+                    if (isset($allowedRowMap[$dr['number']])) {
+                        $hasMatch = true;
+                        break;
+                    }
+                }
+                if ($hasMatch) {
+                    $blocksToRender[] = $b;
+                }
+            }
+            if (empty($blocksToRender)) {
+                $blocksToRender = $blocksWithHeader;
+            }
         } elseif (count($blocksWithHeader) > 1) {
             $blocksToRender = $blocksWithHeader;
         } else {
-            // Flat / single-table fallback identik dengan perilaku standar
-            $nonEmptyRows = array_values(array_filter($decodedRows, fn ($r) => !$isBlankCells($r)));
+            $nonEmptyRows = array_values(array_filter($decodedRows, fn ($r) => !$isBlankCells($r['cells'])));
             $headerIdx = 0;
-            foreach ($nonEmptyRows as $idx => $cells) {
-                $nonEmpty = count(array_filter($cells, fn ($v) => $v !== ''));
-                if ($nonEmpty >= 3) {
+            foreach ($nonEmptyRows as $idx => $dr) {
+                if ($isHeaderCandidate($dr['cells'])) {
                     $headerIdx = $idx;
                     break;
                 }
             }
-            $headerRow = $nonEmptyRows[$headerIdx] ?? [];
+            $headerRow = $nonEmptyRows[$headerIdx]['cells'] ?? [];
             $dataCand = array_slice($nonEmptyRows, $headerIdx + 1);
             $blocksToRender[] = [
                 'index'        => 0,
@@ -779,7 +857,7 @@ class KajianExportService
             return true;
         };
 
-        $buildBlockTableData = function (array $block) use ($rowMatchesFilters, $tahun, $hasBlockParam): array {
+        $buildBlockTableData = function (array $block) use ($rowMatchesFilters, $tahun, $allowedRowMap, $perPage, $page, $isRekapConnectorSheet): array {
             $headerCells = $block['headerRow'] ?? [];
             $subHeaderCells = $block['subHeaderRow'] ?? null;
             $dataCandidateRows = $block['dataRows'] ?? [];
@@ -791,33 +869,37 @@ class KajianExportService
                 $maxColCount = max($maxColCount, count($subHeaderCells));
             }
             foreach ($dataCandidateRows as $r) {
-                $maxColCount = max($maxColCount, count($r));
+                $maxColCount = max($maxColCount, count($r['cells']));
             }
 
-            // Bangun label header gabungan (Group / Subheader) per kolom
-            $mergedLabels = [];
-            $currentGroupLabel = '';
-            for ($c = 0; $c < $maxColCount; $c++) {
-                $h = trim((string) ($headerCells[$c] ?? ''));
-                if ($h !== '') {
-                    $currentGroupLabel = $h;
-                }
-                $sub = $subHeaderCells ? trim((string) ($subHeaderCells[$c] ?? '')) : '';
-                if ($sub !== '' && $currentGroupLabel !== '' && mb_strtolower($currentGroupLabel) !== mb_strtolower($sub)) {
-                    $shortGroup = mb_strlen($currentGroupLabel) > 14 ? (mb_substr($currentGroupLabel, 0, 12) . '.') : $currentGroupLabel;
-                    $mergedLabels[$c] = $shortGroup . ' ' . $sub;
-                } else {
-                    $mergedLabels[$c] = $h !== '' ? $h : $sub;
+            if ($isRekapConnectorSheet) {
+                $mergedLabels = ['NO', 'MATERIAL MDU', 'REN', 'RESERVASI', 'ISSUED', 'BELUM RESERVASI', 'BELUM GOOD ISUE'];
+                $maxColCount = count($mergedLabels);
+            } else {
+                $mergedLabels = [];
+                $currentGroupLabel = '';
+                for ($c = 0; $c < $maxColCount; $c++) {
+                    $h = trim((string) ($headerCells[$c] ?? ''));
+                    if ($h !== '') {
+                        $currentGroupLabel = $h;
+                    }
+                    $sub = $subHeaderCells ? trim((string) ($subHeaderCells[$c] ?? '')) : '';
+                    if ($sub !== '' && $currentGroupLabel !== '' && mb_strtolower($currentGroupLabel) !== mb_strtolower($sub)) {
+                        $shortGroup = mb_strlen($currentGroupLabel) > 14 ? (mb_substr($currentGroupLabel, 0, 12) . '.') : $currentGroupLabel;
+                        $mergedLabels[$c] = $shortGroup . ' ' . $sub;
+                    } else {
+                        $mergedLabels[$c] = $h !== '' ? $h : $sub;
+                    }
                 }
             }
 
+            // Sertakan seluruh kolom aktif pada tabel (jangan dipotong 14 kolom dan jangan tambah kolom No ekstra)
             $activeCols = [];
-            $maxAllowedCols = 14;
             for ($c = 0; $c < $maxColCount; $c++) {
                 $colHasVal = trim((string) ($mergedLabels[$c] ?? '')) !== '';
                 if (!$colHasVal) {
-                    foreach (array_slice($dataCandidateRows, 0, 30) as $sample) {
-                        if (trim((string) ($sample[$c] ?? '')) !== '') {
+                    foreach ($dataCandidateRows as $sample) {
+                        if (trim((string) ($sample['cells'][$c] ?? '')) !== '') {
                             $colHasVal = true;
                             break;
                         }
@@ -826,96 +908,81 @@ class KajianExportService
                 if ($colHasVal) {
                     $activeCols[] = $c;
                 }
-                if (count($activeCols) >= $maxAllowedCols) {
-                    break;
-                }
             }
             if (empty($activeCols)) {
                 $activeCols = [0];
             }
 
-            // Hindari kolom "No" ganda jika kolom pertama memang sudah "NO"
-            $firstColHeader = mb_strtoupper(trim((string) ($mergedLabels[$activeCols[0]] ?? '')));
-            $prependNo = $firstColHeader !== 'NO';
-
-            $tableHeaders = $prependNo ? ['No'] : [];
+            $tableHeaders = [];
             foreach ($activeCols as $cIdx => $colIndex) {
                 $lbl = trim((string) ($mergedLabels[$colIndex] ?? ''));
+                if ($cIdx === 0 && mb_strtolower($lbl) === 'f') {
+                    $lbl = 'NO';
+                }
                 $tableHeaders[] = $lbl !== '' ? $lbl : ('Kol ' . ($cIdx + 1));
             }
 
             $filteredData = [];
-            $lineNo = 1;
-            foreach ($dataCandidateRows as $cells) {
-                if (!$rowMatchesFilters($cells, $blockMatchesYear)) {
-                    continue;
+            foreach ($dataCandidateRows as $dr) {
+                $cells = $dr['cells'];
+                $rowNum = $dr['number'];
+
+                if (!empty($allowedRowMap)) {
+                    if (!isset($allowedRowMap[$rowNum])) {
+                        continue;
+                    }
+                } else {
+                    $firstUpper = mb_strtoupper(trim((string) ($cells[0] ?? '')));
+                    if ($perPage > 0 && in_array($firstUpper, ['TOTAL', 'SISA'], true)) {
+                        continue;
+                    }
+                    if (!$rowMatchesFilters($cells, $blockMatchesYear)) {
+                        continue;
+                    }
                 }
-                $outRow = $prependNo ? [(string) $lineNo++] : [];
+
+                $outRow = [];
                 foreach ($activeCols as $colIndex) {
                     $outRow[] = (string) ($cells[$colIndex] ?? '');
                 }
                 $filteredData[] = $outRow;
             }
 
+            if (empty($allowedRowMap) && $perPage > 0) {
+                $offset = ($page - 1) * $perPage;
+                $filteredData = array_slice($filteredData, $offset, $perPage);
+            }
+
             return [
                 'context'          => (string) ($block['context'] ?? ''),
                 'blockMatchesYear' => $blockMatchesYear,
                 'headers'          => $tableHeaders,
-                'prependNo'        => $prependNo,
                 'rows'             => $filteredData,
             ];
         };
 
         $preparedBlocks = [];
-        $totalMatched = 0;
         foreach ($blocksToRender as $blk) {
             $tbl = $buildBlockTableData($blk);
-            // Jika filter Tahun aktif di halaman multi-blok tanpa ?block= spesifik, skip blok kosong yang tahunnya tidak cocok
-            if (!$hasBlockParam && count($blocksToRender) > 1 && $tahun !== '' && empty($tbl['rows'])) {
+            if (!$hasBlockParam && count($blocksToRender) > 1 && ($tahun !== '' || !empty($allowedRowMap)) && empty($tbl['rows'])) {
                 continue;
             }
-            $totalMatched += count($tbl['rows']);
             $preparedBlocks[] = $tbl;
         }
 
         if (empty($preparedBlocks)) {
             $fallbackHeaders = !empty($blocksToRender)
                 ? ($buildBlockTableData($blocksToRender[0])['headers'])
-                : ['No', 'Data'];
+                : ['NO', 'DATA'];
             $emptyRow = array_fill(0, count($fallbackHeaders), '-');
             $emptyRow[min(1, count($emptyRow) - 1)] = 'Tidak ada data yang cocok dengan filter';
             $preparedBlocks[] = [
                 'context'          => '',
                 'blockMatchesYear' => false,
                 'headers'          => $fallbackHeaders,
-                'prependNo'        => true,
                 'rows'             => [$emptyRow],
             ];
         }
-
-        $truncated = false;
-        $remainingBudget = 400;
-        foreach ($preparedBlocks as $idx => $pBlk) {
-            $cnt = count($pBlk['rows']);
-            if ($remainingBudget <= 0) {
-                $preparedBlocks[$idx]['rows'] = [];
-                $truncated = true;
-                continue;
-            }
-            if ($cnt > $remainingBudget) {
-                $preparedBlocks[$idx]['rows'] = array_slice($pBlk['rows'], 0, $remainingBudget);
-                $remainingBudget = 0;
-                $truncated = true;
-            } else {
-                $remainingBudget -= $cnt;
-            }
-            if ($hasBlockParam && empty($preparedBlocks[$idx]['rows'])) {
-                $emptyRow = array_fill(0, count($pBlk['headers']), '-');
-                $emptyRow[min(1, count($emptyRow) - 1)] = 'Tidak ada data yang cocok dengan filter';
-                $preparedBlocks[$idx]['rows'] = [$emptyRow];
-            }
-        }
-        $preparedBlocks = array_values(array_filter($preparedBlocks, fn ($b) => !empty($b['rows'])));
 
         $pdf = new PurePhpPdfBuilder('L');
         $filterNote = [];
@@ -935,38 +1002,35 @@ class KajianExportService
 
         $sheetName = (string) ($sheet->nama_sheet ?? 'Sheet Monitoring');
         $pdf->drawHeader(
-            'PT PLN (PERSERO) UP3 JAMBI • PUSAT MONITORING',
+            'SIGINJAI • Sistem Gerbang Informasi Jasa , Anggaran & Investasi',
             $sheetName . ($filterNote ? ' (' . implode(' | ', $filterNote) . ')' : ''),
             'Dicetak: ' . now()->format('d/m/Y H:i') . ' WIB'
         );
 
-        $pdf->drawInfoBanner(
-            'Sheet: ' . $sheetName . ($hasBlockParam && !empty($preparedBlocks[0]['context']) ? ' — ' . $preparedBlocks[0]['context'] : ''),
-            'Menampilkan ' . number_format($totalMatched, 0, ',', '.') . ' baris data' . ($filterNote ? ' (terfilter)' : ' (seluruh data)'),
-            $totalMatched . ' BARIS',
-            [13, 33, 55]
-        );
-
         $usableW = 773.0;
         foreach ($preparedBlocks as $pIdx => $pBlk) {
-            if ($pBlk['context'] !== '' && (count($preparedBlocks) > 1 || !$hasBlockParam)) {
+            if ($pBlk['context'] !== '' && (count($preparedBlocks) > 1 || $hasBlockParam)) {
                 $pdf->drawSectionTitle($pBlk['context']);
             }
             $hdrs = $pBlk['headers'];
-            $noW = 24.0;
-            $otherCount = max(1, count($hdrs) - 1);
-            $colW = ($usableW - $noW) / $otherCount;
-            $widths = [$noW];
-            $aligns = ['C'];
-            for ($i = 0; $i < $otherCount; $i++) {
-                $widths[] = $colW;
-                $aligns[] = 'L';
+            $colCount = max(1, count($hdrs));
+            $firstIsNo = mb_strtoupper(trim((string) ($hdrs[0] ?? ''))) === 'NO';
+            if ($firstIsNo && $colCount > 1) {
+                $noW = $colCount > 16 ? 18.0 : 24.0;
+                $otherCount = $colCount - 1;
+                $colW = ($usableW - $noW) / $otherCount;
+                $widths = [$noW];
+                $aligns = ['C'];
+                for ($i = 0; $i < $otherCount; $i++) {
+                    $widths[] = $colW;
+                    $aligns[] = 'L';
+                }
+            } else {
+                $colW = $usableW / $colCount;
+                $widths = array_fill(0, $colCount, $colW);
+                $aligns = array_fill(0, $colCount, 'L');
             }
             $pdf->drawTable($hdrs, $widths, $pBlk['rows'], $aligns);
-        }
-
-        if ($truncated) {
-            $pdf->drawNoteBox('Catatan: PDF menampilkan 400 baris pertama agar ukuran dokumen tetap ringkas. Gunakan pencarian/filter Tahun untuk menyaring data spesifik.');
         }
 
         $fileSuffix = $hasBlockParam ? ('_Tabel' . ((int) $blockParam + 1)) : ($tahun !== '' ? ('_' . preg_replace('/[^0-9A-Za-z]/', '', $tahun)) : '');
@@ -978,15 +1042,31 @@ class KajianExportService
     }
 
     /**
-     * Build downloadable PDF (A4 Portrait) untuk data Standar Konstruksi (User & Admin).
+     * Build downloadable PDF (A4 Portrait) untuk data Standar Konstruksi (sesuai data yang tampil).
      */
     public function exportStandarKonstruksiPdf(Collection|array $items, array $filters = []): array
     {
         $items = collect($items);
         $q = mb_strtolower(trim((string) ($filters['q'] ?? '')));
         $tahun = trim((string) ($filters['tahun'] ?? ''));
+        $perPage = max(0, (int) ($filters['per_page'] ?? 0));
+        $page = max(1, (int) ($filters['page'] ?? 1));
 
-        $filtered = $items->filter(function ($item) use ($q, $tahun) {
+        $allowedIdMap = [];
+        $rawIds = trim((string) ($filters['ids'] ?? ''));
+        if ($rawIds !== '') {
+            foreach (explode(',', $rawIds) as $idStr) {
+                $idInt = (int) trim($idStr);
+                if ($idInt > 0) {
+                    $allowedIdMap[$idInt] = true;
+                }
+            }
+        }
+
+        $filtered = $items->filter(function ($item) use ($q, $tahun, $allowedIdMap) {
+            if (!empty($allowedIdMap)) {
+                return isset($allowedIdMap[(int) ($item->id ?? 0)]);
+            }
             $hay = mb_strtolower(trim(implode(' ', [
                 (string) ($item->no ?? ''),
                 (string) ($item->sub_bab_kode ?? ''),
@@ -1003,6 +1083,10 @@ class KajianExportService
             return true;
         })->values();
 
+        if (empty($allowedIdMap) && $perPage > 0) {
+            $filtered = $filtered->slice(($page - 1) * $perPage, $perPage)->values();
+        }
+
         $pdf = new PurePhpPdfBuilder('P');
         $filterNote = [];
         if ($q !== '') {
@@ -1013,39 +1097,34 @@ class KajianExportService
         }
 
         $pdf->drawHeader(
-            'PT PLN (PERSERO) UP3 JAMBI • REFERENSI TEKNIS',
+            'SIGINJAI • Sistem Gerbang Informasi Jasa , Anggaran & Investasi',
             'STANDAR KONSTRUKSI SUTM 2026' . ($filterNote ? ' (' . implode(' | ', $filterNote) . ')' : ''),
             'Dicetak: ' . now()->format('d/m/Y H:i') . ' WIB'
         );
 
-        $pdf->drawInfoBanner(
-            'Daftar Standar Konstruksi Jaringan Tegangan Menengah',
-            'Sumber: Database Standar Konstruksi SUTM UP3 Jambi',
-            $filtered->count() . ' ITEM',
-            [13, 33, 55]
-        );
-
         $rows = [];
+        $currentSubBab = null;
         foreach ($filtered as $item) {
-            $subBab = $item->sub_bab_nama
-                ? ($item->sub_bab_kode ? $item->sub_bab_kode . ' - ' . $item->sub_bab_nama : $item->sub_bab_nama)
-                : '-';
+            if ($item->sub_bab_nama && $item->sub_bab_nama !== $currentSubBab) {
+                $currentSubBab = $item->sub_bab_nama;
+                $subTitle = $item->sub_bab_kode ? ($item->sub_bab_kode . ' - ' . $item->sub_bab_nama) : $item->sub_bab_nama;
+                $rows[] = ['', (string) $subTitle, ''];
+            }
             $rows[] = [
                 (string) ($item->no ?? '-'),
-                (string) $subBab,
                 (string) ($item->nama_konstruksi ?? '-'),
-                (string) ($item->link_gambar ?: '-'),
+                (string) ($item->link_gambar ? 'Lihat Gambar (' . $item->link_gambar . ')' : '-'),
             ];
         }
         if (empty($rows)) {
-            $rows[] = ['-', '-', 'Belum ada data Standar Konstruksi sesuai filter.', '-'];
+            $rows[] = ['-', 'Belum ada data Standar Konstruksi sesuai filter.', '-'];
         }
 
         $pdf->drawTable(
-            ['No', 'Sub-Bab / Kelompok', 'Konstruksi SUTM', 'Link Gambar'],
-            [36, 130, 210, 151],
+            ['NO', 'KONTRUKSI SUTM 2026', 'LINK GAMBAR'],
+            [42, 235, 250],
             $rows,
-            ['C', 'L', 'L', 'L']
+            ['C', 'L', 'L']
         );
 
         return [
@@ -1235,6 +1314,11 @@ class PurePhpPdfBuilder
 
     public function drawTable(array $headers, array $widths, array $rows, array $aligns = []): void
     {
+        $colCount = max(1, count($headers));
+        $hdrFont = $colCount > 24 ? 4.8 : ($colCount > 16 ? 5.6 : ($colCount > 12 ? 6.4 : 7.4));
+        $cellFont = $colCount > 24 ? 4.8 : ($colCount > 16 ? 5.5 : ($colCount > 12 ? 6.3 : 7.3));
+        $padX = $colCount > 16 ? 2.0 : 4.0;
+
         $headerH = 19.0;
         $rowH = 16.5;
         $totalW = array_sum($widths);
@@ -1244,7 +1328,7 @@ class PurePhpPdfBuilder
             $widths = array_map(fn ($v) => $v * $scale, $widths);
         }
 
-        $drawHeaderFn = function () use ($headers, $widths, $headerH, $rowH): void {
+        $drawHeaderFn = function () use ($headers, $widths, $headerH, $rowH, $hdrFont, $padX): void {
             $this->ensureSpace($headerH + $rowH);
             $bottom = $this->y - $headerH;
             $x = $this->margin;
@@ -1252,7 +1336,7 @@ class PurePhpPdfBuilder
                 $cw = $widths[$i];
                 $this->fillRect($x, $bottom, $cw, $headerH, [30, 58, 95]);
                 $this->strokeRect($x, $bottom, $cw, $headerH, [51, 85, 125]);
-                $this->drawText($x + 4, $bottom + 6.5, $this->fitText($hLabel, $cw - 8, 7.4), 7.4, true, [255, 255, 255]);
+                $this->drawText($x + $padX, $bottom + 6.5, $this->fitText((string) $hLabel, max(4.0, $cw - ($padX * 2)), $hdrFont), $hdrFont, true, [255, 255, 255]);
                 $x += $cw;
             }
             $this->y = $bottom;
@@ -1270,19 +1354,19 @@ class PurePhpPdfBuilder
             $bg = ($rIdx % 2 === 0) ? [255, 255, 255] : [248, 250, 252];
 
             foreach ($row as $i => $cellVal) {
-                $cw = $widths[$i];
+                $cw = $widths[$i] ?? 20.0;
                 $align = $aligns[$i] ?? 'L';
                 $this->fillRect($x, $bottom, $cw, $rowH, $bg);
                 $this->strokeRect($x, $bottom, $cw, $rowH, [226, 232, 240]);
-                $fitted = $this->fitText((string) $cellVal, $cw - 8, 7.3);
+                $fitted = $this->fitText((string) $cellVal, max(4.0, $cw - ($padX * 2)), $cellFont);
                 if ($align === 'R') {
-                    $this->drawTextRight($x + $cw - 4, $bottom + 5.5, $fitted, 7.3, false, [15, 23, 42]);
+                    $this->drawTextRight($x + $cw - $padX, $bottom + 5.5, $fitted, $cellFont, false, [15, 23, 42]);
                 } elseif ($align === 'C') {
-                    $tw = $this->estimateTextWidth($fitted, 7.3);
-                    $tx = $x + max(3.0, ($cw - $tw) / 2);
-                    $this->drawText($tx, $bottom + 5.5, $fitted, 7.3, false, [15, 23, 42]);
+                    $tw = $this->estimateTextWidth($fitted, $cellFont);
+                    $tx = $x + max($padX, ($cw - $tw) / 2);
+                    $this->drawText($tx, $bottom + 5.5, $fitted, $cellFont, false, [15, 23, 42]);
                 } else {
-                    $this->drawText($x + 4, $bottom + 5.5, $fitted, 7.3, false, [15, 23, 42]);
+                    $this->drawText($x + $padX, $bottom + 5.5, $fitted, $cellFont, false, [15, 23, 42]);
                 }
                 $x += $cw;
             }

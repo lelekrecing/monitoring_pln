@@ -37,10 +37,6 @@
         <div class="right-panel">
             <div class="registrasi-box">
                 <div class="login-header">
-                    <div class="login-pln-badge">
-                        <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
-                        <span>SIGINJAI • UP3 Jambi</span>
-                    </div>
                     <h1>Daftar Akun Baru</h1>
                     <p class="login-subtitle">Buat akun pengguna untuk mengakses portal monitoring perencanaan UP3 Jambi.</p>
                 </div>

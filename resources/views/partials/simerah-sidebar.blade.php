@@ -354,7 +354,7 @@
         </div>
 
         <a href="{{ route('dashboard') . $yearQuerySuffix }}" class="{{ $activeNav === 'dashboard' ? 'active-nav' : '' }}">
-            <span><i class="fa fa-home"></i> Dashboard utama</span>
+            <span><i class="fa fa-home"></i> Dashboard Utama</span>
         </a>
 
         <div class="sidebar-section-label">Modul Monitoring</div>
@@ -374,74 +374,67 @@
                 <div class="subsubmenu" id="sub{{ Str::slug($monitoringLabel) }}">
                     @if(($monitoringGroup['type'] ?? 'flat') === 'monitoring-khs')
                         @foreach($monitoringGroup['groups'] as $topLabel => $topGroup)
-                            <a href="#" onclick="toggleSimerahSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}', this); return false;">
-                                <span>{{ $topLabel }}</span>
-                                <i class="fa fa-chevron-down"></i>
-                            </a>
+                            @if(($topGroup['type'] ?? 'flat') === 'nested')
+                                <a href="#" onclick="toggleSimerahSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}', this); return false;">
+                                    <span>{{ $topLabel }}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
 
-                            <div class="subsubsubmenu" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}">
-                                @if(($topGroup['type'] ?? 'flat') === 'nested')
+                                <div class="subsubsubmenu" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}">
                                     @foreach($topGroup['children'] as $subLabel => $sheetsInSub)
-                                        @if($subLabel === 'KHS PEMBESIAN')
-                                            <a href="#" class="menu-lvl4-item" onclick="toggleSimerahSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}', this); return false;">
-                                                <span>{{ $subLabel }}</span>
-                                                <i class="fa fa-chevron-down"></i>
+                                        @php
+                                            $flatSubSheets = [];
+                                            foreach ((array) $sheetsInSub as $entry) {
+                                                if (is_array($entry)) {
+                                                    foreach ($entry as $nestedSheet) {
+                                                        if (is_object($nestedSheet)) $flatSubSheets[] = $nestedSheet;
+                                                    }
+                                                } elseif (is_object($entry)) {
+                                                    $flatSubSheets[] = $entry;
+                                                }
+                                            }
+                                            $primarySubSheet = collect($flatSubSheets)->sortByDesc(fn ($s) => (int) ($s->tahun ?? 0))->first() ?? ($flatSubSheets[0] ?? null);
+                                            $subSheetIds = array_map(fn ($s) => (int) $s->id, $flatSubSheets);
+                                            $isSubActive = $activeSheetId !== null && in_array($activeSheetId, $subSheetIds, true);
+                                            $displaySubLabel = count($flatSubSheets) === 1 && $primarySubSheet ? $primarySubSheet->nama_sheet : $subLabel;
+                                        @endphp
+                                        @if($primarySubSheet)
+                                            <a href="{{ route('sheet.show', $primarySubSheet->id) . $yearQuerySuffix }}"
+                                               class="menu-lvl4-item {{ $isSubActive ? 'active-sheet' : '' }}">
+                                                {{ $displaySubLabel }}
                                             </a>
-
-                                            <div class="menu-lvl4" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}">
-                                                @foreach($sheetsInSub as $pembesianLabel => $sheetsInPembesian)
-                                                    @if(count($sheetsInPembesian) === 1)
-                                                        <a href="{{ route('sheet.show', $sheetsInPembesian[0]->id) . $yearQuerySuffix }}"
-                                                           class="menu-lvl5-item {{ $activeSheetId === (int) $sheetsInPembesian[0]->id ? 'active-sheet' : '' }}">
-                                                            {{ $sheetsInPembesian[0]->nama_sheet }}
-                                                        </a>
-                                                    @else
-                                                        <a href="#" class="menu-lvl5-item" onclick="toggleSimerahSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel.'-'.$pembesianLabel) }}', this); return false;">
-                                                            <span>{{ $pembesianLabel }}</span>
-                                                            <i class="fa fa-chevron-down"></i>
-                                                        </a>
-
-                                                        <div class="menu-lvl5" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel.'-'.$pembesianLabel) }}">
-                                                            @foreach($sheetsInPembesian as $itemSheet)
-                                                                <a href="{{ route('sheet.show', $itemSheet->id) . $yearQuerySuffix }}"
-                                                                   class="{{ $activeSheetId === (int) $itemSheet->id ? 'active-sheet' : '' }}">
-                                                                    {{ $itemSheet->nama_sheet }}
-                                                                </a>
-                                                            @endforeach
-                                                        </div>
-                                                    @endif
-                                                @endforeach
-                                            </div>
-                                        @elseif(count($sheetsInSub) === 1)
-                                            <a href="{{ route('sheet.show', $sheetsInSub[0]->id) . $yearQuerySuffix }}"
-                                               class="menu-lvl4-item {{ $activeSheetId === (int) $sheetsInSub[0]->id ? 'active-sheet' : '' }}">
-                                                {{ $sheetsInSub[0]->nama_sheet }}
-                                            </a>
-                                        @else
-                                            <a href="#" class="menu-lvl4-item" onclick="toggleSimerahSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}', this); return false;">
-                                                <span>{{ $subLabel }}</span>
-                                                <i class="fa fa-chevron-down"></i>
-                                            </a>
-
-                                            <div class="menu-lvl4" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel.'-'.$subLabel) }}">
-                                                @foreach($sheetsInSub as $itemSheet)
-                                                    <a href="{{ route('sheet.show', $itemSheet->id) . $yearQuerySuffix }}"
-                                                       class="{{ $activeSheetId === (int) $itemSheet->id ? 'active-sheet' : '' }}">
-                                                        {{ $itemSheet->nama_sheet }}
-                                                    </a>
-                                                @endforeach
-                                            </div>
                                         @endif
                                     @endforeach
-                                @else
+                                </div>
+                            @elseif(in_array($topLabel, ['Reservasi', 'Rekap'], true))
+                                <a href="#" onclick="toggleSimerahSub('sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}', this); return false;">
+                                    <span>{{ $topLabel }}</span>
+                                    <i class="fa fa-chevron-down"></i>
+                                </a>
+
+                                <div class="subsubsubmenu" id="sub{{ Str::slug($monitoringLabel.'-'.$topLabel) }}">
                                     @foreach($topGroup['items'] as $itemSheet)
                                         <a href="{{ route('sheet.show', $itemSheet->id) . $yearQuerySuffix }}"
                                            class="menu-lvl4-item {{ $activeSheetId === (int) $itemSheet->id ? 'active-sheet' : '' }}">
                                             {{ $itemSheet->nama_sheet }}
                                         </a>
                                     @endforeach
+                                </div>
+                            @else
+                                @php
+                                    $groupItems = $topGroup['items'] ?? [];
+                                    $primaryTopSheet = collect($groupItems)->sortByDesc(fn ($s) => (int) ($s->tahun ?? 0))->first() ?? ($groupItems[0] ?? null);
+                                    $topSheetIds = array_map(fn ($s) => (int) $s->id, $groupItems);
+                                    $isTopActive = $activeSheetId !== null && in_array($activeSheetId, $topSheetIds, true);
+                                    $displayTopLabel = count($groupItems) === 1 && $primaryTopSheet ? $primaryTopSheet->nama_sheet : $topLabel;
+                                @endphp
+                                @if($primaryTopSheet)
+                                    <a href="{{ route('sheet.show', $primaryTopSheet->id) . $yearQuerySuffix }}"
+                                       class="{{ $isTopActive ? 'active-sheet' : '' }}">
+                                        <span>{{ $displayTopLabel }}</span>
+                                    </a>
                                 @endif
-                            </div>
+                            @endif
                         @endforeach
                     @else
                         @forelse($monitoringGroup['items'] as $itemSheet)
@@ -457,7 +450,7 @@
             @endforeach
         </div>
 
-        <div class="sidebar-section-label">Referensi &amp; Dokumen</div>
+        <div class="sidebar-section-label">Informasi &amp; Kajian</div>
 
         <a href="{{ route('standar-konstruksi.index') }}" class="{{ $activeNav === 'standar' ? 'active-nav' : '' }}">
             <span><i class="fa fa-images"></i> Standar Konstruksi</span>

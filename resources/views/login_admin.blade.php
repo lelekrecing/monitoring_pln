@@ -38,10 +38,6 @@
         <div class="right-panel">
             <div class="login-box">
                 <div class="login-header">
-                    <div class="login-pln-badge">
-                        <img src="{{ asset('images/Logo_PLN.png') }}" alt="Logo PLN">
-                        <span>Administrator • UP3 Jambi</span>
-                    </div>
                     <h1>Login Admin</h1>
                     <p class="login-subtitle">Masuk menggunakan email administrator dan password Anda.</p>
                 </div>

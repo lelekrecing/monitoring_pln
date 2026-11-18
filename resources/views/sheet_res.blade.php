@@ -337,7 +337,6 @@
     <div class="page-header">
         <div>
             <h2>{{ $sheet->nama_sheet }}</h2>
-            <p>Total Baris : {{ $sheet->total_rows }}</p>
         </div>
     </div>
 

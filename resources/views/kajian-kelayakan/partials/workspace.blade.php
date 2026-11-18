@@ -295,6 +295,7 @@
         </div>
     </div>
 
+    @if(!$isAdminPortal)
     <div class="kk-tabs" role="tablist">
         <button type="button" class="kk-tab-btn active" data-tab="tabKkf" onclick="switchKkTab('tabKkf', this)">
             <i class="fa fa-table-cells"></i> Kajian KKF &amp; Input URAI (ULP / Perencanaan)
@@ -306,6 +307,7 @@
             <i class="fa fa-file-contract"></i> Daftar Kajian, Export &amp; Kuota Kontrak
         </button>
     </div>
+    @endif
 
     {{-- ================= TAB 1: SIMULASI CEPAT ================= --}}
     <div id="tabSimulasi" class="kk-tab-panel">
@@ -495,7 +497,7 @@
     </div>
 
     {{-- ================= TAB 2: FORM KAJIAN KKF & URAI ================= --}}
-    <div id="tabKkf" class="kk-tab-panel active">
+    <div id="tabKkf" class="kk-tab-panel {{ !$isAdminPortal ? 'active' : '' }}">
         <div class="kk-card">
             <div class="kk-card-head">
                 <div>
@@ -803,7 +805,7 @@
     </div>
 
     {{-- ================= TAB 3: DAFTAR KAJIAN, EXPORT & KUOTA KONTRAK ================= --}}
-    <div id="tabDaftar" class="kk-tab-panel">
+    <div id="tabDaftar" class="kk-tab-panel {{ $isAdminPortal ? 'active' : '' }}">
         {{-- DISTRIBUSI KAJIAN PER ULP --}}
         <div class="kk-card">
             <div class="kk-card-head">
@@ -847,13 +849,17 @@
                     </div>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                    <div style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#334155;">
+                        <span>Show</span>
+                        <select id="quotaPerPage" class="kk-select" style="width:76px;" onchange="applyQuotaPagination(1)">
+                            <option value="10" selected>10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                        <span>entries</span>
+                    </div>
                     <input type="text" id="quotaSearch" class="kk-input" style="width:200px;" placeholder="Cari vendor / kontrak..." oninput="applyQuotaPagination(1)">
-                    <select id="quotaPerPage" class="kk-select" style="width:115px;" onchange="applyQuotaPagination(1)">
-                        <option value="10" selected>10 / hal</option>
-                        <option value="25">25 / hal</option>
-                        <option value="50">50 / hal</option>
-                        <option value="100">100 / hal</option>
-                    </select>
                     <button type="button" class="kk-btn kk-btn-primary kk-btn-sm" onclick="openQuotaModal()">
                         <i class="fa fa-plus"></i> Tambah / Atur Kuota Kontrak
                     </button>
@@ -937,8 +943,13 @@
         <div class="kk-card">
             <div class="kk-card-head">
                 <div>
-                    <div class="kk-card-title"><i class="fa fa-list-check" style="color:#0d2137;"></i> Daftar Kajian Kelayakan &amp; Simulasi Proyek</div>
-                    <div class="kk-card-sub">Pilih tampil 10 / 25 / 50 / 100 data per halaman, filter ULP/Tahun/Status, atau Export Rekap PDF &amp; Excel.</div>
+                    <div class="kk-card-title">
+                        <i class="fa fa-list-check" style="color:#0d2137;"></i>
+                        {{ $isAdminPortal ? 'Panel Data Kajian Kelayakan & URAI (Hasil Input User)' : 'Daftar Kajian Kelayakan & Simulasi Proyek' }}
+                    </div>
+                    <div class="kk-card-sub">
+                        {{ $isAdminPortal ? 'Pantau seluruh data kajian KKO/KKF, pelanggan PB/PD, dan kebutuhan URAI yang diinput pada halaman User, serta kelola kontrak & export PDF/Excel.' : 'Pilih Show 10 / 25 / 50 / 100 entries, filter ULP/Tahun/Status, atau Export Rekap PDF & Excel.' }}
+                    </div>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
                     <a href="{{ $exportBaseUrl . '/export-pdf' }}" id="btnRecapExportPdf" target="_blank" class="kk-btn kk-btn-pdf kk-btn-sm">
@@ -951,6 +962,16 @@
             </div>
 
             <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center;">
+                <div style="display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:#334155;">
+                    <span>Show</span>
+                    <select id="projectsPerPage" class="kk-select" style="width:76px;" onchange="filterProjectsTable(true)">
+                        <option value="10" selected>10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select>
+                    <span>entries</span>
+                </div>
                 <input type="text" id="filterSearch" class="kk-input" style="width:230px;" placeholder="Cari kode, pekerjaan, ULP, vendor..." oninput="filterProjectsTable(true)">
                 <select id="filterUlp" class="kk-select" style="width:160px;" onchange="syncUlpCardSelection(); filterProjectsTable(true);">
                     <option value="">Semua ULP</option>
@@ -972,12 +993,6 @@
                     <option value="layak">Disetujui Layak</option>
                     <option value="tidak_layak">Tidak Layak</option>
                     <option value="terkontrak">Terkontrak</option>
-                </select>
-                <select id="projectsPerPage" class="kk-select" style="width:120px;margin-left:auto;" onchange="filterProjectsTable(true)">
-                    <option value="10" selected>Tampil: 10</option>
-                    <option value="25">Tampil: 25</option>
-                    <option value="50">Tampil: 50</option>
-                    <option value="100">Tampil: 100</option>
                 </select>
             </div>
 
@@ -1047,9 +1062,15 @@
                                 </td>
                                 <td>
                                     <div style="display:flex;gap:5px;flex-wrap:wrap;">
-                                        <button type="button" class="kk-btn kk-btn-outline kk-btn-xs" onclick="loadProjectIntoKkf({{ $p->id }})">
-                                            <i class="fa fa-pen-to-square"></i> URAI
-                                        </button>
+                                        @if($isAdminPortal)
+                                            <button type="button" class="kk-btn kk-btn-outline kk-btn-xs" onclick="openViewDetailModal({{ $p->id }})">
+                                                <i class="fa fa-eye"></i> Lihat Data
+                                            </button>
+                                        @else
+                                            <button type="button" class="kk-btn kk-btn-outline kk-btn-xs" onclick="loadProjectIntoKkf({{ $p->id }})">
+                                                <i class="fa fa-pen-to-square"></i> URAI
+                                            </button>
+                                        @endif
                                         <a href="{{ $exportBaseUrl . '/' . $p->id . '/export-pdf' }}" target="_blank" class="kk-btn kk-btn-pdf kk-btn-xs" title="Export PDF KKO-KKF">
                                             <i class="fa fa-file-pdf"></i> PDF
                                         </a>
@@ -1068,7 +1089,7 @@
                         @empty
                             <tr id="projectsEmptyRow">
                                 <td colspan="8" style="text-align:center;color:#64748b;padding:28px;">
-                                    Belum ada data kajian kelayakan atau simulasi. Silakan mulai dari Tab <strong>Simulasi Cepat</strong> atau <strong>Kajian KKF</strong>.
+                                    Belum ada data kajian kelayakan atau simulasi yang diinput oleh User.
                                 </td>
                             </tr>
                         @endforelse
@@ -1081,6 +1102,20 @@
                 <div class="kk-pager-controls" id="projectsPagerBtns"></div>
             </div>
         </div>
+    </div>
+</div>
+
+{{-- MODAL LIHAT DETAIL DATA INPUT USER (UNTUK ADMIN) --}}
+<div id="adminDetailModal" class="kk-modal-backdrop">
+    <div class="kk-modal" style="width:min(980px, 96%);max-height:88vh;overflow-y:auto;">
+        <div class="kk-card-head">
+            <div>
+                <div class="kk-card-title" id="admDetailTitle"><i class="fa fa-eye"></i> Detail Data Kajian Input User</div>
+                <div class="kk-card-sub" id="admDetailSub">-</div>
+            </div>
+            <button type="button" class="kk-btn kk-btn-outline kk-btn-sm" onclick="closeModal('adminDetailModal')">Tutup</button>
+        </div>
+        <div id="admDetailBody" style="font-size:13px;color:#1e293b;line-height:1.5;">Memuat data...</div>
     </div>
 </div>
 
@@ -2614,6 +2649,85 @@ async function submitContractModal(){
 
 function openQuotaModal(){
     document.getElementById('quotaModal').classList.add('open');
+}
+
+async function openViewDetailModal(id){
+    const modal = document.getElementById('adminDetailModal');
+    const body = document.getElementById('admDetailBody');
+    if (!modal || !body) return;
+    body.innerHTML = 'Memuat detail data kajian...';
+    modal.classList.add('open');
+
+    const res = await fetch(`${KK_ROUTES.showBase}/${id}`, { headers: { 'Accept': 'application/json' } });
+    const json = await res.json();
+    if (!res.ok || !json.data) {
+        body.innerHTML = '<div style="color:#dc2626;">Gagal memuat detail kajian.</div>';
+        return;
+    }
+    const p = json.data;
+    document.getElementById('admDetailTitle').innerHTML = `<i class="fa fa-eye"></i> ${escapeHtml(p.kode_kajian)} — ${escapeHtml(p.nama_pekerjaan)}`;
+    document.getElementById('admDetailSub').textContent = `ULP ${p.ulp || '-'} • Tahun ${p.tahun || '-'} • Status: ${p.status || '-'}`;
+
+    const pelRows = (p.pelanggans || []).map((pl, idx) => `
+        <tr>
+            <td>${idx + 1}</td>
+            <td>${escapeHtml(pl.jenis_permohonan)}</td>
+            <td>${escapeHtml(pl.kelompok_tarif)}</td>
+            <td>${pl.jumlah_pelanggan}</td>
+            <td>${pl.daya_sebelum_kva} kVA</td>
+            <td>${pl.daya_sesudah_kva} kVA</td>
+            <td><strong>+${pl.penambahan_daya_kva} kVA</strong></td>
+        </tr>
+    `).join('') || '<tr><td colspan="7" style="text-align:center;color:#64748b;">Tidak ada baris pelanggan.</td></tr>';
+
+    const uraiRows = (p.urai_rows || []).map(ur => {
+        const d = ur.row_data || {};
+        return `
+            <tr>
+                <td>${ur.row_number}</td>
+                <td>${escapeHtml(d.AJ || '-')}</td>
+                <td>${escapeHtml(d.AK || '-')}</td>
+                <td>${escapeHtml(d.AL || '-')}</td>
+                <td>${escapeHtml(d.VOL150 || '0')}</td>
+                <td>${escapeHtml(d.BA || '0')}</td>
+                <td>${escapeHtml(d.BD || '0')}</td>
+                <td>${escapeHtml(d.BG || '-')}</td>
+                <td>${escapeHtml(d.CANTOL || d.PORTAL || '-')}</td>
+                <td>${escapeHtml(d.DN || '-')}</td>
+                <td>${escapeHtml(d.DP || '-')}</td>
+                <td>${escapeHtml(d.VOLJTR || '0')}</td>
+                <td>${escapeHtml(d.DS || '0')}</td>
+            </tr>
+        `;
+    }).join('') || '<tr><td colspan="13" style="text-align:center;color:#64748b;">Tidak ada baris URAI.</td></tr>';
+
+    body.innerHTML = `
+        <div class="kk-mini-grid" style="margin-bottom:14px;">
+            <div class="kk-mini-box"><div class="lbl">Total Pelanggan</div><div class="val">${p.total_pelanggan || 0} plg</div></div>
+            <div class="kk-mini-box"><div class="lbl">Total Daya</div><div class="val">+${p.total_daya_kva || 0} kVA</div></div>
+            <div class="kk-mini-box"><div class="lbl">Estimasi RAB</div><div class="val">${formatRp(p.estimasi_nilai_rab || 0)}</div></div>
+            <div class="kk-mini-box"><div class="lbl">Payback Period</div><div class="val">${p.payback_tahun ?? '-'} Thn</div></div>
+            <div class="kk-mini-box"><div class="lbl">Jarak Gudang</div><div class="val">${p.jarak_gudang_km ?? 0} km</div></div>
+        </div>
+        <div style="margin-bottom:12px;">
+            <strong style="display:block;margin-bottom:6px;color:#0d2137;">1. Data Pelanggan PB / PD (${(p.pelanggans || []).length} Kelompok)</strong>
+            <div class="kk-table-wrap">
+                <table class="kk-table">
+                    <thead><tr><th>#</th><th>Jenis</th><th>Kelompok Tarif</th><th>Jml</th><th>Sebelum</th><th>Sesudah</th><th>Tambah Daya</th></tr></thead>
+                    <tbody>${pelRows}</tbody>
+                </table>
+            </div>
+        </div>
+        <div>
+            <strong style="display:block;margin-bottom:6px;color:#0d2137;">2. Data Kebutuhan Jaringan URAI (${(p.urai_rows || []).length} Baris Terisi)</strong>
+            <div class="kk-table-wrap">
+                <table class="kk-table">
+                    <thead><tr><th>Baris</th><th>AJ</th><th>AK</th><th>AL</th><th>VOL150</th><th>BA</th><th>BD</th><th>BG</th><th>Trafo</th><th>DN</th><th>DP</th><th>VOLJTR</th><th>DS</th></tr></thead>
+                    <tbody>${uraiRows}</tbody>
+                </table>
+            </div>
+        </div>
+    `;
 }
 
 async function deleteProject(id, kode){
